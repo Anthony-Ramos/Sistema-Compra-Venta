@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Registro de Usuario</title>
+  <link rel="stylesheet" href="CSS/registro.css" />
+</head>
+<body>
+  <div class="fondo">
+    <div class="contenido">
+      <h1 class="msj">Registro de Usuario</h1>
+
+      <!-- ajuste a URL do action para o seu backend -->
+      <form id="registroForm" method="POST" action="api/usuarios_crear.php" novalidate>
+        <label class="texto" for="nom_usuario">Nombre de usuario</label>
+        <input
+          type="text" class="txt"
+          id="nom_usuario" name="nom_usuario"
+          placeholder="Ingrese su usuario"
+          minlength="3" maxlength="100" required
+        />
+
+        <label class="texto" for="contrasena">Contraseña</label>
+        <input
+          type="password" class="txt"
+          id="contrasena" name="contrasena"
+          placeholder="Mínimo 6 caracteres"
+          minlength="6" maxlength="100" required
+        />
+
+        <label class="texto" for="confirmar">Confirmar contraseña</label>
+        <input
+          type="password" class="txt"
+          id="confirmar" name="confirmar"
+          placeholder="Repita la contraseña"
+          minlength="6" maxlength="100" required
+        />
+
+        <label class="texto" for="id_rol">Rol</label>
+        <select class="txt" id="id_rol" name="id_rol" required>
+          <!-- substitua/complete com os roles reais do seu BD -->
+          <option value="" selected disabled>Seleccione un rol</option>
+          <option value="1">Administrador</option>
+          <option value="2">Vendedor</option>
+        </select>
+
+        <button type="submit" class="btn">Registrarse</button>
+        <a href="index.html" class="btn" role="button">Volver al login</a>
+        <a href="menu.html" class="btn" role="button">Regresar al menú</a>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // validações rápidas no cliente
+    const form = document.getElementById('registroForm');
+    form.addEventListener('submit', (e) => {
+      const pass = document.getElementById('contrasena').value;
+      const confirm = document.getElementById('confirmar').value;
+      const rol = document.getElementById('id_rol').value;
+
+      if (pass !== confirm) {
+        e.preventDefault();
+        alert('Las contraseñas no coinciden.');
+        return;
+      }
+      if (!rol) {
+        e.preventDefault();
+        alert('Seleccione un rol.');
+        return;
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,80 +1,131 @@
+/* ===== Reset útil ===== */
+* { box-sizing: border-box; }
+
 body {
     background-color: #0E4C75;
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 }
 
+/* ===== Contenedor para centrar todo ===== */
+.fondo {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;   /* Centra horizontal */
+    align-items: center;       /* Centra vertical */
+    padding: 16px;
+}
+
+/* ===== Tarjeta (login/registro) ===== */
 .contenido {
-    margin-left: 35%;
-    margin-top: 10%;
-    width: 30%;
-    height: 50%;
+    width: 100%;
+    max-width: 420px;                 /* Antes era porcentaje fijo; ahora responsivo */
     color: #f6fdff;
-    background-color: rgb(50, 130, 181,0.8);
-    box-shadow: 10px 10px 15px rgb(0, 0, 0, 0.5);
+    background-color: rgba(50,130,181,0.8);
+    box-shadow: 10px 10px 15px rgba(0,0,0,0.5);
     border-radius: 10px;
+    padding: 28px 22px;               /* Espaciado interno cómodo */
 }
 
+/* ===== Títulos y textos ===== */
 .msj {
-    margin-left: 30%;
-    display: inline-block;
-}
-.texto{
-    margin-left: 5%;
-    font-weight: bold;
+    display: block;
+    text-align: center;               /* Centrado real */
+    margin: 0 0 16px 0;
 }
 
-.txt{
-    height: 6vh;
-    width: 70%;
-    border: 2px solid transparent;
-    margin-bottom: 2vh;
-    display: inline-block;
-    margin-left: 10%;
-    border-radius: 5px;
-    padding-left: 5vh;
-    transition: all 0.5s ease;
+.texto{
+    font-weight: bold;
+    text-align: center;
+    display: block;
+    margin-bottom: 8px;
 }
+
+/* ===== Inputs ===== */
+.txt{
+    display: block;
+    width: 100%;
+    height: 44px;                     /* 6vh puede variar demasiado; fijo para consistencia */
+    border: 2px solid transparent;
+    border-radius: 5px;
+    margin: 0 0 14px 0;
+    padding: 0 12px;                  /* Antes 5vh; ahora padding típico */
+    transition: all 0.2s ease;
+    background-color: #ffffff;
+}
+
 .txt:focus{
     outline: none;
-    border: 2px solid rgb(0,0, 0);
+    border: 2px solid #000;
+    background-color: #f0fff4;
 }
+
 .txt:not(:placeholder-shown){
     border: 2px solid #000000fa;
     background-color: #f0fff4;
 }
 
+/* ===== Botón base ===== */
 .entrar {
-    width: 70%;
-    height: 7vh;
-    font-size: 3vh;
-    margin-bottom: 2%;
-    color: #212121;
-    display: inline-block;
-    margin-left: 15%;
-    background-color: #BBE1F8;
-    border-style: none;
-    border-radius: 10px;
-
-    transition: transform 0.4s ease, bacground-color 0.4s ease;
+    background-color: #007bff; /* Azul */
+    color: white;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 10px 0 0 0;
+    width: 100%;                     /* Ocupa el ancho para alineación limpia */
+    display: block;
+    transition: background-color 0.2s ease, transform 0.08s ease;
 }
 
 .entrar:hover {
-    transform: scale(1.05);
-    background-color: #8dd3ff;
-    cursor: pointer;
+    background-color: #0056b3;
 }
 
+.entrar:active {
+    transform: scale(0.98);
+}
+
+/* ===== Enlace recuperar cuenta ===== */
 .recuperacion {
-    margin-left: 30%;
     text-decoration: none;
     color: #def4fd;
     font-weight: bold;
-    margin-top: 3vh;
-    margin-bottom: 3vh;
+    margin: 12px auto 14px auto;     /* Centrado y con margen vertical */
     display: inline-block;
-    transition: transform 0.3s ease, bacground-color 0.3s ease;
+    transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
 .recuperacion:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
     text-decoration: underline;
+}
+
+/* ===== Variantes de botón (opcional) ===== */
+.registrar {
+    background-color: #28a745; /* Verde */
+}
+.registrar:hover {
+    background-color: #1e7e34;
+}
+
+.volver {
+    background-color: #6c757d; /* Gris */
+}
+.volver:hover {
+    background-color: #5a6268;
+}
+
+/* ===== Utilidad para ocultar el otro formulario ===== */
+.oculto { display: none; }
+
+/* ===== Responsive fino ===== */
+@media (max-width: 480px) {
+    .contenido {
+        padding: 22px 16px;
+        border-radius: 12px;
+    }
+    .entrar { font-size: 15px; }
 }
