@@ -20,11 +20,13 @@
         </div>
     </header>
     <nav>
-<a href="{{ url_for('auth.menu') }}">Inicio</a>
-<a href="{{ url_for('auth.productos') }}">Gestión de Productos</a>
-<a href="{{ url_for('auth.registro') }}">Ir a Usuarios</a>
+    <a href="{{ url_for('auth.menu') }}">Inicio</a>
+    <a href="{{ url_for('auth.productos') }}">Gestión de Productos</a>
+    <a href="{{ url_for('auth.registro') }}">Ir a Usuarios</a>
 
-        <a href="#" class="logout"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
+    <a href="{{ url_for('auth.logout') }}" class="logout">
+    <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+    </a>
     </nav>
     <main>
         <div class="logo-container">

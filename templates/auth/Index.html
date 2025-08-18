@@ -1,23 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tienda Julio y Mary</title>
-    <link rel="stylesheet" href="../CSS/login.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/login.css') }}">
 </head>
 <body>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <ul class="flashes">
+        {% for category, message in messages %}
+            <li class="{{ category }}">{{ message }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+    {% endwith %}
+
     <div class="fondo">
         <div class="contenido">
             <h1 class="msj">Bienvenido</h1>
-                <form id="loginForm">
-                <input type="text" class="txt" id="usuario" placeholder="Usuario" required minlength="3">
-                <input type="password" class="txt" id="contrasena" placeholder="Contraseña" required minlength="6">
+            <form id="loginForm" method="POST" action="{{ url_for('auth.login') }}">
+                <input type="text" class="txt" name="usuario" placeholder="Usuario" required minlength="3">
+                <input type="password" class="txt" name="contrasena" placeholder="Contraseña" required minlength="6">
                 <button type="submit" class="entrar">Entrar</button><br>
                 <a href="#" class="recuperacion">Recuperar la cuenta</a>
-    </form>
+            </form>
         </div>
     </div>
-    <script href="../JS/verificacion.js"></script>
+
+    <!-- Script corregido -->
+      <!--<script src="{{ url_for('static', filename='JS/verificacion.js') }}"></script>-->
 </body>
 </html>

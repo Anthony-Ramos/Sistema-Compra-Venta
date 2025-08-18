@@ -4,6 +4,7 @@ Este módulo define las rutas relacionadas con el inicio de sesión,
 registro y menú principal utilizando Flask y Blueprints.
 """
 import psycopg2
+from flask import session
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from backend.modelos.usuario_modelo import Usuario
 
@@ -21,15 +22,27 @@ def login():
     if request.method == "POST":
         usuario = request.form.get("usuario")
         contrasena = request.form.get("contrasena")
+        print("Usuario ingresado:", usuario)
 
         user = Usuario.autenticar(usuario, contrasena)
+        print("Resultado autenticación:", user)
         if user:
             flash("Inicio de sesión exitoso", "success")
             return redirect(url_for("auth.menu"))
 
         flash("Usuario o contraseña incorrectos", "danger")
-
+        return redirect(url_for("auth.login"))
+        # 👇 Este return es para el método GET
     return render_template("auth/Index.html")
+
+@auth_bp.route("/logout")
+def logout():
+    """
+    Cierra la sesión del usuario.
+    """
+    session.clear()
+    flash("Sesión cerrada correctamente", "info")
+    return redirect(url_for("auth.login"))
 
 
 @auth_bp.route("/registro", methods=["GET", "POST"])
