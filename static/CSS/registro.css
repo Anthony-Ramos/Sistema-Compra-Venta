@@ -130,6 +130,15 @@ form{
   box-shadow: 0 5px 14px rgba(0, 123, 255, 0.28);
 }
 
+.btn-eliminar {
+  background-color: #f94144;
+  color: white;
+}
+
+.btn-eliminar:hover {
+  background-color: #d62828;
+}
+
 /* Grupo de botones ordenado (se aplica automático si hay varios .btn seguidos) */
 .btn + .btn{
   margin-top: 8px;
@@ -184,4 +193,39 @@ hr, .divider{
 }
 @keyframes rise-in{
   to{ opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.contenedor-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20px;
+  gap: 40px;
+}
+
+.formulario {
+  flex: 1;
+}
+
+.tabla-estilo {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  color: black;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.tabla-estilo th,
+.tabla-estilo td {
+  padding: 12px 16px;
+  border: 1px solid #ccc;
+  text-align: left;
+}
+
+.tabla-estilo th {
+  background-color: #f0f0f0;
+  font-weight: 600;
 }

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Registro de Usuario</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> 
+  <!-- Estilos generales -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='CSS/registro.css') }}" />
+
+</head>
+<body>
+<div class="fondo">
+  <!-- 🔔 ALERTAS -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="container mt-3">
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <div class="contenedor-flex">
+
+    <!-- FORMULARIO -->
+    <div class="formulario-contenedor">
+      <h1 class="msj">Registro de Usuario</h1>
+      <form id="registroForm" method="POST" action="/auth/registro" novalidate>
+        <label class="texto" for="nom_usuario">Nombre de usuario</label>
+        <input type="text" class="txt" id="nom_usuario" name="nom_usuario" required minlength="3" maxlength="100"/>
+
+        <label class="texto" for="contrasena">Contraseña</label>
+        <input type="password" class="txt" id="contrasena" name="contrasena" required minlength="6" maxlength="100"/>
+
+        <label class="texto" for="confirmar">Confirmar contraseña</label>
+        <input type="password" class="txt" id="confirmar" name="confirmar" required minlength="6" maxlength="100"/>
+
+        <label class="texto" for="id_rol">Rol</label>
+        <select class="txt" id="id_rol" name="id_rol" required>
+          <option value="" selected disabled>Seleccione un rol</option>
+          <option value="1">Administrador</option>
+          <option value="2">Vendedor</option>
+        </select>
+
+        <button type="submit" class="btn">Registrarse</button>
+        <a href="{{ url_for('auth.login') }}" class="btn">Volver al login</a>
+        <a href="{{ url_for('auth.menu') }}" class="btn">Regresar al menú</a>
+      </form>
+    </div>
+
+    <!-- TABLA -->
+    <div class="tabla-contenedor">
+      <h2>Usuarios Registrados</h2>
+      <table class="tabla-estilo">
+        <thead>
+          <tr>
+            <!--<th>ID</th>-->
+            <th>Nombre de usuario</th>
+            <th>Rol</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for usuario in usuarios %}
+            <tr>
+               <!--<td>{{ usuario.id_usuario }}</td>-->
+              <td>{{ usuario.nom_usuario }}</td>
+              <td>{{ usuario.nom_rol }}</td>
+              <td class="acciones">    
+                <!-- Botón modal -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalEditar{{ usuario.id_usuario }}">
+                  Editar
+                </button>
+
+                <form action="{{ url_for('auth.eliminar_usuario', id_usuario=usuario.id_usuario) }}" method="POST" style="display:inline;" onsubmit="return confirm('¿Seguro que deseas eliminar este usuario?');">
+                  <button type="submit" class="btn btn-eliminar">Eliminar</button>
+                </form>
+              </td>
+            </tr>
+
+            <!-- Modal para editar usuario -->
+            <div class="modal fade" id="modalEditar{{ usuario.id_usuario }}" tabindex="-1" aria-labelledby="modalLabel{{ usuario.id_usuario }}" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <form action="{{ url_for('auth.editar_usuario', id_usuario=usuario.id_usuario) }}" method="POST">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="modalLabel{{ usuario.id_usuario }}">Editar Usuario</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="mb-3">
+                        <label for="nom_usuario{{ usuario.id_usuario }}" class="form-label">Nombre de Usuario</label>
+                        <input type="text" class="form-control" id="nom_usuario{{ usuario.id_usuario }}" name="nom_usuario" value="{{ usuario.nom_usuario }}" required>
+                      </div>
+                      <div class="mb-3">
+                        <label for="id_rol{{ usuario.id_usuario }}" class="form-label">Rol</label>
+                        <select class="form-select" id="id_rol{{ usuario.id_usuario }}" name="id_rol" required>
+                          <option value="1" {% if usuario.id_rol == 1 %}selected{% endif %}>Administrador</option>
+                          <option value="2" {% if usuario.id_rol == 2 %}selected{% endif %}>Vendedor</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                      <button type="submit" class="btn btn-success">Guardar Cambios</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          {% else %}
+            <tr><td colspan="4">No hay usuarios registrados aún.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+  const form = document.getElementById('registroForm');
+  form.addEventListener('submit', (e) => {
+    const pass = document.getElementById('contrasena').value;
+    const confirm = document.getElementById('confirmar').value;
+    const rol = document.getElementById('id_rol').value;
+
+    if (pass !== confirm) {
+      e.preventDefault();
+      alert('Las contraseñas no coinciden.');
+    } else if (!rol) {
+      e.preventDefault();
+      alert('Seleccione un rol.');
+    }
+  });
+</script>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
