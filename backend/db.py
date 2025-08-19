@@ -9,9 +9,14 @@ def iniciar_pool():
     if _pool is None:
         _pool = pool.SimpleConnectionPool(
             1, 10,
-            host=Config.PG_HOST, port=Config.PG_PORT,
-            dbname=Config.PG_DB, user=Config.PG_USER, password=Config.PG_PASS
+            host=Config.PG_HOST,
+            port=Config.PG_PORT,
+            dbname=Config.PG_DB,
+            user=Config.PG_USER,
+            password=Config.PG_PASS,
+            client_encoding='UTF8'
         )
+        print("Conexion exitosa")
 
 def obtener_conexion():
     if _pool is None:
