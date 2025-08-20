@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tienda Julio y Mary</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
+    </style>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../CSS/menu.css">
+    <link rel="stylesheet" href="../CSS/productos.css">
+</head>
+
+<body>
+    <header>
+        <h1 class="empresa">Tienda Julio y Mary</h1>
+        <h1 class="pagina">Productos</h1>
+        <div class="user-info">
+            <img src="../IMG/logo.png" alt="Logo">
+            <i class="fas fa-user-circle"></i>
+            <label>Administrador</label>
+            <label>Ricardo</label>
+        </div>
+    </header>
+    <nav>
+        <a href="menu.html">Menu</a>
+        <a href="productos.html" class="active">Gestión de Productos</a>
+        <a href="ventas.html">Ventas</a>
+        <a href="compras.html">Compras</a>
+        <a href="inventario.html">Inventario</a>
+        <a href="reportes.html">Reportes</a>
+        <a href="usuarios.html">usuarios</a>
+        <a href="#" class="logout"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
+    </nav>
+    <main>
+        <div class="tabla-agregarprod">
+            <div class="form-productos">
+                <label for="" class="center">AGREGAR PRODUCTO</label>
+
+                <label for="">Nombre*</label>
+                <input type="text" id="nombre" placeholder="Nombre">
+
+                <div class="fila-doble">
+                    <div class="campo">
+                        <label for="">Categoria*</label>
+                        <select id="categoria">
+                            <option value="">Categoria</option>
+                            <option value="cat1">Categoria 1</option>
+                            <option value="cat2">Categoria 2</option>
+                        </select>
+                    </div>
+                    <div class="campo">
+                        <label for="">Proveedor*</label>
+                        <select id="proveedor">
+                            <option value="">Proveedor</option>
+                            <option value="prov1">Proveedor 1</option>
+                            <option value="prov2">Proveedor 2</option>
+                        </select>
+                    </div>
+                </div>
+
+                <label for="">Precio*</label>
+                <div class="fila-doble">
+                    <div class="campo">
+                        <input type="number" id="precio_compra" placeholder="Compra" step="0.01">
+                    </div>
+                    <div class="campo">
+                        <input type="number" id="precio_venta" placeholder="Venta" step="0.01">
+                    </div>
+                </div>
+
+                <label for="">Minimo en inventario*</label>
+                <input type="number" id="stock_minimo" placeholder="Stock minimo">
+
+                <label for="">Descripcion*</label>
+                <textarea id="descripcion" rows="4" placeholder="Ingrese aqui la descripcion del Producto"></textarea>
+
+                <div class="botones">
+                    <input type="button" value="Guardar" id="guardar">
+                    <input type="button" value="Cancelar" id="cancelar">
+                </div>
+            </div>
+        </div>
+
+        </div>
+        <div class="tabla-productos">
+            <h1 class="Apartado de tabla">Lista de Productos</h1>
+
+            <div class="buscador">
+                <select name="Opciones">
+                    <option value="">Opciones</option>
+                    <option value="Productos">Productos</option>
+                    <option value="Ventas">Ventas</option>
+                    <option value="Compras">Compras</option>
+                </select>
+                <input type="search" placeholder="Buscar..." id="buscador">
+                <button type="button">Buscar</button>
+            </div>
+
+            <!-- Contenedor scrollable -->
+            <div class="tabla-scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Categoria</th>
+                            <th>Proveedor</th>
+                            <th>Precio Compra</th>
+                            <th>Precio Venta</th>
+                            <th>Stock Actual</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Registros -->
+                        <tr>
+                        </tr>
+                        <tr>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+    </main>
+    <footer>
+        © Sistema Tienda Julio y Mary
+    </footer>
+    <script src="../JS/prodenv.js"></script>
+</body>
+
+</html>
