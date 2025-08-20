@@ -3,6 +3,7 @@
 Este módulo define las rutas relacionadas con el inicio de sesión,
 registro y menú principal utilizando Flask y Blueprints.
 """
+import re
 import psycopg2
 from flask import session
 from flask import make_response
@@ -50,7 +51,6 @@ def registro():
     """
     Muestra y procesa el formulario de registro de usuarios.
     """
-
     if request.method == "POST":
         nom_usuario = request.form.get("nom_usuario")
         contrasena  = request.form.get("contrasena")
@@ -61,6 +61,13 @@ def registro():
             flash("Complete todos los campos.", "warning")
         elif contrasena != confirmar:
             flash("Las contraseñas no coinciden.", "warning")
+        elif (
+            len(contrasena) < 8 or 
+            not re.search(r"\d", contrasena) or 
+            not re.search(r"[A-Z]", contrasena) or 
+            not re.search(r"[a-z]", contrasena)
+        ):
+            flash("La contraseña debe tener al menos 8 caracteres, incluir mayúsculas, minúsculas y números.", "warning")
         else:
             try:
                 nuevo_id = Usuario.registrar(nom_usuario, contrasena, int(id_rol))
@@ -70,7 +77,6 @@ def registro():
 
     # 👇 Esta línea se ejecuta SIEMPRE
     usuarios = Usuario.obtener_todos()
-
     return render_template("auth/usuarios.html", usuarios=usuarios)
 
 

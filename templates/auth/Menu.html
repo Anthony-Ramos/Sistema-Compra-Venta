@@ -20,6 +20,8 @@
         </div>
     </header>
 
+    <div class="contenedor">
+    
     <nav>
         <a href="{{ url_for('auth.menu') }}">Inicio</a>
         <a href="{{ url_for('auth.productos') }}">Gestión de Productos</a>
@@ -29,12 +31,14 @@
         </a>
     </nav>
 
+
     <main>
         <div class="logo-container">
            <img src="{{ url_for('static', filename='IMG/logotienda.png') }}">
         </div>
         <p>Bienvenido al sistema de Tienda Julio y Mary. Seleccione una opción del menú para comenzar.</p>
     </main>
+      </div>
 
     <footer>
         © Sistema Tienda Julio y Mary
