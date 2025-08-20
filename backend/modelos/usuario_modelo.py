@@ -108,3 +108,10 @@ class Usuario:
             WHERE id_usuario = %s;
         """
         DB.execute(sql, (nom_usuario, id_rol, id_usuario))
+
+    @staticmethod
+    def obtener_nombre_rol(id_rol: int) -> str:
+        """Obtiene el nombre del rol dado su ID."""
+        query = "SELECT nom_rol FROM rol WHERE id_rol = %s"
+        row = DB.fetch_one(query, (id_rol,))
+        return row[0] if row else "Desconocido"

@@ -5,6 +5,7 @@ registro y menú principal utilizando Flask y Blueprints.
 """
 import psycopg2
 from flask import session
+from flask import make_response
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from backend.modelos.usuario_modelo import Usuario
 
@@ -14,26 +15,25 @@ auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
 @auth_bp.route("/login", methods=["GET", "POST"])
 def login():
     """
-    Muestra y procesa el formulario de inicio de sesión.
-
-    Si la petición es POST, valida las credenciales y redirige al menú.
-    Si falla, muestra un mensaje de error.
+    Abre la sesión del usuario.
     """
+
     if request.method == "POST":
         usuario = request.form.get("usuario")
         contrasena = request.form.get("contrasena")
-        print("Usuario ingresado:", usuario)
 
         user = Usuario.autenticar(usuario, contrasena)
-        print("Resultado autenticación:", user)
         if user:
+            session["usuario_id"] = user.id_usuario
+            session["usuario_nombre"] = user.nom_usuario
+            session["usuario_rol"] = Usuario.obtener_nombre_rol(user.id_rol)  # ⬅️ Nuevo
+
             flash("Inicio de sesión exitoso", "success")
             return redirect(url_for("auth.menu"))
 
         flash("Usuario o contraseña incorrectos", "danger")
-        return redirect(url_for("auth.login"))
-        # 👇 Este return es para el método GET
     return render_template("auth/Index.html")
+
 
 @auth_bp.route("/logout")
 def logout():
@@ -77,9 +77,17 @@ def registro():
 @auth_bp.route("/menu")
 def menu():
     """
-    Muestra el menú principal de la aplicación después del login.
+    Muestra y procesa el formulario de menús.
     """
-    return render_template("auth/Menu.html")
+
+    if "usuario_id" not in session:
+        flash("Inicie sesión para continuar.", "warning")
+        return redirect(url_for("auth.login"))
+    response = make_response(render_template("auth/Menu.html"))
+    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
 
 @auth_bp.route("/usuarios")
 def listar_usuarios():
