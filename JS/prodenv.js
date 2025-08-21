@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
     cargarComboFiltro();
     cargarProveedores();
     cargarProductos();
+    
     const selectFiltro = document.getElementById("filtro");
     selectFiltro.addEventListener("change", () => {
         const categoria = selectFiltro.value;
