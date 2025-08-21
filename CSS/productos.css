@@ -29,12 +29,17 @@ main {
     max-width: 90%;
 }
 
+.select-combo {
+    width: 100%;
+    padding: 5px;
+    box-sizing: border-box;
+}
 .buscador select,
 .buscador input[type="search"] {
     border: none;
     outline: none;
     padding: 8px 10px; 
-    font-size: 14px;
+    font-size: 12px;
 }
 
 .buscador select {

@@ -7,7 +7,6 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
     </style>
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../CSS/menu.css">
     <link rel="stylesheet" href="../CSS/productos.css">
 </head>
@@ -44,7 +43,7 @@
                 <div class="fila-doble">
                     <div class="campo">
                         <label for="">Categoria*</label>
-                        <select id="categoria">
+                        <select id="categoria" class="select-combo">
                             <option value="">Seleccione una categoría</option>
                         </select>
                     </div>
@@ -52,11 +51,9 @@
                         <label for="">Proveedor*</label>
                         <select id="proveedor">
                             <option value="">Seleccione un proveedor</option>
-
                         </select>
                     </div>
                 </div>
-
                 <label for="">Precio*</label>
                 <div class="fila-doble">
                     <div class="campo">
@@ -83,18 +80,13 @@
         </div>
         <div class="tabla-productos">
             <h1 class="Apartado de tabla">Lista de Productos</h1>
-
             <div class="buscador">
-                <select name="Opciones">
-                    <option value="">Opciones</option>
-                    <option value="Productos">Productos</option>
-                    <option value="Ventas">Ventas</option>
-                    <option value="Compras">Compras</option>
+                <select id="filtro" class="select-combo">
+                    <option value="">Filtro</option>
                 </select>
                 <input type="search" placeholder="Buscar..." id="buscador">
                 <button type="button">Buscar</button>
             </div>
-
             <!-- Contenedor scrollable -->
             <div class="tabla-scroll">
                 <table>
@@ -108,12 +100,7 @@
                             <th>Stock Actual</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <!--Registros-->
-                        <tr>
-                        </tr>
-                        <tr>
-                        </tr>
+                    <tbody id="tabla-produc">
                     </tbody>
                 </table>
             </div>
