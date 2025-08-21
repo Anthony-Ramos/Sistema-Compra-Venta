@@ -1,6 +1,6 @@
 import psycopg2
 from psycopg2 import pool
-from config import Config
+from .config import Config
 
 _pool = None
 
