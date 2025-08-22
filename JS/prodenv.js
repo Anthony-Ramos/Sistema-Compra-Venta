@@ -114,28 +114,36 @@ function cargarProductos(categoria = "") {
             document.querySelectorAll(".btn-eliminar").forEach(btn => {
                 btn.addEventListener("click", (e) => {
                     const id = e.target.getAttribute("data-id");
-                    if (confirm("¿Seguro que quieres eliminar este producto?")) {
-                        fetch(`http://localhost:5000/eliminar_producto/${id}`, {
-                            method: "DELETE"
-                        })
-                        .then(response => {
-                            if (response.ok) {
-                                alert("Producto eliminado correctamente");
-                                cargarProductos();
-                            } else {
-                                alert("Error al eliminar el producto");
-                            }
-                        })
-                        .catch(error => console.error("Error al eliminar producto:", error));
-                    }
+
+                    mostrarConfirmToast(
+                        "¿Seguro que quieres eliminar este producto?",
+                        () => { // Callback Aceptar
+                            fetch(`http://localhost:5000/eliminar_producto/${id}`, {
+                                method: "DELETE"
+                            })
+                                .then(response => {
+                                    if (response.ok) {
+                                        mostrarToast("../IMG/iconos/check.png", "Producto Eliminado", "success");
+                                        cargarProductos();
+                                    } else {
+                                        mostrarToast("../IMG/iconos/error.png", "Error al eliminar", "error");
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error("Error al eliminar producto:", error);
+                                    mostrarToast("../IMG/iconos/error.png", "Error en la conexión", "error");
+                                });
+                        },
+                        () => { // Callback Cancelar
+                            mostrarToast("../IMG/iconos/advertencia.png", "Eliminación cancelada", "warning");
+                        }
+                    );
                 });
             });
-
         })
         .catch(error => console.error("Error cargando productos:", error));
 }
 const selectFiltro = document.getElementById("filtro");
-
 selectFiltro.addEventListener("change", () => {
     const categoria = selectFiltro.value;
     let url = `http://localhost:5000/productos_filtro`;
@@ -150,26 +158,39 @@ selectFiltro.addEventListener("change", () => {
         })
         .catch(error => console.error("Error:", error));
 });
-
 //Guardar producto
 document.getElementById("guardar").addEventListener("click", function () {
-    const id_producto = document.getElementById("id_producto").value; // campo oculto o input
+    const id_producto = document.getElementById("id_producto").value;
+
+    // Obtener valores
+    const nombre = document.getElementById("nombre").value.trim();
+    const categoria = document.getElementById("categoria").value.trim();
+    const proveedor = document.getElementById("proveedor").value.trim();
+    const precio_compra = document.getElementById("precio_compra").value.trim();
+    const precio_venta = document.getElementById("precio_venta").value.trim();
+    const stock_minimo = document.getElementById("stock_minimo").value.trim();
+    const descripcion = document.getElementById("descripcion").value.trim();
+
+    //Validación: campos obligatorios
+    if (!nombre || !categoria || !proveedor || !precio_compra || !precio_venta || !stock_minimo || !descripcion) {
+        mostrarToast("../IMG/iconos/advertencia.png", "Todos los campos son obligatorios", "warning");
+        return; // Detener ejecución
+    }
 
     const data = {
-        nombre: document.getElementById("nombre").value,
-        categoria: document.getElementById("categoria").value,
-        proveedor: document.getElementById("proveedor").value,
-        precio_compra: document.getElementById("precio_compra").value,
-        precio_venta: document.getElementById("precio_venta").value,
-        stock_minimo: document.getElementById("stock_minimo").value,
-        descripcion: document.getElementById("descripcion").value
+        nombre,
+        categoria,
+        proveedor,
+        precio_compra,
+        precio_venta,
+        stock_minimo,
+        descripcion
     };
 
     let url = "http://localhost:5000/agregar_producto";
     let method = "POST";
 
     if (id_producto) {
-        // Si existe ID, hacemos un PUT para actualizar
         url = `http://localhost:5000/editar_producto/${id_producto}`;
         method = "PUT";
     }
@@ -182,11 +203,12 @@ document.getElementById("guardar").addEventListener("click", function () {
         .then(response => {
             if (response.ok) {
                 if (id_producto) {
-                    alert("Producto actualizado correctamente");
+                    mostrarToast("../IMG/iconos/check.png", "Producto Actualizado", "success");
                 } else {
-                    alert("Producto agregado correctamente");
+                    mostrarToast("../IMG/iconos/check.png", "Producto agregado", "success");
                 }
-                // Limpiar formulario y recargar tabla
+
+                // Limpiar formulario
                 document.getElementById("id_producto").value = "";
                 document.getElementById("nombre").value = "";
                 document.getElementById("categoria").value = "";
@@ -195,15 +217,18 @@ document.getElementById("guardar").addEventListener("click", function () {
                 document.getElementById("precio_venta").value = "";
                 document.getElementById("stock_minimo").value = "";
                 document.getElementById("descripcion").value = "";
-                
+
                 cargarProductos();
             } else {
-                alert("Error al guardar el producto");
+                mostrarToast("../IMG/iconos/error.png", "Error al guardar", "error");
             }
         })
-        .catch(error => console.error("Error al enviar producto:", error));
+        .catch(error => {
+            console.error("Error al enviar producto:", error);
+            mostrarToast("../IMG/iconos/error.png", "Error en la conexión", "error");
+        });
 });
-// 🔹 Cancelar formulario
+//Cancelar formulario
 document.getElementById("cancelar").addEventListener("click", function () {
     document.getElementById("nombre").value = "";
     document.getElementById("categoria").value = "";
