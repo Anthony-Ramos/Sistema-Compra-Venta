@@ -1,73 +1,84 @@
 main {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    flex-wrap: wrap; 
-    margin-left: 20vh;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-left: 20vh;
 }
-.tabla-agregarprod,
+.id_prod{
+  display: none;
+}
+.tabla-agregarprod {
+  flex: 1;
+  min-width: 300px;
+}
+
 .tabla-productos {
-    flex: 1; 
-    min-width: 300px;
+  flex: 1.5;
+  min-width: 300px;
 }
+
 .form-productos {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
+
 /*Parte de estilos para el bucador*/
 .buscador {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 5px auto;
-    background: #fff;
-    border-radius: 5px;
-    overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-    width: 350px;
-    max-width: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 5px auto;
+  background: #fff;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  width: 350px;
+  max-width: 90%;
 }
 
 .select-combo {
-    width: 100%;
-    padding: 5px;
-    box-sizing: border-box;
+  width: 100%;
+  padding: 5px;
+  box-sizing: border-box;
 }
+
 .buscador select,
 .buscador input[type="search"] {
-    border: none;
-    outline: none;
-    padding: 8px 10px; 
-    font-size: 12px;
+  border: none;
+  outline: none;
+  padding: 8px 10px;
+  font-size: 12px;
 }
 
 .buscador select {
-    border-right: 1px solid #ddd;
-    background: #fff;
-    cursor: pointer;
+  border-right: 1px solid #ddd;
+  background: #fff;
+  cursor: pointer;
 }
 
 .buscador input[type="search"] {
-    flex: 1;
+  flex: 1;
 }
 
 .buscador button {
-    background: #28a745;
-    border: none;
-    color: white;
-    padding: 10px 15px;
-    cursor: pointer;
-    font-size: 14px;
+  background: #28a745;
+  border: none;
+  color: white;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 14px;
 }
 
 .buscador button:hover {
-    background: #218838;
+  background: #218838;
 }
 
 .buscador button i {
-    font-size: 14px;
+  font-size: 14px;
 }
+
 /*Parte de estilos para la tabla de ingreso de productos*/
 .form-productos {
   display: flex;
@@ -75,7 +86,8 @@ main {
   gap: 10px;
   max-width: 350px;
   margin: 0 auto;
-  padding: 15px;
+  padding: 10px;
+  margin-left: 13vh;
   border: 1px solid #ccc;
   border-radius: 8px;
   background-color: #ffffff;
@@ -87,11 +99,13 @@ main {
   font-weight: bold;
   font-size: 13px;
   text-align: left;
-  display: block; 
+  display: block;
 }
+
 .form-productos label.center {
   text-align: center;
 }
+
 .form-productos select,
 .form-productos textarea {
   padding: 5px;
@@ -101,31 +115,36 @@ main {
   box-sizing: border-box;
   font-size: 13px;
 }
+
 .form-productos input[type="text"] {
-    width: 100%;       
-    padding: 5px;    
-    box-sizing: border-box; 
-    font-size: 14px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+  width: 100%;
+  padding: 5px;
+  box-sizing: border-box;
+  font-size: 14px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
 }
+
 .form-productos input[type="number"] {
-    width: 100%;       
-    padding: 5px;    
-    box-sizing: border-box; 
-    font-size: 14px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+  width: 100%;
+  padding: 2px;
+  box-sizing: border-box;
+  font-size: 14px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
 }
-.form-productos text{
-    padding: 8px;
+
+.form-productos text {
+  padding: 8px;
 }
+
 .form-productos .botones {
   display: flex;
   gap: 10px;
   justify-content: center;
   margin-top: 10px;
 }
+
 .form-productos .botones input[type="button"] {
   flex: 1;
   padding: 8px 12px;
@@ -141,6 +160,7 @@ main {
 .form-productos .botones input[type="button"]:hover {
   background-color: #218838;
 }
+
 .form-productos .botones input[type="button"]:nth-child(2) {
   background-color: #dc3545;
 }
@@ -157,7 +177,7 @@ main {
 /* Para filas de dos campos */
 .fila-doble {
   display: flex;
-  gap: 10px;
+  gap: 5px;
 }
 
 .fila-doble .campo {
@@ -165,37 +185,41 @@ main {
   display: flex;
   flex-direction: column;
 }
+
 /*Apartado de la tabla*/
 .tabla-scroll {
-    max-height: 300px; /* altura máxima visible */
-    overflow-y: auto;  /* barra vertical si excede */
-    margin-top: 15px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
+  max-height: 300px;
+  /* altura máxima visible */
+  overflow-y: auto;
+  /* barra vertical si excede */
+  margin-top: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
 }
 
 /* Mantener la tabla ocupando todo el contenedor */
 .tabla-scroll table {
-    width: 100%;
-    border-collapse: collapse;
-    font-family: Arial, sans-serif;
+  width: 100%;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
 }
 
 /* Estilos de celdas */
 .tabla-scroll th,
 .tabla-scroll td {
-    border: 1px solid #ccc;
-    padding: 8px;
-    text-align: center;
+  border: 1px solid #ccc;
+  padding: 2px;
+  text-align: center;
 }
 
 /* Encabezados fijos */
 .tabla-scroll th {
-    background-color: #f2f2f2;
-    font-weight: bold;
-    position: sticky;
-    top: 0;
+  background-color: #f2f2f2;
+  font-weight: bold;
+  position: sticky;
+  top: 0;
 }
+
 .tabla-scroll tbody tr:hover {
-    background-color: #f9f9f9;
+  background-color: #f9f9f9;
 }

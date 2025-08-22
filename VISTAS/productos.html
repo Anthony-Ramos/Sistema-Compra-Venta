@@ -36,6 +36,7 @@
         <div class="tabla-agregarprod">
             <div class="form-productos">
                 <label for="" class="center">AGREGAR PRODUCTO</label>
+                <input type="hidden" id="id_producto">
 
                 <label for="">Nombre*</label>
                 <input type="text" id="nombre" placeholder="Nombre">
@@ -44,13 +45,13 @@
                     <div class="campo">
                         <label for="">Categoria*</label>
                         <select id="categoria" class="select-combo">
-                            <option value="">Seleccione una categoría</option>
+                            <option value="">Categoria</option>
                         </select>
                     </div>
                     <div class="campo">
                         <label for="">Proveedor*</label>
                         <select id="proveedor">
-                            <option value="">Seleccione un proveedor</option>
+                            <option value="">Proveedor</option>
                         </select>
                     </div>
                 </div>
@@ -84,7 +85,7 @@
                 <select id="filtro" class="select-combo">
                     <option value="">Filtro</option>
                 </select>
-                <input type="search" placeholder="Buscar..." id="buscador">
+                <input type="search" placeholder="Buscar" id="buscador">
                 <button type="button">Buscar</button>
             </div>
             <!-- Contenedor scrollable -->
@@ -92,12 +93,14 @@
                 <table>
                     <thead>
                         <tr>
+                            <th class="id_prod">ID</th>
                             <th>Nombre</th>
                             <th>Categoria</th>
                             <th>Proveedor</th>
                             <th>Precio Compra</th>
                             <th>Precio Venta</th>
                             <th>Stock Actual</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody id="tabla-produc">
