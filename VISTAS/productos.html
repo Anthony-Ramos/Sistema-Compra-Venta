@@ -7,9 +7,9 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
     </style>
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../CSS/menu.css">
     <link rel="stylesheet" href="../CSS/productos.css">
+    <link rel="stylesheet" href="../CSS/toast.css">
 </head>
 
 <body>
@@ -37,6 +37,7 @@
         <div class="tabla-agregarprod">
             <div class="form-productos">
                 <label for="" class="center">AGREGAR PRODUCTO</label>
+                <input type="hidden" id="id_producto">
 
                 <label for="">Nombre*</label>
                 <input type="text" id="nombre" placeholder="Nombre">
@@ -44,22 +45,17 @@
                 <div class="fila-doble">
                     <div class="campo">
                         <label for="">Categoria*</label>
-                        <select id="categoria">
+                        <select id="categoria" class="select-combo">
                             <option value="">Categoria</option>
-                            <option value="cat1">Categoria 1</option>
-                            <option value="cat2">Categoria 2</option>
                         </select>
                     </div>
                     <div class="campo">
                         <label for="">Proveedor*</label>
                         <select id="proveedor">
                             <option value="">Proveedor</option>
-                            <option value="prov1">Proveedor 1</option>
-                            <option value="prov2">Proveedor 2</option>
                         </select>
                     </div>
                 </div>
-
                 <label for="">Precio*</label>
                 <div class="fila-doble">
                     <div class="campo">
@@ -86,48 +82,40 @@
         </div>
         <div class="tabla-productos">
             <h1 class="Apartado de tabla">Lista de Productos</h1>
-
             <div class="buscador">
-                <select name="Opciones">
-                    <option value="">Opciones</option>
-                    <option value="Productos">Productos</option>
-                    <option value="Ventas">Ventas</option>
-                    <option value="Compras">Compras</option>
+                <select id="filtro" class="select-combo">
+                    <option value="">Filtro</option>
                 </select>
-                <input type="search" placeholder="Buscar..." id="buscador">
+                <input type="search" placeholder="Buscar" id="buscador">
                 <button type="button">Buscar</button>
             </div>
-
             <!-- Contenedor scrollable -->
             <div class="tabla-scroll">
                 <table>
                     <thead>
                         <tr>
+                            <th class="id_prod">ID</th>
                             <th>Nombre</th>
                             <th>Categoria</th>
                             <th>Proveedor</th>
                             <th>Precio Compra</th>
                             <th>Precio Venta</th>
                             <th>Stock Actual</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <!-- Registros -->
-                        <tr>
-                        </tr>
-                        <tr>
-                        </tr>
+                    <tbody id="tabla-produc">
                     </tbody>
                 </table>
             </div>
         </div>
-
-
+        <div id="toast-container"></div>
     </main>
     <footer>
         © Sistema Tienda Julio y Mary
     </footer>
     <script src="../JS/prodenv.js"></script>
+    <script src="../JS/toast.js"></script>
 </body>
 
 </html>
