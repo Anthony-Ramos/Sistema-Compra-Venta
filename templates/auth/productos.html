@@ -7,8 +7,8 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
     </style>
-    <link rel="stylesheet" href="../CSS/menu.css">
-    <link rel="stylesheet" href="../CSS/productos.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/menu.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/productos.css') }}">
 </head>
 
 <body>
@@ -22,16 +22,19 @@
             <label>Ricardo</label>
         </div>
     </header>
-    <nav>
-        <a href="menu.html">Menu</a>
-        <a href="productos.html" class="active">Gestión de Productos</a>
-        <a href="ventas.html">Ventas</a>
-        <a href="compras.html">Compras</a>
-        <a href="inventario.html">Inventario</a>
-        <a href="reportes.html">Reportes</a>
-        <a href="usuarios.html">usuarios</a>
-        <a href="#" class="logout"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
-    </nav>
+        <nav>
+                <a href="{{ url_for('auth.menu') }}" class="active">Menú</a>        
+                <a href="{{ url_for('auth.productos') }}">Gestión de Productos</a>
+                <a href="{{ url_for('auth.registro') }}">Usuarios</a>
+                <!-- ✅ Opciones adicionales (por ahora apuntan a #, puedes crear rutas luego) -->
+                <a href="#">Ventas</a>
+                <a href="#">Compras</a>
+                <a href="#">Inventario</a>
+                <a href="#">Reportes</a>
+                <a href="{{ url_for('auth.logout') }}" class="logout">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+                </a>
+        </nav>
     <main>
         <div class="tabla-agregarprod">
             <div class="form-productos">
