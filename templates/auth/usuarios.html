@@ -32,14 +32,20 @@
   </header>
 
   <!-- NAV LATERAL -->
-  <nav class="nav-lateral">
-    <a href="{{ url_for('auth.menu') }}">Inicio</a>
-    <a href="{{ url_for('auth.productos') }}">Gestión de Productos</a>
-    <a href="{{ url_for('auth.registro') }}">Ir a Usuarios</a>
-    <a href="{{ url_for('auth.logout') }}" class="logout">
-      <i class="fas fa-sign-out-alt"></i> Cerrar sesión
-    </a>
-  </nav>
+
+    <nav>
+        <a href="{{ url_for('auth.menu') }}" class="active">Menú</a>        
+        <a href="{{ url_for('auth.productos') }}">Gestión de Productos</a>
+        <a href="{{ url_for('auth.registro') }}">Usuarios</a>
+        <!-- ✅ Opciones adicionales (por ahora apuntan a #, puedes crear rutas luego) -->
+        <a href="#">Ventas</a>
+        <a href="#">Compras</a>
+        <a href="#">Inventario</a>
+        <a href="#">Reportes</a>
+        <a href="{{ url_for('auth.logout') }}" class="logout">
+            <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+        </a>
+    </nav>
 
   <!-- CONTENIDO PRINCIPAL -->
   <main class="contenido-principal">
@@ -84,7 +90,7 @@
 
             <button type="submit" class="btn">Registrarse</button>
             <a href="{{ url_for('auth.login') }}" class="btn">Volver al login</a>
-            <a href="{{ url_for('auth.menu') }}" class="btn">Regresar al menú</a>
+
           </form>
         </div>
 

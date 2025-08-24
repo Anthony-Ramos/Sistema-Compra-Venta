@@ -16,10 +16,10 @@
         <h1 class="empresa">Tienda Julio y Mary</h1>
         <h1 class="pagina">Productos</h1>
         <div class="user-info">
-            <img src="../IMG/logo.png" alt="Logo">
+            <img src="{{ url_for('static', filename='IMG/logo.png') }}" alt="Logo">
             <i class="fas fa-user-circle"></i>
-            <label>Administrador</label>
-            <label>Ricardo</label>
+            <label class="usuario-rol">{{ session.get("usuario_rol", "Rol") }}</label>
+            <label class="usuario-nombre">{{ session.get("usuario_nombre", "Invitado") }}</label>
         </div>
     </header>
         <nav>
