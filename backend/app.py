@@ -1,15 +1,24 @@
+"""Punto de entrada principal de la aplicación Flask."""
+
 from flask import Flask
-from controladores.auth_controlador import auth_bp
-from .config import Config
-from db import iniciar_pool
+
+from backend.controladores.auth_controlador import auth_bp
+from backend.config import Config
+from backend.db import DB
+
 
 def crear_app():
-    app = Flask(__name__)
+    """Crea e inicializa la aplicación Flask."""
+    app = Flask(__name__, template_folder="../templates", static_folder="../static")
     app.config.from_object(Config)
-    iniciar_pool()
+
+    DB.init_app(Config)
+    print("✅ Conexión a la base de datos inicializada correctamente")
+
     app.register_blueprint(auth_bp)
     return app
 
+
 if __name__ == "__main__":
-    app = crear_app()
-    app.run(debug=True)
+    aplicacion = crear_app()
+    aplicacion.run(debug=True)

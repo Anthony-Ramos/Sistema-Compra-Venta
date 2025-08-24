@@ -1,197 +1,141 @@
+"""Módulo de API Flask para CRUD de productos.
+
+Incluye endpoints para:
+- Agregar producto
+- Editar producto
+- Eliminar producto
+- Obtener categorías
+- Obtener proveedores
+- Listar productos
+- Listar productos filtrados por categoría
+"""
+
+import os
+import sys
+
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import sys
-import os
+
+from backend.db import DB
+from backend.config import Config
+
+# Para poder importar desde backend
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from backend.db import obtener_conexion, liberar_conexion
+
 app = Flask(__name__)
 CORS(app)
 
-#endpoint para guardar producto
+# 🔹 Inicializar pool de conexiones
+DB.init_app(Config)
+
+
+# ===================== ENDPOINTS ===================== #
+
 @app.route('/agregar_producto', methods=['POST'])
 def agregar_producto():
+    """Inserta un nuevo producto en la base de datos."""
     data = request.get_json()
     print("Datos recibidos del formulario:", data)
-    conn = obtener_conexion()
-
     try:
-        cursor = conn.cursor()
-        query = """
-        INSERT INTO producto (nombre, descripcion, id_categoria, precio_compra, precio_venta, stock_minimo,id_proveedor)
-        VALUES (%s, %s, %s, %s, %s, %s, %s)
-        """
-        cursor.execute(query, (
-            data['nombre'], 
-            data['descripcion'],
-            int(data['categoria']), 
-            float(data['precio_compra']), 
-            float(data['precio_venta']),
-            int(data['stock_minimo']),
-            int(data['proveedor'])
-            
-        ))
-        conn.commit()
-        cursor.close()
+        DB.execute(
+            """
+            INSERT INTO producto
+                (nombre, descripcion, id_categoria, precio_compra,
+                 precio_venta, stock_minimo, id_proveedor)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
+            """,
+            (
+                data['nombre'],
+                data['descripcion'],
+                int(data['categoria']),
+                float(data['precio_compra']),
+                float(data['precio_venta']),
+                int(data['stock_minimo']),
+                int(data['proveedor'])
+            )
+        )
         return jsonify({"status": "ok"})
-    except Exception as e:
-        print(e)
+    except Exception as e:  # pylint: disable=broad-exception-caught
+        print("❌ Error al agregar producto:", e)
         return jsonify({"status": "error"}), 500
-    finally:
-        liberar_conexion(conn)
 
-#endpoint para editar producto
+
 @app.route('/editar_producto/<int:id_producto>', methods=['PUT'])
 def editar_producto(id_producto):
+    """Edita un producto existente por su ID."""
     data = request.get_json()
     print(f"Editando producto {id_producto} con datos:", data)
-    
-    conn = obtener_conexion()
     try:
-        cursor = conn.cursor()
-        query = """
-        UPDATE producto
-        SET nombre = %s,
-            descripcion = %s,
-            id_categoria = %s,
-            precio_compra = %s,
-            precio_venta = %s,
-            stock_minimo = %s,
-            id_proveedor = %s
-        WHERE id_producto = %s
-        """
-        cursor.execute(query, (
-            data['nombre'],
-            data['descripcion'],
-            int(data['categoria']),
-            float(data['precio_compra']),
-            float(data['precio_venta']),
-            int(data['stock_minimo']),
-            int(data['proveedor']),
-            id_producto
-        ))
-        conn.commit()
-        cursor.close()
+        DB.execute(
+            """
+            UPDATE producto
+            SET nombre = %s,
+                descripcion = %s,
+                id_categoria = %s,
+                precio_compra = %s,
+                precio_venta = %s,
+                stock_minimo = %s,
+                id_proveedor = %s
+            WHERE id_producto = %s
+            """,
+            (
+                data['nombre'],
+                data['descripcion'],
+                int(data['categoria']),
+                float(data['precio_compra']),
+                float(data['precio_venta']),
+                int(data['stock_minimo']),
+                int(data['proveedor']),
+                id_producto
+            )
+        )
         return jsonify({"status": "ok"})
-    except Exception as e:
-        print(e)
+    except Exception as e:  # pylint: disable=broad-exception-caught
+        print("❌ Error al editar producto:", e)
         return jsonify({"status": "error"}), 500
-    finally:
-        liberar_conexion(conn)
 
-#endpoint para eliminar producto
+
 @app.route('/eliminar_producto/<int:id_producto>', methods=['DELETE'])
 def eliminar_producto(id_producto):
-    conn = obtener_conexion()
+    """Elimina un producto de la base de datos por su ID."""
     try:
-        cursor = conn.cursor()
-        query = "DELETE FROM producto WHERE id_producto = %s"
-        cursor.execute(query, (id_producto,))
-        conn.commit()
-        cursor.close()
+        DB.execute("DELETE FROM producto WHERE id_producto = %s", (id_producto,))
         return jsonify({"status": "ok"})
-    except Exception as e:
-        print("Error al eliminar producto:", e)
+    except Exception as e:  # pylint: disable=broad-exception-caught
+        print("❌ Error al eliminar producto:", e)
         return jsonify({"status": "error"}), 500
-    finally:
-        liberar_conexion(conn)
 
-#endpoint para traer categorías
+
 @app.route('/categorias', methods=['GET'])
 def obtener_categorias():
-    conn = obtener_conexion()
+    """Obtiene todas las categorías de productos."""
     try:
-        cursor = conn.cursor()
-        cursor.execute("SELECT id_categoria, nombre FROM categoria_producto ORDER BY nombre;")
-        categorias = cursor.fetchall()
-        cursor.close()
-
-        return jsonify([
-            {"id": cat[0], "nombre": cat[1].strip()}  # .strip() si usaste CHAR
-            for cat in categorias
-        ])
-    except Exception as e:
-        print(e)
+        categorias = DB.fetch_all(
+            "SELECT id_categoria, nombre FROM categoria_producto ORDER BY nombre;"
+        )
+        return jsonify([{"id": c[0], "nombre": c[1].strip()} for c in categorias])
+    except Exception as e:  # pylint: disable=broad-exception-caught
+        print("❌ Error al obtener categorías:", e)
         return jsonify({"status": "error"}), 500
-    finally:
-        liberar_conexion(conn)
 
-#endpoint para atraer categorias
+
 @app.route('/proveedores', methods=['GET'])
 def obtener_proveedores():
-    conn = obtener_conexion()
+    """Obtiene todos los proveedores."""
     try:
-        cursor = conn.cursor()
-        cursor.execute('SELECT id_proveedor, nombre FROM proveedores ORDER BY nombre;')
-        proveedores = cursor.fetchall()
-        cursor.close()
-
-        return jsonify([
-            {"id": prov[0], "nombre": prov[1].strip()}  # 👈 corregido: prov en lugar de cat
-            for prov in proveedores
-        ])
-    except Exception as e:
-        print(e)
+        proveedores = DB.fetch_all(
+            "SELECT id_proveedor, nombre FROM proveedores ORDER BY nombre;"
+        )
+        return jsonify([{"id": p[0], "nombre": p[1].strip()} for p in proveedores])
+    except Exception as e:  # pylint: disable=broad-exception-caught
+        print("❌ Error al obtener proveedores:", e)
         return jsonify({"status": "error"}), 500
-    finally:
-        liberar_conexion(conn)
 
-# Endpoint para traer productos y llenar la tabla
+
 @app.route('/productos', methods=['GET'])
 def obtener_productos():
-    conn = obtener_conexion()
+    """Obtiene todos los productos con su categoría y proveedor."""
     try:
-        cursor = conn.cursor()
-        query = """
-        SELECT 
-    p.id_producto,
-    p.nombre,
-    p.id_categoria,
-    c.nombre AS categoria,
-    p.id_proveedor,
-    COALESCE(pr.nombre, '-') AS proveedor,
-    p.precio_compra,
-    p.precio_venta,
-    p.stock_minimo,
-    p.descripcion
-FROM producto p
-INNER JOIN categoria_producto c ON p.id_categoria = c.id_categoria
-        LEFT JOIN proveedores pr ON p.id_proveedor = pr.id_proveedor
-        ORDER BY p.id_producto;
-
-        """
-        cursor.execute(query)
-        productos = cursor.fetchall()
-        cursor.close()
-
-        # Convertir a JSON
-        resultado = [
-    {
-        "id_producto": int(p[0]),
-        "nombre": p[1],
-        "id_categoria": int(p[2]),
-        "categoria": p[3].strip(),
-        "id_proveedor": int(p[4]) if p[4] else None,
-        "proveedor": p[5].strip() if p[5] else "-",
-        "precio_compra": float(p[6]),
-        "precio_venta": float(p[7]),
-        "stock_minimo": int(p[8]),
-        "descripcion": p[9] if p[9] else ""
-    }
-    for p in productos
-]
-        return jsonify(resultado)
-    except Exception as e:
-        print(e)
-        return jsonify({"status": "error"}), 500
-    finally:
-        liberar_conexion(conn)
-
-@app.route('/productos_filtro', methods=['GET'])
-def obtener_productos_filtro():
-    filtro_categoria = request.args.get('categoria', default="", type=str)
-    conn = obtener_conexion()
-    try:
-        cursor = conn.cursor()
         query = """
             SELECT 
                 p.id_producto,
@@ -207,15 +151,9 @@ def obtener_productos_filtro():
             FROM producto p
             INNER JOIN categoria_producto c ON p.id_categoria = c.id_categoria
             LEFT JOIN proveedores pr ON p.id_proveedor = pr.id_proveedor
+            ORDER BY p.id_producto;
         """
-        if filtro_categoria:
-            query += " WHERE c.id_categoria = %s"
-            cursor.execute(query, (filtro_categoria,))
-        else:
-            cursor.execute(query)
-
-        productos = cursor.fetchall()
-        cursor.close()
+        productos = DB.fetch_all(query)
 
         resultado = [
             {
@@ -233,7 +171,59 @@ def obtener_productos_filtro():
             for p in productos
         ]
         return jsonify(resultado)
-    finally:
-        liberar_conexion(conn)
+    except Exception as e:  # pylint: disable=broad-exception-caught
+        print("❌ Error al obtener productos:", e)
+        return jsonify({"status": "error"}), 500
+
+
+@app.route('/productos_filtro', methods=['GET'])
+def obtener_productos_filtro():
+    """Obtiene productos filtrados por categoría (si se pasa como query param)."""
+    filtro_categoria = request.args.get('categoria', default="", type=str)
+    try:
+        query = """
+            SELECT 
+                p.id_producto,
+                p.nombre,
+                p.id_categoria,
+                c.nombre AS categoria,
+                p.id_proveedor,
+                COALESCE(pr.nombre, '-') AS proveedor,
+                p.precio_compra,
+                p.precio_venta,
+                p.stock_minimo,
+                p.descripcion
+            FROM producto p
+            INNER JOIN categoria_producto c ON p.id_categoria = c.id_categoria
+            LEFT JOIN proveedores pr ON p.id_proveedor = pr.id_proveedor
+        """
+        params = ()
+        if filtro_categoria:
+            query += " WHERE c.id_categoria = %s"
+            params = (filtro_categoria,)
+
+        productos = DB.fetch_all(query, params)
+
+        resultado = [
+            {
+                "id_producto": int(p[0]),
+                "nombre": p[1],
+                "id_categoria": int(p[2]),
+                "categoria": p[3].strip(),
+                "id_proveedor": int(p[4]) if p[4] else None,
+                "proveedor": p[5].strip() if p[5] else "-",
+                "precio_compra": float(p[6]),
+                "precio_venta": float(p[7]),
+                "stock_minimo": int(p[8]),
+                "descripcion": p[9] if p[9] else ""
+            }
+            for p in productos
+        ]
+        return jsonify(resultado)
+    except Exception as e:  # pylint: disable=broad-exception-caught
+        print("❌ Error en filtro de productos:", e)
+        return jsonify({"status": "error"}), 500
+
+
 if __name__ == "__main__":
     app.run(debug=True)

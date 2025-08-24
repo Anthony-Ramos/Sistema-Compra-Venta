@@ -33,7 +33,7 @@ def login():
             return redirect(url_for("auth.menu"))
 
         flash("Usuario o contraseña incorrectos", "danger")
-    return render_template("auth/Index.html")
+    return render_template("auth/login.html")
 
 
 @auth_bp.route("/logout")
@@ -62,12 +62,16 @@ def registro():
         elif contrasena != confirmar:
             flash("Las contraseñas no coinciden.", "warning")
         elif (
-            len(contrasena) < 8 or 
-            not re.search(r"\d", contrasena) or 
-            not re.search(r"[A-Z]", contrasena) or 
+            len(contrasena) < 8 or
+            not re.search(r"\d", contrasena) or
+            not re.search(r"[A-Z]", contrasena) or
             not re.search(r"[a-z]", contrasena)
         ):
-            flash("La contraseña debe tener al menos 8 caracteres, incluir mayúsculas, minúsculas y números.", "warning")
+            flash(
+                "La contraseña debe tener al menos 8 caracteres, "
+                "incluir mayúsculas, minúsculas y números.",
+                "warning"
+            )
         else:
             try:
                 nuevo_id = Usuario.registrar(nom_usuario, contrasena, int(id_rol))
@@ -90,7 +94,10 @@ def menu():
         flash("Inicie sesión para continuar.", "warning")
         return redirect(url_for("auth.login"))
     response = make_response(render_template("auth/Menu.html"))
-    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0"
+    response.headers["Cache-Control"] = (
+        "no-store, no-cache, must-revalidate, "
+        "post-check=0, pre-check=0, max-age=0"
+    )
     response.headers["Pragma"] = "no-cache"
     response.headers["Expires"] = "0"
     return response
