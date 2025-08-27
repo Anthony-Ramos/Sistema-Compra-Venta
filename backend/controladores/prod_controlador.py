@@ -118,3 +118,25 @@ def eliminar_producto(id_producto):
         print("Error eliminando producto:", e)
         return jsonify({"status": "error"}), 500
 
+@prod_bp.route("/editar_producto/<int:id_producto>", methods=["PUT"])
+def editar_producto(id_producto):
+    try:
+        data = request.get_json()
+        query = """
+            UPDATE producto
+            SET nombre=%s, descripcion=%s, id_categoria=%s, precio_compra=%s,
+                precio_venta=%s, stock_minimo=%s, id_proveedor=%s
+            WHERE id_producto=%s
+        """
+        params = (
+            data["nombre"], data["descripcion"], int(data["categoria"]),
+            float(data["precio_compra"]), float(data["precio_venta"]),
+            int(data["stock_minimo"]), int(data["proveedor"]), id_producto
+        )
+        DB.execute(query, params)
+        return jsonify({"status": "ok"})
+    except Exception as e:
+        print("Error editando producto:", e)
+        return jsonify({"status": "error"}), 500
+
+

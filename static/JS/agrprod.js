@@ -150,6 +150,8 @@ async function cargarProductos(categoria = "") {
     }
 }
 document.getElementById("guardar").addEventListener("click", function () {
+    const id_producto = document.getElementById("id_producto").value.trim(); // Campo oculto para editar
+
     // Obtener valores del formulario
     const nombre = document.getElementById("nombre").value.trim();
     const descripcion = document.getElementById("descripcion").value.trim();
@@ -176,18 +178,27 @@ document.getElementById("guardar").addEventListener("click", function () {
         stock_minimo: parseInt(stock_minimo)
     };
 
+    // Definir URL y método según si se está editando o agregando
+    let url = "/agregar_producto";
+    let method = "POST";
+    if (id_producto) {
+        url = `/editar_producto/${id_producto}`;
+        method = "PUT";
+    }
+
     // Enviar al backend
-    fetch("/agregar_producto", {
-        method: "POST",
+    fetch(url, {
+        method: method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
     })
         .then(response => response.json())
         .then(result => {
             if (result.status === "ok") {
-                mostrarToast("/static/IMG/iconos/check.png", "Producto agregado correctamente", "success");
+                mostrarToast("/static/IMG/iconos/check.png", id_producto ? "Producto actualizado" : "Producto agregado correctamente", "success");
 
                 // Limpiar formulario
+                document.getElementById("id_producto").value = "";
                 document.getElementById("nombre").value = "";
                 document.getElementById("descripcion").value = "";
                 document.getElementById("categoria").value = "";
@@ -197,13 +208,10 @@ document.getElementById("guardar").addEventListener("click", function () {
                 document.getElementById("stock_minimo").value = "";
 
                 // Recargar productos
-                if (typeof cargarProductos === "function") {
-                    cargarProductos();
-
-                }
+                if (typeof cargarProductos === "function") cargarProductos();
 
             } else {
-                mostrarToast("/static/IMG/iconos/error.png", "Error al agregar producto", "error");
+                mostrarToast("/static/IMG/iconos/error.png", "Error al guardar producto", "error");
             }
         })
         .catch(error => {
