@@ -8,7 +8,45 @@ window.addEventListener("DOMContentLoaded", () => {
     selectFiltro.addEventListener("change", () => {
         cargarProductos(selectFiltro.value);
     });
+
+    // Apartado de las validaciones: evitar negativos
+    const evitarNegativos = e => {
+        if (Number(e.target.value) < 0) {
+            e.target.value = 0;
+            mostrarToast("/static/IMG/iconos/informacion.png", "No se permiten negativos", "informacion");
+        }
+    };
+
+    // Bloquear escritura de "-" y "e" directamente
+    const bloquearNegativos = e => {
+        if (e.key === '-') {
+            e.preventDefault();
+            mostrarToast("/static/IMG/iconos/informacion.png", "No se permiten negativos", "informacion");
+        }
+    };
+
+    // Bloquear letras, permitir solo números y punto
+    const bloquearLetras = e => {
+        const teclasPermitidas = ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab"];
+        if (!/[0-9.]/.test(e.key) && !teclasPermitidas.includes(e.key) || e.key === 'e') {
+            e.preventDefault();
+            mostrarToast("/static/IMG/iconos/informacion.png", "Solo se permiten números", "informacion");
+        }
+    };
+
+    // Asignar eventos a cada input numérico
+    ["precio_compra", "precio_venta", "stock_minimo"].forEach(id => {
+        const input = document.getElementById(id);
+        if (input) {
+            input.addEventListener("input", evitarNegativos);       // corrige valores negativos pegados
+            input.addEventListener("keydown", bloquearNegativos);   // bloquea "-" y "e"
+            input.addEventListener("keydown", bloquearLetras);      // bloquea letras
+        }
+    });
+
 });
+
+//Apartado de mostrar los datos
 async function cargarCategorias() {
     try {
         const response = await fetch("/categorias");

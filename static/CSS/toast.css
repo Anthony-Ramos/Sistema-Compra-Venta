@@ -42,6 +42,9 @@
 .error {
     background: #dc3545;
 }
+.informacion {
+    background-color: #095CFF;
+}
 
 
 .confirm-toast {
