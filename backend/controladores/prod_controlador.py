@@ -70,3 +70,31 @@ def obtener_productos():
     except Exception as e:
         print("Error cargando productos:", e)
         return jsonify([]), 500
+
+@prod_bp.route("/agregar_producto", methods=["POST"])
+def agregar_producto():
+    try:
+        data = request.get_json()
+        print("Datos recibidos del formulario:", data)
+
+        query = """
+        INSERT INTO producto (nombre, descripcion, id_categoria, precio_compra, precio_venta, stock_minimo, id_proveedor)
+        VALUES (%s, %s, %s, %s, %s, %s, %s)
+        """
+        params = (
+            data["nombre"],
+            data["descripcion"],
+            int(data["categoria"]),
+            float(data["precio_compra"]),
+            float(data["precio_venta"]),
+            int(data["stock_minimo"]),
+            int(data["proveedor"])
+        )
+
+        # Usando el helper DB (ej. DB.execute)
+        DB.execute(query, params)
+
+        return jsonify({"status": "ok"})
+    except Exception as e:
+        print("Error agregando producto:", e)
+        return jsonify({"status": "error"}), 500
