@@ -158,3 +158,13 @@ def reportes():
 def ventas():
     """Página de ventas"""
     return render_template('auth/ventas.html')
+
+@auth_bp.route('/proveedor')
+def proveedor():
+    """Página de proveedor"""
+    return render_template('auth/proveedor.html')
+
+@auth_bp.route('/categoria')
+def categoria():
+    """Página de categorias"""
+    return render_template('auth/categoria.html')
