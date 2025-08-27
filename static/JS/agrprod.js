@@ -129,7 +129,7 @@ async function cargarProductos(categoria = "") {
                     "¿Seguro que quieres eliminar este producto?",
                     async () => {
                         try {
-                            const res = await fetch(`/productos/eliminar_producto/${id}`, { method: "DELETE" });
+                            const res = await fetch(`/eliminar_producto/${id}`, { method: "DELETE" });
                             if (res.ok) {
                                 mostrarToast("/static/IMG/iconos/check.png", "Producto Eliminado", "success");
                                 cargarProductos();

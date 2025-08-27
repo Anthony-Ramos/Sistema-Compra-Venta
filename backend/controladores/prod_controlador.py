@@ -98,3 +98,23 @@ def agregar_producto():
     except Exception as e:
         print("Error agregando producto:", e)
         return jsonify({"status": "error"}), 500
+
+@prod_bp.route("/eliminar_producto/<int:id_producto>", methods=["DELETE"])
+def eliminar_producto(id_producto):
+    try:
+        print("ID de producto a eliminar:", id_producto)
+
+        query = "DELETE FROM producto WHERE id_producto = %s"
+        params = (id_producto,)
+
+        filas_afectadas = DB.execute(query, params)
+
+        if filas_afectadas > 0:
+            return jsonify({"status": "ok"})
+        else:
+            return jsonify({"status": "error", "msg": "Producto no encontrado"}), 404
+
+    except Exception as e:
+        print("Error eliminando producto:", e)
+        return jsonify({"status": "error"}), 500
+
