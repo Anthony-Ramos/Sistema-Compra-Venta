@@ -33,9 +33,7 @@ def login():
             return redirect(url_for("auth.menu"))
 
         flash("Usuario o contraseña incorrectos", "danger")
-    return render_template("auth/Index.html")
-
-
+        return render_template("auth/index.html")
 @auth_bp.route("/logout")
 def logout():
     """
@@ -89,7 +87,7 @@ def menu():
     if "usuario_id" not in session:
         flash("Inicie sesión para continuar.", "warning")
         return redirect(url_for("auth.login"))
-    response = make_response(render_template("auth/Menu.html"))
+    response = make_response(render_template("auth/menu.html"))
     response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0"
     response.headers["Pragma"] = "no-cache"
     response.headers["Expires"] = "0"
@@ -137,3 +135,26 @@ def eliminar_usuario(id_usuario):
 def productos():
     "lleva a vista productos"
     return render_template('auth/productos.html')
+
+
+# ENDPOINTS ADICIONALES PARA EL MENÚ
+
+@auth_bp.route('/inventario')
+def inventario():
+    """Página de inventario"""
+    return render_template('auth/inventario.html')
+
+@auth_bp.route('/compras')
+def compras():
+    """Página de compras"""
+    return render_template('auth/compras.html')
+
+@auth_bp.route('/reportes')
+def reportes():
+    """Página de reportes"""
+    return render_template('auth/reportes.html')
+
+@auth_bp.route('/ventas')
+def ventas():
+    """Página de ventas"""
+    return render_template('auth/ventas.html')
