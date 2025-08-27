@@ -37,25 +37,29 @@
 
 
 .confirm-toast {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* lo centra */
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    background: #007bff; /* color azul para confirmación */
+    background: #007bff;
     color: #fff;
     padding: 12px 20px;
-    margin-top: 10px;
     border-radius: 6px;
     box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
     opacity: 0;
-    transform: translateX(100%);
     transition: all 0.4s ease;
     font-family: Arial, sans-serif;
-    min-width: 250px;
+
+    min-width: 250px;   /* tamaño mínimo */
+    max-width: 350px;   /* evita que crezca demasiado */
+    width: auto;
 }
 
 .confirm-toast.show {
     opacity: 1;
-    transform: translateX(0);
 }
 
 .confirm-toast .buttons {
