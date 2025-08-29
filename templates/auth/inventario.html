@@ -12,7 +12,7 @@
 <body>
     <header>
         <h1 class="empresa">Tienda Julio y Mary</h1>
-        <h1 class="pagina">Menu</h1>
+        <h1 class="pagina">Inventario</h1>
         <div class="user-info">
             <img src="{{ url_for('static', filename='IMG/logo.png') }}">
             <i class="fas fa-user-circle"></i>
@@ -23,10 +23,10 @@
 
     <div class="contenedor">
     <nav>
-        <a href="{{ url_for('auth.menu') }}" class="active">Inicio</a>
+        <a href="{{ url_for('auth.menu') }}">Inicio</a>
         <a href="{{ url_for('auth.productos')}}">Productos</a>
-        <a href="{{url_for('auth.inventario')}}">Inventario</a>
-        <a href="{{url_for('auth.compras')}}"   >Compras</a>
+        <a href="{{url_for('auth.inventario')}}" class="active">Inventario</a>
+        <a href="{{url_for('auth.compras')}}" >Compras</a>
         <a href="{{url_for('auth.reportes')}}"  >Reportes</a>
         <a href="{{url_for('auth.ventas')}}"    >Ventas</a>
         <a href="{{ url_for('auth.registro') }}">Usuarios</a>
