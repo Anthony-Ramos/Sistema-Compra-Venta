@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Tienda Julio y Mary</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
     </style>
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='CSS/menu.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/categoria.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/toast.css') }}">
+
 </head>
+
 <body>
     <header>
         <h1 class="empresa">Tienda Julio y Mary</h1>
@@ -22,30 +27,60 @@
     </header>
 
     <div class="contenedor">
-    <nav>
-        <a href="{{ url_for('auth.menu') }}" class="active">Inicio</a>
-        <a href="{{ url_for('auth.productos')}}">Productos</a>
-        <a href="{{ url_for('auth.categoria') }}" class="active">Categorias</a>
-        <a href="{{ url_for('auth.proveedor') }}">Proveedores</a>
-        <a href="{{url_for('auth.inventario')}}">Inventario</a>
-        <a href="{{url_for('auth.compras')}}"   >Compras</a>
-        <a href="{{url_for('auth.reportes')}}"  >Reportes</a>
-        <a href="{{url_for('auth.ventas')}}"    >Ventas</a>
-        <a href="{{ url_for('auth.registro') }}">Usuarios</a>
-        <a href="{{ url_for('auth.logout') }}" class="logout">
-            <i class="fas fa-sign-out-alt"></i> Cerrar sesión
-        </a>
-    </nav>
-    <main>
-        <div class="logo-container">
-           <img src="{{ url_for('static', filename='IMG/logotienda.png') }}">
-        </div>
-        <p>Bienvenido al sistema de Tienda Julio y Mary. Seleccione una opción del menú para comenzar.</p>
-    </main>
-      </div>
+        <nav>
+            <a href="{{ url_for('auth.menu') }}">Inicio</a>
+            <a href="{{ url_for('auth.productos')}}">Productos</a>
+            <a href="{{ url_for('auth.categoria') }}" class="active">Categorias</a>
+            <a href="{{ url_for('auth.proveedor') }}">Proveedores</a>
+            <a href="{{url_for('auth.inventario')}}">Inventario</a>
+            <a href="{{url_for('auth.compras')}}">Compras</a>
+            <a href="{{url_for('auth.reportes')}}">Reportes</a>
+            <a href="{{url_for('auth.ventas')}}">Ventas</a>
+            <a href="{{ url_for('auth.registro') }}">Usuarios</a>
+            <a href="{{ url_for('auth.logout') }}" class="logout">
+                <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+            </a>
+        </nav>
+        <div>
+            <!--Espacio para el formulario de ingreso de categoria-->
+            <main>
+                <div class="contenedor-categorias">
+                    <div class="form-categorias">
+                        <label for="" class="center">AGREGAR CATEGORIA</label>
+                        <input type="hidden" id="id_cate">
+                        <label for="">Nombre*</label>
+                        <input type="text" id="nombre-categoria" name="nombre" placeholder="Nombre">
+                        <div class="cate_botones">
+                            <input type="button" value="Guardar" id="cate_guardar">
+                            <input type="button" value="Cancelar" id="cate_cancelar">
+                        </div>
+                    </div>
 
+                    <div class="tabla-categoria">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="id_cate">ID</th>
+                                    <th>Nombre</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla-cate">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="toast-container">
+
+                </div>
+            </main>
+        </div>
+    </div>
     <footer>
         © Sistema Tienda Julio y Mary
     </footer>
+    <script src="{{ url_for('static', filename='JS/agrcat.js') }}"></script>
+    <script src="{{ url_for('static', filename='JS/toast.js') }}"></script>
 </body>
+
 </html>

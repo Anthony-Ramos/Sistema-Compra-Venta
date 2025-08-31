@@ -43,7 +43,6 @@ window.addEventListener("DOMContentLoaded", () => {
             input.addEventListener("keydown", bloquearLetras);      // bloquea letras
         }
     });
-
 });
 
 //Apartado de mostrar los datos
