@@ -27,12 +27,13 @@ def obtener_proveedores():
         print("Error cargando proveedores:", e)
         return jsonify([]), 500
     
-#Estraer la informacion de la tabla productos en general
+#Extraer la informacion de la tabla productos en general
 @prod_bp.route("/productos_filtro", methods=["GET"])
 def obtener_productos():
     try:
-        # Opción de filtrar por categoría
+        # Parámetros de filtro
         categoria_id = request.args.get("categoria", default=None, type=int)
+        query = request.args.get("q", default=None, type=str)
 
         sql = """
             SELECT p.id_producto, p.nombre, c.nombre as categoria, pr.nombre as proveedor,
@@ -43,9 +44,19 @@ def obtener_productos():
             JOIN proveedores pr ON p.id_proveedor = pr.id_proveedor
         """
         params = []
+        filtros = []
+
         if categoria_id:
-            sql += " WHERE p.id_categoria = %s"
+            filtros.append("p.id_categoria = %s")
             params.append(categoria_id)
+
+        if query:
+            filtros.append("(p.nombre ILIKE %s OR pr.nombre ILIKE %s OR c.nombre ILIKE %s)")
+            busqueda = f"%{query}%"
+            params.extend([busqueda, busqueda, busqueda])
+
+        if filtros:
+            sql += " WHERE " + " AND ".join(filtros)
 
         sql += " ORDER BY p.nombre"
 
@@ -70,4 +81,3 @@ def obtener_productos():
     except Exception as e:
         print("Error cargando productos:", e)
         return jsonify([]), 500
-    

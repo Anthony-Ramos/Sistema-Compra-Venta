@@ -1,35 +1,73 @@
+// ===============================
+// Evento principal al cargar la página
+// ===============================
 window.addEventListener("DOMContentLoaded", () => {
     cargarCategorias();
     cargarProveedores();
     const selectFiltro = document.getElementById("filtro");
-    cargarProductos(selectFiltro.value);
+    const inputBuscar = document.getElementById("buscador");
+    const btnBuscar   = document.querySelector(".buscador button");
 
+    // 🔹 Cargar productos al inicio
+    cargarProductos(selectFiltro.value, inputBuscar.value);
+
+    // 🔹 Filtrar por categoría
     selectFiltro.addEventListener("change", () => {
-        cargarProductos(selectFiltro.value);
+        cargarProductos(selectFiltro.value, inputBuscar.value);
+    });
+
+    // 🔹 Buscar al dar clic en el botón
+    btnBuscar.addEventListener("click", () => {
+        cargarProductos(selectFiltro.value, inputBuscar.value);
+    });
+
+    // 🔹 Buscar al presionar Enter
+    inputBuscar.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            cargarProductos(selectFiltro.value, inputBuscar.value);
+        }
     });
 });
+
+// ===============================
+// Cargar categorías
+// ===============================
 async function cargarCategorias() {
     try {
         const response = await fetch("/categorias");
         if (!response.ok) throw new Error("Error en la petición HTTP");
         const categorias = await response.json();
 
-        const select = document.getElementById("categoria");
-        select.innerHTML = '<option value="">Categoria</option>'; // limpia antes de llenar
-
+        // 🔹 Combo de formulario (Agregar producto)
+        const selectForm = document.getElementById("categoria");
+        selectForm.innerHTML = '<option value="">Categoria</option>';
         categorias.forEach(cat => {
             const option = document.createElement("option");
             option.value = cat.id;
             option.textContent = cat.nombre;
-            select.appendChild(option);
+            selectForm.appendChild(option);
         });
+
+        // 🔹 Combo de filtro (buscador de productos)
+        const selectFiltro = document.getElementById("filtro");
+        selectFiltro.innerHTML = '<option value="">Todas las categorías</option>';
+        categorias.forEach(cat => {
+            const option = document.createElement("option");
+            option.value = cat.id;
+            option.textContent = cat.nombre;
+            selectFiltro.appendChild(option);
+        });
+
         mostrarToast("/static/IMG/iconos/check.png", "Categorias cargadas exitosamente", "success");
     } catch (error) {
         mostrarToast("/static/IMG/iconos/error.png", "Error al cargar las Categorias", "error");
     }
 }
 
-//Funcion de extraer proveedores de la base de datos
+// ===============================
+// Cargar proveedores
+// ===============================
 async function cargarProveedores() {
     try {
         const response = await fetch("/proveedores");
@@ -39,7 +77,6 @@ async function cargarProveedores() {
         const select = document.getElementById("proveedor");
         select.innerHTML = '<option value="">Proveedor</option>';
 
-        //prov es una abreviacion de proveedores
         proveedores.forEach(prov => {
             const option = document.createElement("option");
             option.value = prov.id;
@@ -51,11 +88,15 @@ async function cargarProveedores() {
         mostrarToast("/static/IMG/iconos/error.png", "Error al cargar los proveedores", "error");
     }
 }
-//Funcion para extraer lo productos
-async function cargarProductos(categoria = "") {
+
+// ===============================
+// Cargar productos (con filtros)
+// ===============================
+async function cargarProductos(categoria = "", query = "") {
     try {
-        let url = "/productos_filtro";
-        if (categoria) url += `?categoria=${encodeURIComponent(categoria)}`;
+        let url = "/productos_filtro?";
+        if (categoria) url += `categoria=${encodeURIComponent(categoria)}&`;
+        if (query) url += `q=${encodeURIComponent(query)}`;
 
         const response = await fetch(url);
         if (!response.ok) throw new Error("Error en la petición HTTP");
@@ -81,9 +122,12 @@ async function cargarProductos(categoria = "") {
             `;
             tbody.appendChild(row);
         });
-        
+
         mostrarToast("/static/IMG/iconos/check.png", "Productos cargados exitosamente", "success");
-        // Eventos Editar
+
+        // ===============================
+        // Botón Editar
+        // ===============================
         document.querySelectorAll(".btn-editar").forEach(btn => {
             btn.addEventListener("click", e => {
                 const id = e.target.dataset.id;
@@ -100,7 +144,9 @@ async function cargarProductos(categoria = "") {
             });
         });
 
-        // Eventos Eliminar
+        // ===============================
+        // Botón Eliminar
+        // ===============================
         document.querySelectorAll(".btn-eliminar").forEach(btn => {
             btn.addEventListener("click", e => {
                 const id = e.target.dataset.id;
@@ -111,7 +157,7 @@ async function cargarProductos(categoria = "") {
                             const res = await fetch(`/productos/eliminar_producto/${id}`, { method: "DELETE" });
                             if (res.ok) {
                                 mostrarToast("/static/IMG/iconos/check.png", "Producto Eliminado", "success");
-                                cargarProductos();
+                                cargarProductos(categoria, query);
                             } else {
                                 mostrarToast("/static/IMG/iconos/error.png", "Error al Eliminar", "error");
                             }
@@ -123,6 +169,7 @@ async function cargarProductos(categoria = "") {
                 );
             });
         });
+
     } catch (error) {
         console.error("Error cargando productos:", error);
         mostrarToast("/static/IMG/iconos/error.png", "Error cargando productos", "error");
