@@ -6,11 +6,12 @@ from typing import Any, Iterable, Optional, Tuple, List
 from psycopg2.pool import SimpleConnectionPool
 from backend.config import Config
 
+
 class DB:
     """
     Clase para manejar un pool de conexiones PostgreSQL + métodos de ayuda.
     Uso:
-        from db import DB
+        from backend.db import DB
         DB.init_app(Config)  # se llama una vez al iniciar la app
 
         fila = DB.fetch_one("SELECT 1")
@@ -39,13 +40,29 @@ class DB:
         )
 
     @classmethod
+    def get_connection(cls):
+        """
+        Retorna una conexión activa desde el pool.
+        Si el pool no ha sido inicializado, lanza RuntimeError.
+        """
+        if cls._pool is None:
+            raise RuntimeError("DB.init_app(Config) no fue llamado.")
+        return cls._pool.getconn()
+
+    @classmethod
+    def release_connection(cls, conn):
+        """
+        Devuelve la conexión al pool.
+        Debe llamarse siempre que se terminó de usar la conexión.
+        """
+        if cls._pool:
+            cls._pool.putconn(conn)
+
+    @classmethod
     @contextmanager
     def connection(cls):
         """Context manager que entrega (conn, cur) y asegura commit/rollback."""
-        if cls._pool is None:
-            raise RuntimeError("DB.init_app(Config) no fue llamado.")
-
-        conn = cls._pool.getconn()
+        conn = cls.get_connection()
         try:
             with conn.cursor() as cur:
                 yield conn, cur
@@ -54,7 +71,7 @@ class DB:
             conn.rollback()
             raise
         finally:
-            cls._pool.putconn(conn)
+            cls.release_connection(conn)
 
     # ---------- Métodos de ayuda ----------
 
@@ -127,5 +144,17 @@ class DB:
                     return dict(zip(columnas, fila))
                 return None
 
-            # Para operaciones que no retornan (ej. INSERT sin RETURNING)
             return None
+
+
+    # Alias para compatibilidad
+    @classmethod
+    def obtener_conexion(cls):
+        """Alias en español de get_connection()."""
+        return cls.get_connection()
+
+    @classmethod
+    def liberar_conexion(cls, conn):
+        """Alias en español de release_connection()."""
+        cls.release_connection(conn)
+        

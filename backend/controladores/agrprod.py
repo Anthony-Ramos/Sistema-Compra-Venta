@@ -1,7 +1,8 @@
 #Controlador dedicado al manejo de agregar,editar y elimar productos usando flask,blueprint
 import psycopg2
 from flask import Blueprint, request, jsonify
-from backend.db import obtener_conexion, liberar_conexion
+from backend.db import liberar_conexion
+from backend.db import obtener_conexion
 
 prod_bp = Blueprint("productos", __name__, url_prefix="/productos")
 
