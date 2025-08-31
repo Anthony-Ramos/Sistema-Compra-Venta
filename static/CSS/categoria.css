@@ -135,3 +135,36 @@ main {
     background-color: #f4f4f4;
     font-weight: bold;
 }
+
+/*Modificacion de estilos de botones*/
+.btn-editar,
+.btn-eliminar {
+    border: none;
+    width: 45%;
+    height: 5vh;
+    margin-left: 2px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background 0.3s, transform 0.2s;
+
+}
+
+.btn-editar {
+    background-color: #ffc107;
+    color: #FFFF;
+}
+.btn-eliminar {
+    background-color: #c82333;
+    color: #FFFF;
+}
+
+.btn-editar:hover{
+   cursor: pointer;
+  background-color: #e3ab04;
+  transform: scale(0.95);
+}
+.btn-eliminar:hover{
+    cursor: pointer;
+  background-color: #76000c;
+  transform: scale(0.95);
+}
