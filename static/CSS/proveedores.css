@@ -108,3 +108,36 @@
 .tabla tbody tr:nth-child(even) {
     background-color: #fafafa;
 }
+
+/*Ocultar la columna ID junto con sus valores*/
+.id-prov, .id-prove{
+    display: none;
+}
+/*Estilos para los botones la tabla*/
+.btn-editar, .btn-eliminar{
+    width: 100%;
+    height: 5vh;
+    border: none;
+    margin: 2px auto;
+    border-radius: 5px;
+    transition: background 0.3s, transform 0.2s;
+    color: #FFF;
+    font-weight: bold;
+}
+
+.btn-editar{
+    background-color: #ffc107;
+}
+.btn-eliminar{
+    background-color: #c82333;
+}
+.btn-editar:hover{
+    background-color: #e3ab04;
+    transform: scale(0.95);
+    cursor: pointer;
+}
+.btn-eliminar:hover{
+    background-color: #76000c;
+    transform: scale(0.95);
+    cursor: pointer;
+}

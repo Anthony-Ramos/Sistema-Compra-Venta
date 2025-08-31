@@ -34,6 +34,8 @@ def login():
 
         flash("Usuario o contraseña incorrectos", "danger")
         return render_template("auth/index.html")
+
+    return render_template("auth/index.html")
 @auth_bp.route("/logout")
 def logout():
     """
