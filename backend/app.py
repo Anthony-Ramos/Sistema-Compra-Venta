@@ -5,6 +5,7 @@ from flask import Flask, render_template
 from backend.controladores.auth_controlador import auth_bp
 from backend.controladores.prod_controlador import prod_bp
 from backend.controladores.cate_controlador import cate_bp
+from backend.controladores.prov_controlador import prov_bp
 from backend.config import Config
 from backend.db import DB
 import os
@@ -21,6 +22,7 @@ def crear_app():
     app.register_blueprint(auth_bp)
     app.register_blueprint(prod_bp)
     app.register_blueprint(cate_bp)
+    app.register_blueprint(prov_bp)
     
     @app.route("/")
     def index():
