@@ -42,20 +42,6 @@ main {
 
 }
 
-.btn-agregar .icono {
-  transition: transform 0.3s ease;
-}
-
-.btn-agregar:hover .icono {
-  transform: rotate(90deg);
-}
-
-.btn-agregar:hover {
-  cursor: pointer;
-  background-color: #218838;
-  transform:scale(1.05);
-}
-
 /*Parte de estilos para el bucador*/
 .buscador {
   display: flex;
@@ -69,7 +55,6 @@ main {
   width: 350px;
   max-width: 90%;
 }
-
 .select-combo {
   width: 100%;
   padding: 5px;
@@ -231,12 +216,9 @@ main {
   flex-direction: column;
 }
 
-/*Apartado de la tabla*/
 .tabla-scroll {
   max-height: 300px;
-  /* altura máxima visible */
   overflow-y: auto;
-  /* barra vertical si excede */
   margin-top: 15px;
   border: 1px solid #ccc;
   border-radius: 8px;
