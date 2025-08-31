@@ -38,7 +38,7 @@ async function cargarCategorias() {
 // Eventos Eliminar con toast personalizado
 function asignarEventos(categorias) {
     const inputNombre = document.getElementById("nombre-categoria");
-    const inputId = document.getElementById("id_categoria");
+    const inputId = document.getElementById("id_cate");
 
     // Eventos Editar
     document.querySelectorAll(".btn-editar").forEach(btn => {
