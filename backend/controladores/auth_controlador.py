@@ -38,7 +38,7 @@ def login():
             return redirect(url_for("auth.menu"))
 
         flash("Usuario o contraseña incorrectos", "danger")
-    return render_template("auth/login.html")
+    return render_template("auth/index.html")
 
 
 @auth_bp.route("/logout")

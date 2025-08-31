@@ -9,51 +9,69 @@ from backend.config import Config
 
 class DB:
     """
-    Clase para manejar un pool de conexiones PostgreSQL + métodos de ayuda.
-    Uso:
-        from backend.db import DB
-        DB.init_app(Config)  # se llama una vez al iniciar la app
+    Clase para manejar un pool de conexiones PostgreSQL y métodos de utilidad.
 
+    Ejemplo de uso:
+        DB.init_app(Config)  # Se llama una vez al iniciar la aplicación
+
+        conn = DB.obtener_conexion()
+        DB.liberar_conexion(conn)
+
+        # Consultas útiles
         fila = DB.fetch_one("SELECT 1")
         filas = DB.fetch_all("SELECT * FROM usuarios WHERE estado = %s", (True,))
-        DB.execute("INSERT INTO usuarios(usuario, contrasena) VALUES (%s, %s)", (u, p))
+        DB.execute("DELETE FROM usuarios WHERE id = %s", (id,))
     """
 
     _pool: Optional[SimpleConnectionPool] = None
 
     @classmethod
     def init_app(cls, cfg: Config, minconn: int = 1, maxconn: int = 10) -> None:
-        """Inicializa el pool con base en la Config."""
-        if cls._pool is not None:
-            return  # ya inicializado
+        """
+        Inicializa el pool de conexiones si aún no ha sido creado.
 
-        dsn = (
-            f"host={cfg.PG_HOST} port={cfg.PG_PORT} dbname={cfg.PG_DB} "
-            f"user={cfg.PG_USER} password={cfg.PG_PASS}"
-        )
-        cls._pool = SimpleConnectionPool(
-            minconn=minconn,
-            maxconn=maxconn,
-            dsn=dsn,
-            connect_timeout=10,
-            application_name="mi-app",
-        )
+        Parámetros:
+            cfg (Config): Objeto de configuración con credenciales de la base de datos.
+            minconn (int): Número mínimo de conexiones en el pool.
+            maxconn (int): Número máximo de conexiones en el pool.
+        """
+        if cls._pool is None:
+            cls._pool = SimpleConnectionPool(
+                minconn=minconn,
+                maxconn=maxconn,
+                host=cfg.PG_HOST,
+                port=cfg.PG_PORT,
+                dbname=cfg.PG_DB,
+                user=cfg.PG_USER,
+                password=cfg.PG_PASS,
+                client_encoding='UTF8',
+                connect_timeout=10,
+                application_name="mi-app"
+            )
+            print("✅ Pool de conexiones PostgreSQL inicializado correctamente.")
 
     @classmethod
-    def get_connection(cls):
+    def obtener_conexion(cls):
         """
-        Retorna una conexión activa desde el pool.
-        Si el pool no ha sido inicializado, lanza RuntimeError.
+        Obtiene una conexión desde el pool.
+
+        Retorna:
+            conexión activa (psycopg2.extensions.connection)
+
+        Lanza:
+            RuntimeError: si el pool no ha sido inicializado previamente.
         """
         if cls._pool is None:
             raise RuntimeError("DB.init_app(Config) no fue llamado.")
         return cls._pool.getconn()
 
     @classmethod
-    def release_connection(cls, conn):
+    def liberar_conexion(cls, conn):
         """
-        Devuelve la conexión al pool.
-        Debe llamarse siempre que se terminó de usar la conexión.
+        Devuelve una conexión al pool.
+
+        Parámetros:
+            conn: conexión a devolver al pool.
         """
         if cls._pool:
             cls._pool.putconn(conn)
@@ -61,8 +79,15 @@ class DB:
     @classmethod
     @contextmanager
     def connection(cls):
-        """Context manager que entrega (conn, cur) y asegura commit/rollback."""
-        conn = cls.get_connection()
+        """
+        Context manager que proporciona (conn, cur) para ejecutar SQL
+        y asegura el manejo de commit/rollback automáticamente.
+
+        Uso:
+            with DB.connection() as (conn, cur):
+                cur.execute("SELECT * FROM tabla")
+        """
+        conn = cls.obtener_conexion()
         try:
             with conn.cursor() as cur:
                 yield conn, cur
@@ -71,46 +96,71 @@ class DB:
             conn.rollback()
             raise
         finally:
-            cls.release_connection(conn)
-
-    # ---------- Métodos de ayuda ----------
+            cls.liberar_conexion(conn)
 
     @classmethod
     def fetch_one(
-        cls, sql: str, params: Optional[Iterable[Any]] = None
+    cls,
+    sql: str,
+    params: Optional[Iterable[Any]] = None
     ) -> Optional[Tuple[Any, ...]]:
-        """Retorna una sola fila o None."""
+        """
+        Ejecuta una consulta SQL y devuelve una sola fila.
+
+        Parámetros:
+            sql (str): sentencia SQL a ejecutar.
+            params (Iterable): parámetros opcionales.
+
+        Retorna:
+            Una tupla con los datos de la fila o None.
+        """
         with cls.connection() as (_, cur):
             cur.execute(sql, params or ())
             return cur.fetchone()
 
     @classmethod
-    def fetch_all(
-        cls, sql: str, params: Optional[Iterable[Any]] = None
-    ) -> List[Tuple[Any, ...]]:
-        """Retorna todas las filas (lista, puede ser vacía)."""
+    def fetch_all(cls, sql: str, params: Optional[Iterable[Any]] = None) -> List[Tuple[Any, ...]]:
+        """
+        Ejecuta una consulta SQL y devuelve todas las filas.
+
+        Parámetros:
+            sql (str): sentencia SQL a ejecutar.
+            params (Iterable): parámetros opcionales.
+
+        Retorna:
+            Lista de tuplas con los datos obtenidos.
+        """
         with cls.connection() as (_, cur):
             cur.execute(sql, params or ())
             return cur.fetchall()
 
     @classmethod
     def execute(cls, sql: str, params: Optional[Iterable[Any]] = None) -> int:
-        """Ejecuta INSERT/UPDATE/DELETE. Devuelve número de filas afectadas."""
+        """
+        Ejecuta una sentencia INSERT, UPDATE o DELETE.
+
+        Parámetros:
+            sql (str): consulta SQL.
+            params (Iterable): parámetros opcionales.
+
+        Retorna:
+            int: número de filas afectadas.
+        """
         with cls.connection() as (_, cur):
             cur.execute(sql, params or ())
             return cur.rowcount
 
     @classmethod
-    def execute_returning(
-        cls, sql: str, params: Optional[Iterable[Any]] = None
-    ) -> Tuple[Any, ...]:
+    def execute_returning(cls, sql: str, params: Optional[Iterable[Any]] = None) -> Tuple[Any, ...]:
         """
-        Ejecuta con RETURNING y devuelve la fila retornada.
-        Ejemplo:
-            DB.execute_returning(
-                "INSERT INTO usuarios(usuario, contrasena) VALUES (%s,%s) RETURNING id",
-                (u, p)
-            )
+        Ejecuta una sentencia SQL con cláusula RETURNING y devuelve la fila retornada.
+
+        Parámetros:
+            sql (str): consulta SQL con RETURNING.
+            params (Iterable): parámetros opcionales.
+
+        Retorna:
+            Tupla con los valores retornados.
         """
         with cls.connection() as (_, cur):
             cur.execute(sql, params or ())
@@ -125,10 +175,18 @@ class DB:
         fetch_one: bool = False
     ) -> Optional[Any]:
         """
-        Ejecuta una consulta SQL.
-        - fetch_all=True: retorna lista de diccionarios.
-        - fetch_one=True: retorna un solo diccionario.
-        - Ninguno: hace commit (INSERT/UPDATE/DELETE).
+        Ejecuta una consulta SQL personalizada.
+
+        Parámetros:
+            consulta (str): consulta SQL.
+            params (Iterable): parámetros opcionales.
+            fetch_all (bool): si es True, retorna todas las filas como diccionarios.
+            fetch_one (bool): si es True, retorna una sola fila como diccionario.
+
+        Retorna:
+            - Lista de diccionarios (si fetch_all=True).
+            - Diccionario (si fetch_one=True).
+            - None (si es una operación tipo INSERT sin RETURNING).
         """
         with cls.connection() as (_, cur):
             cur.execute(consulta, params or ())
@@ -145,16 +203,3 @@ class DB:
                 return None
 
             return None
-
-
-    # Alias para compatibilidad
-    @classmethod
-    def obtener_conexion(cls):
-        """Alias en español de get_connection()."""
-        return cls.get_connection()
-
-    @classmethod
-    def liberar_conexion(cls, conn):
-        """Alias en español de release_connection()."""
-        cls.release_connection(conn)
-        
