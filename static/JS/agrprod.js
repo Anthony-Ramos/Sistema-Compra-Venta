@@ -43,7 +43,14 @@ window.addEventListener("DOMContentLoaded", () => {
             input.addEventListener("keydown", bloquearLetras);      // bloquea letras
         }
     });
+    document.getElementById('precio_compra').addEventListener('input', function() {
+    let compra = parseFloat(this.value) || 0;
+    let ganancia = 0.3; // 30%
+    let venta = compra * (1 + ganancia);
+    document.getElementById('precio_venta').value = venta.toFixed(2);
 });
+});
+
 
 //Apartado de mostrar los datos
 async function cargarCategorias() {
