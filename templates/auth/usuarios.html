@@ -32,18 +32,18 @@
   </header>
 
   <!-- NAV LATERAL -->
-  <nav>
-      <a href="{{ url_for('auth.menu') }}" class="active">Menú</a>        
-      <a href="{{ url_for('auth.productos') }}">Gestión de Productos</a>
-      <a href="{{ url_for('auth.registro') }}">Usuarios</a>
-      <a href="#">Ventas</a>
-      <a href="#">Compras</a>
-      <a href="#">Inventario</a>
-      <a href="#">Reportes</a>
-      <a href="{{ url_for('auth.logout') }}" class="logout">
-          <i class="fas fa-sign-out-alt"></i> Cerrar sesión
-      </a>
-  </nav>
+    <nav>
+        <a href="{{ url_for('auth.menu') }}" class="active">Inicio</a>
+        <a href="{{ url_for('auth.productos')}}">Productos</a>
+        <a href="{{url_for('auth.inventario')}}">Inventario</a>
+        <a href="{{url_for('auth.compras')}}"   >Compras</a>
+        <a href="{{url_for('auth.reportes')}}"  >Reportes</a>
+        <a href="{{url_for('auth.ventas')}}"    >Ventas</a>
+        <a href="{{ url_for('auth.registro') }}">Usuarios</a>
+        <a href="{{ url_for('auth.logout') }}" class="logout">
+            <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+        </a>
+    </nav>
 
   <!-- CONTENIDO PRINCIPAL -->
   <main class="contenido-principal">
