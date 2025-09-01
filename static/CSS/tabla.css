@@ -1,0 +1,22 @@
+/* static/CSS/tabla.css */
+
+.tabla-estilizada {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.tabla-estilizada th,
+.tabla-estilizada td {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  text-align: left;
+}
+
+.tabla-estilizada th {
+  background-color: #f4f4f4;
+}
+
+.acciones button {
+  margin-right: 5px;
+}

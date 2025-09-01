@@ -6,7 +6,10 @@ function mostrarToast(icono, mensaje, tipo) {
         console.error("No se encontró el contenedor de toasts");
         return;
     }
+<<<<<<< HEAD:JS/toast.js
 
+=======
+>>>>>>> 9b7a46f117bf64e31afe0100cb487a227027cbe3:static/JS/toast.js
     // Crear toast
     const toast = document.createElement("div");
     toast.classList.add("toast", tipo); // asigna color por tipo
@@ -58,4 +61,8 @@ function mostrarConfirmToast(mensaje, callbackAceptar, callbackCancelar) {
 function cerrarToast(toast) {
     toast.classList.remove("show");
     setTimeout(() => toast.remove(), 400);
+<<<<<<< HEAD:JS/toast.js
 }
+=======
+}
+>>>>>>> 9b7a46f117bf64e31afe0100cb487a227027cbe3:static/JS/toast.js
