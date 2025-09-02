@@ -2,53 +2,98 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Tienda Julio y Mary</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
-    </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/menu.css') }}">
+  <meta charset="UTF-8" />
+  <title>Reporte de Compras - Tienda Julio y Mary</title>
+
+  <!-- Tipografía de títulos (mismo estilo) -->
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
+  </style>
+
+  <!-- Estilos existentes -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='CSS/menu.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='CSS/ingresos.css') }}">
 </head>
 
 <body>
-    <header>
-        <h1 class="empresa">Tienda Julio y Mary</h1>
-        <h1 class="pagina">Compras</h1>
-        <div class="user-info">
-            <img src="{{ url_for('static', filename='IMG/logo.png') }}">
-            <i class="fas fa-user-circle"></i>
-            <label class="usuario-rol">{{ session.get("usuario_rol", "Rol") }}</label>
-            <label class="usuario-nombre">{{ session.get("usuario_nombre", "Invitado") }}</label>
-        </div>
-    </header>
-
-    <div class="contenedor">
-        <nav>
-            <a href="{{ url_for('auth.menu') }}">Inicio</a>
-            <a href="{{ url_for('auth.productos')}}">Productos</a>
-            <a href="{{ url_for('auth.categoria') }}">Categorias</a>
-            <a href="{{ url_for('auth.proveedor') }}">Proveedores</a>
-            <a href="{{url_for('auth.inventario')}}">Inventario</a>
-            <a href="{{url_for('auth.compras')}}" class="active">Compras</a>
-            <a href="{{url_for('auth.reportes')}}">Reportes</a>
-            <a href="{{url_for('auth.ventas')}}">Ventas</a>
-            <a href="{{ url_for('auth.registro') }}">Usuarios</a>
-            <a href="{{ url_for('auth.logout') }}" class="logout">
-                <i class="fas fa-sign-out-alt"></i> Cerrar sesión
-            </a>
-        </nav>
-        <main>
-            <div class="logo-container">
-                <img src="{{ url_for('static', filename='IMG/logotienda.png') }}">
-            </div>
-            <p>Bienvenido al sistema de Tienda Julio y Mary. Seleccione una opción del menú para comenzar.</p>
-        </main>
+  <header>
+    <h1 class="empresa">Tienda Julio y Mary</h1>
+    <h1 class="pagina">Reporte de Compras</h1>
+    <div class="user-info">
+      <img src="{{ url_for('static', filename='IMG/logo.png') }}" alt="logo">
+      <i class="fas fa-user-circle"></i>
+      <label class="usuario-rol">{{ session.get("usuario_rol", "Rol") }}</label>
+      <label class="usuario-nombre">{{ session.get("usuario_nombre", "Invitado") }}</label>
     </div>
+  </header>
 
-    <footer>
-        © Sistema Tienda Julio y Mary
-    </footer>
+  <nav>
+    <a href="{{ url_for('auth.menu') }}">Inicio</a>
+    <a href="{{ url_for('auth.productos') }}">Productos</a>
+    <a href="{{ url_for('auth.inventario') }}">Inventario</a>
+    <a href="{{ url_for('auth.compras') }}" class="active">Compras</a>
+    <a href="{{ url_for('auth.reportes') }}">Reportes</a>
+    <a href="{{ url_for('auth.ventas') }}">Ventas</a>
+    <a href="{{ url_for('auth.registro') }}">Usuarios</a>
+    <a href="{{ url_for('auth.logout') }}" class="logout">
+      <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+    </a>
+  </nav>
+
+  <main>
+    <div class="tabla-reportes">
+      <div class="tabla-scroll">
+        <table class="tabla-estilizada">
+          <thead>
+            <tr>
+              <th>Proveedor</th>
+              <th>Fecha</th>
+              <th>Producto</th>
+              <th>Cantidad</th>
+              <th>Precio Unitario</th>
+              <th>Estado</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <!-- data-endpoint apunta al API de compras (ajústalo si tu blueprint usa otra ruta) -->
+          <tbody id="tabla-compras" data-endpoint="/api/compras">
+            <!-- Se llenará con JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 🔽 Filtros y totales (compatibles con compras.js) -->
+      <div class="totales-wrapper" style="margin-top:12px; display:flex; gap:24px; align-items:center; flex-wrap:wrap;">
+        <div>
+          <label for="filtro-mes-compras"><strong>Filtrar por mes:</strong></label>
+          <input type="month" id="filtro-mes-compras" />
+        </div>
+
+        <div>
+          <label for="filtro-proveedor"><strong>Proveedor:</strong></label>
+          <input type="text" id="filtro-proveedor" placeholder="Buscar proveedor..." />
+          <button id="btn-limpiar-filtros-compras" type="button">Limpiar</button>
+        </div>
+
+        <div>
+          <strong>Total del mes:</strong>
+          <span id="total-mes-compras">$0.00</span>
+        </div>
+
+        <div>
+          <strong>Total general:</strong>
+          <span id="total-general-compras">$0.00</span>
+        </div>
+      </div>
+      <!-- 🔼 Fin filtros y totales -->
+    </div>
+  </main>
+
+  <footer>
+    © Sistema Tienda Julio y Mary
+  </footer>
+
+  <!-- JS de compras -->
+  <script src="{{ url_for('static', filename='JS/compras.js') }}"></script>
 </body>
-
 </html>

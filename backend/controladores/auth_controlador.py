@@ -170,3 +170,12 @@ def proveedor():
 def categoria():
     """Página de categorias"""
     return render_template('auth/categoria.html')
+
+@auth_bp.route('/stockmin')
+def stockmin():
+    """Página de productos con stock bajo"""
+    return render_template('auth/stockMin.html')
+
+@auth_bp.route('/movi')
+def movi():
+    return render_template('auth/movi.html')
