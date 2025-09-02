@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
-    <title>Tienda Julio y Mary</title>
+    <title>Reporte de Ventas - Tienda Julio y Mary</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
     </style>
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='CSS/menu.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/ingresos.css') }}">
 </head>
+
 <body>
     <header>
         <h1 class="empresa">Tienda Julio y Mary</h1>
-        <h1 class="pagina">Ventas</h1>
+        <h1 class="pagina">Reporte de Ventas</h1>
         <div class="user-info">
             <img src="{{ url_for('static', filename='IMG/logo.png') }}">
             <i class="fas fa-user-circle"></i>
@@ -21,31 +23,67 @@
         </div>
     </header>
 
-    <div class="contenedor">
     <nav>
         <a href="{{ url_for('auth.menu') }}">Inicio</a>
         <a href="{{ url_for('auth.productos')}}">Productos</a>
-        <a href="{{ url_for('auth.categoria') }}">Categorias</a>
-        <a href="{{ url_for('auth.proveedor') }}">Proveedores</a>
         <a href="{{url_for('auth.inventario')}}">Inventario</a>
-        <a href="{{url_for('auth.compras')}}"   >Compras</a>
-        <a href="{{url_for('auth.reportes')}}"  >Reportes</a>
-        <a href="{{url_for('auth.ventas')}}"    class="active">Ventas</a>
+        <a href="{{url_for('auth.compras')}}">Compras</a>
+        <a href="{{url_for('auth.reportes')}}" class="active">Reportes</a>
+        <a href="{{url_for('auth.ventas')}}">Ventas</a>
         <a href="{{ url_for('auth.registro') }}">Usuarios</a>
         <a href="{{ url_for('auth.logout') }}" class="logout">
             <i class="fas fa-sign-out-alt"></i> Cerrar sesión
         </a>
     </nav>
+
     <main>
-        <div class="logo-container">
-           <img src="{{ url_for('static', filename='IMG/logotienda.png') }}">
+        <div class="tabla-reportes">
+            <div class="tabla-scroll">
+                <table class="tabla-estilizada">
+                    <thead>
+                        <tr>
+                            <th>ID Venta</th>
+                            <th>Fecha</th>
+                            <th>Usuario</th>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Precio Unitario</th>
+                            <th>Subtotal</th>
+                            <th>Total Venta</th>
+                            <th>Método de Pago</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-ventas" data-endpoint="{{ url_for('ventas.obtener_ventas') }}">
+                        <!-- Se llenará con JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 🔽 BLOQUE NUEVO: Filtro por mes y totales -->
+            <div class="totales-wrapper" style="margin-top: 12px; display: flex; gap: 24px; align-items: center; flex-wrap: wrap;">
+                <div>
+                    <label for="filtro-mes"><strong>Filtrar por mes:</strong></label>
+                    <input type="month" id="filtro-mes" />
+                </div>
+
+                <div>
+                    <strong>Total del mes:</strong>
+                    <span id="total-mes">$0.00</span>
+                </div>
+
+                <div>
+                    <strong>Total general:</strong>
+                    <span id="total-general">$0.00</span>
+                </div>
+            </div>
+            <!-- 🔼 FIN BLOQUE NUEVO -->
         </div>
-        <p>Bienvenido al sistema de Tienda Julio y Mary. Seleccione una opción del menú para comenzar.</p>
     </main>
-      </div>
 
     <footer>
         © Sistema Tienda Julio y Mary
     </footer>
+
+    <script src="{{ url_for('static', filename='JS/ingresos.js') }}"></script>
 </body>
 </html>
