@@ -2,7 +2,6 @@
 
 from contextlib import contextmanager
 from typing import Any, Iterable, Optional, Tuple, List
-
 from psycopg2.pool import SimpleConnectionPool
 from backend.config import Config
 
@@ -12,26 +11,24 @@ class DB:
     Clase para manejar un pool de conexiones PostgreSQL y métodos de utilidad.
 
     Ejemplo de uso:
-        DB.init_app(Config)  # Se llama una vez al iniciar la aplicación
-
-        conn = DB.obtener_conexion()
-        DB.liberar_conexion(conn)
-
-        # Consultas útiles
-        fila = DB.fetch_one("SELECT 1")
-        filas = DB.fetch_all("SELECT * FROM usuarios WHERE estado = %s", (True,))
-        DB.execute("DELETE FROM usuarios WHERE id = %s", (id,))
+        >>> DB.init_app(Config)  # Inicializa el pool al iniciar la aplicación
+        >>> fila = DB.fetch_one("SELECT 1")
+        >>> filas = DB.fetch_all("SELECT * FROM usuarios")
+        >>> DB.execute("DELETE FROM usuarios WHERE id = %s", (id,))
     """
 
     _pool: Optional[SimpleConnectionPool] = None
 
+    # ===============================
+    # Inicialización
+    # ===============================
     @classmethod
     def init_app(cls, cfg: Config, minconn: int = 1, maxconn: int = 10) -> None:
         """
         Inicializa el pool de conexiones si aún no ha sido creado.
 
         Parámetros:
-            cfg (Config): Objeto de configuración con credenciales de la base de datos.
+            cfg (Config): Objeto de configuración con credenciales de la BD.
             minconn (int): Número mínimo de conexiones en el pool.
             maxconn (int): Número máximo de conexiones en el pool.
         """
@@ -44,12 +41,15 @@ class DB:
                 dbname=cfg.PG_DB,
                 user=cfg.PG_USER,
                 password=cfg.PG_PASS,
-                client_encoding='UTF8',
+                client_encoding="UTF8",
                 connect_timeout=10,
                 application_name="mi-app"
             )
             print("✅ Pool de conexiones PostgreSQL inicializado correctamente.")
 
+    # ===============================
+    # Métodos básicos de conexión
+    # ===============================
     @classmethod
     def obtener_conexion(cls):
         """
@@ -84,8 +84,8 @@ class DB:
         y asegura el manejo de commit/rollback automáticamente.
 
         Uso:
-            with DB.connection() as (conn, cur):
-                cur.execute("SELECT * FROM tabla")
+            >>> with DB.connection() as (conn, cur):
+            ...     cur.execute("SELECT * FROM tabla")
         """
         conn = cls.obtener_conexion()
         try:
@@ -98,12 +98,11 @@ class DB:
         finally:
             cls.liberar_conexion(conn)
 
+    # ===============================
+    # Métodos de consulta
+    # ===============================
     @classmethod
-    def fetch_one(
-    cls,
-    sql: str,
-    params: Optional[Iterable[Any]] = None
-    ) -> Optional[Tuple[Any, ...]]:
+    def fetch_one(cls, sql: str, params: Optional[Iterable[Any]] = None) -> Optional[Tuple[Any, ...]]:
         """
         Ejecuta una consulta SQL y devuelve una sola fila.
 
@@ -203,3 +202,21 @@ class DB:
                 return None
 
             return None
+
+
+# ===============================
+# Función de compatibilidad
+# ===============================
+def iniciar_pool():
+    """
+    Función de compatibilidad con versiones antiguas.
+
+    Inicializa el pool de conexiones usando la clase DB. 
+    Internamente llama a DB.init_app(Config).
+
+    Uso:
+        >>> from backend.db import iniciar_pool
+        >>> iniciar_pool()
+    """
+    DB.init_app(Config)
+    return DB._pool

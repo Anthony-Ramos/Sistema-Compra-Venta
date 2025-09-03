@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function cargarComboCategoria() {
-    fetch("/categorias")
+    fetch("http://localhost:5000/categorias")
         .then(response => response.json())
         .then(data => {
             const selectCategoria = document.getElementById("categoria");
@@ -29,7 +29,7 @@ function cargarComboCategoria() {
 }
 // Función para llenar el segundo combo
 function cargarComboFiltro() {
-    fetch("/categorias")
+    fetch("http://localhost:5000/categorias")
         .then(response => response.json())
         .then(data => {
             const selectFiltro = document.getElementById("filtro");
@@ -45,7 +45,7 @@ function cargarComboFiltro() {
         .catch(error => console.error("Error cargando categorías para el filtro:", error));
 }
 function cargarProveedores() {
-    fetch("/proveedores")
+    fetch("http://localhost:5000/proveedores")
         .then(response => response.json())
         .then(data => {
             const selectProveedor = document.getElementById("proveedor");
@@ -61,7 +61,7 @@ function cargarProveedores() {
         .catch(error => console.error("Error cargando proveedores:", error));
 }
 function cargarProductos(categoria = "") {
-    let url = "/productos_filtro";
+    let url = "http://localhost:5000/productos_filtro";
     if (categoria) {
         url += `?categoria=${encodeURIComponent(categoria)}`;
     }
@@ -118,7 +118,7 @@ function cargarProductos(categoria = "") {
                     mostrarConfirmToast(
                         "¿Seguro que quieres eliminar este producto?",
                         () => { // Callback Aceptar
-                            fetch(`/eliminar_producto/${id}`, {
+                            fetch(`http://localhost:5000/eliminar_producto/${id}`, {
                                 method: "DELETE"
                             })
                                 .then(response => {
@@ -146,7 +146,7 @@ function cargarProductos(categoria = "") {
 const selectFiltro = document.getElementById("filtro");
 selectFiltro.addEventListener("change", () => {
     const categoria = selectFiltro.value;
-    let url = `/productos_filtro`;
+    let url = `http://localhost:5000/productos_filtro`;
     if (categoria) {
         url += `?categoria=${encodeURIComponent(categoria)}`;
     }
@@ -187,11 +187,11 @@ document.getElementById("guardar").addEventListener("click", function () {
         descripcion
     };
 
-    let url = "/agregar_producto";
+    let url = "http://localhost:5000/agregar_producto";
     let method = "POST";
 
     if (id_producto) {
-        url = `/editar_producto/${id_producto}`;
+        url = `http://localhost:5000/editar_producto/${id_producto}`;
         method = "PUT";
     }
 
@@ -207,6 +207,7 @@ document.getElementById("guardar").addEventListener("click", function () {
                 } else {
                     mostrarToast("../IMG/iconos/check.png", "Producto agregado", "success");
                 }
+
                 // Limpiar formulario
                 document.getElementById("id_producto").value = "";
                 document.getElementById("nombre").value = "";
