@@ -11,7 +11,6 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash
 from backend.modelos.usuario_modelo import Usuario
 from backend.utils.decoradores import login_requerido
 from backend.db import DB
-
 # Blueprint para las rutas de autenticación
 auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
 
@@ -79,9 +78,7 @@ def registro():
     # 👇 Esta línea se ejecuta SIEMPRE
     usuarios = Usuario.obtener_todos()
     roles = DB.fetch_all("SELECT id_rol, nom_rol FROM rol ORDER BY id_rol")
-
     return render_template("auth/usuarios.html", usuarios=usuarios, roles=roles)
-
 @auth_bp.route("/menu")
 def menu():
     """
