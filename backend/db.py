@@ -47,6 +47,14 @@ class DB:
             )
             print("✅ Pool de conexiones PostgreSQL inicializado correctamente.")
 
+    @classmethod
+    def get_pool(cls) -> Optional[SimpleConnectionPool]:
+        """
+        Devuelve el objeto del pool de conexiones.
+        Útil para compatibilidad o casos donde se requiere acceso directo.
+        """
+        return cls._pool
+
     # ===============================
     # Métodos básicos de conexión
     # ===============================
@@ -102,7 +110,9 @@ class DB:
     # Métodos de consulta
     # ===============================
     @classmethod
-    def fetch_one(cls, sql: str, params: Optional[Iterable[Any]] = None) -> Optional[Tuple[Any, ...]]:
+    def fetch_one(
+        cls, sql: str, params: Optional[Iterable[Any]] = None
+    ) -> Optional[Tuple[Any, ...]]:
         """
         Ejecuta una consulta SQL y devuelve una sola fila.
 
@@ -118,7 +128,9 @@ class DB:
             return cur.fetchone()
 
     @classmethod
-    def fetch_all(cls, sql: str, params: Optional[Iterable[Any]] = None) -> List[Tuple[Any, ...]]:
+    def fetch_all(
+        cls, sql: str, params: Optional[Iterable[Any]] = None
+    ) -> List[Tuple[Any, ...]]:
         """
         Ejecuta una consulta SQL y devuelve todas las filas.
 
@@ -150,7 +162,9 @@ class DB:
             return cur.rowcount
 
     @classmethod
-    def execute_returning(cls, sql: str, params: Optional[Iterable[Any]] = None) -> Tuple[Any, ...]:
+    def execute_returning(
+        cls, sql: str, params: Optional[Iterable[Any]] = None
+    ) -> Tuple[Any, ...]:
         """
         Ejecuta una sentencia SQL con cláusula RETURNING y devuelve la fila retornada.
 
@@ -192,9 +206,12 @@ class DB:
 
             if fetch_all:
                 columnas = [desc[0] for desc in cur.description]
-                return [dict(zip(columnas, fila)) for fila in cur.fetchall()]
+                return [
+                    dict(zip(columnas, fila))
+                    for fila in cur.fetchall()
+                ]
 
-            elif fetch_one:
+            if fetch_one:
                 fila = cur.fetchone()
                 if fila:
                     columnas = [desc[0] for desc in cur.description]
@@ -211,7 +228,7 @@ def iniciar_pool():
     """
     Función de compatibilidad con versiones antiguas.
 
-    Inicializa el pool de conexiones usando la clase DB. 
+    Inicializa el pool de conexiones usando la clase DB.
     Internamente llama a DB.init_app(Config).
 
     Uso:
@@ -219,4 +236,4 @@ def iniciar_pool():
         >>> iniciar_pool()
     """
     DB.init_app(Config)
-    return DB._pool
+    return DB.get_pool()

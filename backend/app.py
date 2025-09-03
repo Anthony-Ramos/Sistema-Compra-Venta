@@ -7,9 +7,7 @@ from backend.controladores.cate_controlador import cate_bp
 from backend.controladores.prov_controlador import prov_bp
 
 from backend.config import Config
-from backend.db import DB
-from backend.db import iniciar_pool
-
+from backend.db import DB, iniciar_pool  # pylint: disable=unused-import
 
 def crear_app():
     """Crea e inicializa la aplicación Flask."""

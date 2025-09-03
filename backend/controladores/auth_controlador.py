@@ -7,6 +7,9 @@ Define las rutas relacionadas con:
 - Menú principal
 - Gestión de usuarios
 - Gestión de productos
+- Gestión de inventario
+- Módulo de compras, ventas, reportes
+- Módulo de categorías y proveedores
 """
 
 import re
@@ -21,9 +24,7 @@ auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
 
 @auth_bp.route("/login", methods=["GET", "POST"])
 def login():
-    """
-    Maneja el inicio de sesión de los usuarios.
-    """
+    """Maneja el inicio de sesión de los usuarios."""
     if request.method == "POST":
         usuario = request.form.get("usuario")
         contrasena = request.form.get("contrasena")
@@ -43,9 +44,7 @@ def login():
 
 @auth_bp.route("/logout")
 def logout():
-    """
-    Cierra la sesión del usuario.
-    """
+    """Cierra la sesión del usuario."""
     session.clear()
     flash("Sesión cerrada correctamente", "info")
     return redirect(url_for("auth.login"))
@@ -54,9 +53,7 @@ def logout():
 @auth_bp.route("/registro", methods=["GET", "POST"])
 @login_requerido
 def registro():
-    """
-    Muestra y procesa el formulario de registro de usuarios.
-    """
+    """Muestra y procesa el formulario de registro de usuarios."""
     if request.method == "POST":
         nom_usuario = request.form.get("nom_usuario")
         contrasena = request.form.get("contrasena")
@@ -92,18 +89,14 @@ def registro():
 @auth_bp.route("/menu")
 @login_requerido
 def menu():
-    """
-    Muestra el menú principal.
-    """
+    """Muestra el menú principal."""
     return render_template("auth/Menu.html")
 
 
 @auth_bp.route("/usuarios")
 @login_requerido
 def listar_usuarios():
-    """
-    Muestra una tabla con todos los usuarios registrados.
-    """
+    """Muestra una tabla con todos los usuarios registrados."""
     usuarios = Usuario.obtener_todos()
     return render_template("auth/tabla_usuarios.html", usuarios=usuarios)
 
@@ -111,9 +104,7 @@ def listar_usuarios():
 @auth_bp.route('/editar/<int:id_usuario>', methods=['GET', 'POST'])
 @login_requerido
 def editar_usuario(id_usuario):
-    """
-    Actualiza el nombre y rol de un usuario por su ID.
-    """
+    """Actualiza el nombre y rol de un usuario por su ID."""
     if request.method == 'POST':
         nom_usuario = request.form.get('nom_usuario')
         id_rol = request.form.get('id_rol')
@@ -131,53 +122,63 @@ def editar_usuario(id_usuario):
 @auth_bp.route('/eliminar/<int:id_usuario>', methods=['POST'])
 @login_requerido
 def eliminar_usuario(id_usuario):
-    """
-    Elimina un usuario de la base de datos según su ID.
-    """
+    """Elimina un usuario de la base de datos según su ID."""
     Usuario.eliminar(id_usuario)
     flash(f"Usuario con ID {id_usuario} eliminado correctamente.", "success")
     return redirect(url_for('auth.registro'))
 
 
+# ===============================
+# Vistas de módulos principales
+# ===============================
+
 @auth_bp.route('/productos')
 @login_requerido
 def productos():
-    """
-    Muestra la vista de gestión de productos.
-    """
+    """Muestra la vista de gestión de productos."""
     return render_template('auth/productos.html')
+
 
 @auth_bp.route('/inventario')
 @login_requerido
 def inventario():
-    """
-    Muestra la vista del módulo de Inventario.
-    """
+    """Muestra la vista del módulo de Inventario."""
     return render_template('auth/inventario.html')
 
 
 @auth_bp.route('/compras')
 @login_requerido
 def compras():
-    """
-    Muestra la vista del módulo de Compras.
-    """
+    """Muestra la vista del módulo de Compras."""
     return render_template('auth/compras.html')
 
 
 @auth_bp.route('/reportes')
 @login_requerido
 def reportes():
-    """
-    Muestra la vista del módulo de Reportes.
-    """
+    """Muestra la vista del módulo de Reportes."""
     return render_template('auth/reportes.html')
 
 
 @auth_bp.route('/ventas')
 @login_requerido
 def ventas():
-    """
-    Muestra la vista del módulo de Ventas.
-    """
+    """Muestra la vista del módulo de Ventas."""
     return render_template('auth/ventas.html')
+
+
+# ===============================
+# 🔹 Nuevos endpoints necesarios
+# ===============================
+
+@auth_bp.route('/categoria')
+@login_requerido
+def categoria():
+    """Muestra la vista de categorías."""
+    return render_template('auth/categoria.html')
+
+@auth_bp.route('/proveedor')
+@login_requerido
+def proveedor():
+    """Muestra la vista de proveedores."""
+    return render_template('auth/proveedor.html')

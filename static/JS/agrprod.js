@@ -175,3 +175,76 @@ async function cargarProductos(categoria = "", query = "") {
         mostrarToast("/static/IMG/iconos/error.png", "Error cargando productos", "error");
     }
 }
+
+// ===============================
+    // Guardar producto (nuevo o editar)
+    // ===============================
+    document.getElementById("guardar").addEventListener("click", function () {
+        const id_producto = document.getElementById("id_producto").value.trim();
+
+        const nombre = document.getElementById("nombre").value.trim();
+        const descripcion = document.getElementById("descripcion").value.trim();
+        const categoria = document.getElementById("categoria").value.trim();
+        const proveedor = document.getElementById("proveedor").value.trim();
+        const precio_compra = document.getElementById("precio_compra").value.trim();
+        const precio_venta = document.getElementById("precio_venta").value.trim();
+        const stock_minimo = document.getElementById("stock_minimo").value.trim();
+
+        if (!nombre || !descripcion || !categoria || !proveedor || !precio_compra || !precio_venta || !stock_minimo) {
+            mostrarToast("/static/IMG/iconos/advertencia.png", "Todos los campos son obligatorios", "warning");
+            return;
+        }
+
+        const data = {
+            nombre: nombre,
+            descripcion: descripcion,
+            categoria: parseInt(categoria),
+            proveedor: parseInt(proveedor),
+            precio_compra: parseFloat(precio_compra),
+            precio_venta: parseFloat(precio_venta),
+            stock_minimo: parseInt(stock_minimo)
+        };
+
+        let url = "/agregar_producto";
+        let method = "POST";
+        if (id_producto) {
+            url = `/editar_producto/${id_producto}`;
+            method = "PUT";
+        }
+
+        fetch(url, {
+            method: method,
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        })
+            .then(response => response.json())
+            .then(result => {
+                if (result.status === "ok") {
+                    mostrarToast(
+                        "/static/IMG/iconos/check.png",
+                        id_producto ? "Producto actualizado" : "Producto agregado correctamente",
+                        "success"
+                    );
+
+                    // Limpiar formulario
+                    document.getElementById("id_producto").value = "";
+                    document.getElementById("nombre").value = "";
+                    document.getElementById("descripcion").value = "";
+                    document.getElementById("categoria").value = "";
+                    document.getElementById("proveedor").value = "";
+                    document.getElementById("precio_compra").value = "";
+                    document.getElementById("precio_venta").value = "";
+                    document.getElementById("stock_minimo").value = "";
+
+                    // Recargar productos
+                    cargarProductos(selectFiltro.value, inputBuscar.value);
+
+                } else {
+                    mostrarToast("/static/IMG/iconos/error.png", "Error al guardar producto", "error");
+                }
+            })
+            .catch(error => {
+                console.error("Error en la conexión:", error);
+                mostrarToast("/static/IMG/iconos/error.png", "Error en la conexión", "error");
+            });
+    });

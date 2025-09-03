@@ -22,18 +22,20 @@
     </header>
 
     <div class="contenedor">
-    <nav>
-        <a href="{{ url_for('auth.menu') }}" class="active">Inicio</a>
-        <a href="{{ url_for('auth.productos')}}">Productos</a>
-        <a href="{{url_for('auth.inventario')}}">Inventario</a>
-        <a href="{{url_for('auth.compras')}}"   >Compras</a>
-        <a href="{{url_for('auth.reportes')}}"  >Reportes</a>
-        <a href="{{url_for('auth.ventas')}}"    >Ventas</a>
-        <a href="{{ url_for('auth.registro') }}">Usuarios</a>
-        <a href="{{ url_for('auth.logout') }}" class="logout">
-            <i class="fas fa-sign-out-alt"></i> Cerrar sesión
-        </a>
-    </nav>
+        <nav>
+            <a href="{{ url_for('auth.menu') }}">Inicio</a>
+            <a href="{{ url_for('auth.productos')}}">Productos</a>
+            <a href="{{ url_for('auth.categoria') }}">Categorias</a>
+            <a href="{{ url_for('auth.proveedor') }}" class="active">Proveedores</a>
+            <a href="{{url_for('auth.inventario')}}">Inventario</a>
+            <a href="{{url_for('auth.compras')}}">Compras</a>
+            <a href="{{url_for('auth.reportes')}}">Reportes</a>
+            <a href="{{url_for('auth.ventas')}}">Ventas</a>
+            <a href="{{ url_for('auth.registro') }}">Usuarios</a>
+            <a href="{{ url_for('auth.logout') }}" class="logout">
+                <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+            </a>
+        </nav>
     <main>
         <div class="logo-container">
            <img src="{{ url_for('static', filename='IMG/logotienda.png') }}">

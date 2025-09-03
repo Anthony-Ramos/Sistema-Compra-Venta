@@ -25,7 +25,9 @@
     </header>
     <nav>
         <a href="{{ url_for('auth.menu') }}"    >Inicio</a>
-        <a href="{{ url_for('auth.productos')}}">Productos</a>
+        <a href="{{ url_for('auth.productos')}}" class="active">Productos</a>
+        <a href="{{ url_for('auth.categoria') }}">Categorias</a>
+        <a href="{{ url_for('auth.proveedor') }}">Proveedores</a>
         <a href="{{url_for('auth.inventario')}}">Inventario</a>
         <a href="{{url_for('auth.compras')}}"   >Compras</a>
         <a href="{{url_for('auth.reportes')}}"  >Reportes</a>
@@ -61,15 +63,15 @@
                 <label for="">Precio*</label>
                 <div class="fila-doble">
                     <div class="campo">
-                        <input type="number" id="precio_compra" placeholder="Compra" step="0.01">
+                        <input type="number" id="precio_compra" placeholder="Compra" step="0.01" required >
                     </div>
                     <div class="campo">
-                        <input type="number" id="precio_venta" placeholder="Venta" step="0.01">
+                        <input type="number" id="precio_venta" placeholder="Venta" step="0.01" required>
                     </div>
                 </div>
 
                 <label for="">Minimo en inventario*</label>
-                <input type="number" id="stock_minimo" placeholder="Stock minimo">
+                <input type="number" id="stock_minimo" placeholder="Stock minimo" required>
 
                 <label for="">Descripcion*</label>
                 <textarea id="descripcion" rows="4" placeholder="Ingrese aqui la descripcion del Producto"></textarea>
@@ -83,18 +85,6 @@
 
         </div>
         <div class="tabla-productos">
-            <div class="botones-agr">
-                <button type="button" class="btn-agregar">
-                    <img src="{{ url_for('static', filename='IMG/iconos/mas.png') }}" alt="Agregar" class="icono"
-                        style="width:16px; height:16px; vertical-align:middle;">
-                    Agregar Categoria
-                </button>
-                <button type="button" class="btn-agregar">
-                    <img src="{{ url_for('static', filename='IMG/iconos/mas.png') }}" alt="Agregar" class="icono"
-                        style="width:16px; height:16px; vertical-align:middle;">
-                    Agregar Proveedor
-                </button>
-            </div>
             <div class="buscador">
                 <select id="filtro" class="select-combo">
                     <option value="">Filtro</option>
