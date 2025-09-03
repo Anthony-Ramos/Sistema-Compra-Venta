@@ -26,6 +26,29 @@ main {
   gap: 15px;
 }
 
+/*Espacio par los botones de agregar*/
+.btn-agregar{
+  border: none;
+  width: 30vh;
+  height: 40px;
+  background-color: #28a745;
+  color: #FFFF;
+  border-radius: 10px;
+  margin-bottom: 2vh;
+  margin-right: 30px;
+  font-size: 15px;
+  text-align: center;
+}
+.btn-agregar .icono{
+    transition: transform 0.3s ease;
+}
+.btn-agregar:hover .icono{
+      transform: rotate(90deg);
+}
+.btn-agregar:hover{
+  cursor: pointer;
+  background-color: #218838;
+}
 /*Parte de estilos para el bucador*/
 .buscador {
   display: flex;
