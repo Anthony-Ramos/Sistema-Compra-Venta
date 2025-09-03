@@ -33,23 +33,6 @@
   </header>
 
   <!-- NAV LATERAL -->
-<<<<<<< HEAD
-<<<<<<< HEAD
-    <nav>
-        <a href="{{ url_for('auth.menu') }}" class="active">Inicio</a>
-        <a href="{{ url_for('auth.productos')}}">Productos</a>
-        <a href="{{url_for('auth.inventario')}}">Inventario</a>
-        <a href="{{url_for('auth.compras')}}"   >Compras</a>
-        <a href="{{url_for('auth.reportes')}}"  >Reportes</a>
-        <a href="{{url_for('auth.ventas')}}"    >Ventas</a>
-        <a href="{{ url_for('auth.registro') }}">Usuarios</a>
-        <a href="{{ url_for('auth.logout') }}" class="logout">
-            <i class="fas fa-sign-out-alt"></i> Cerrar sesión
-        </a>
-    </nav>
-=======
-=======
->>>>>>> f32f0d6 (x)
   <nav>
     <a href="{{ url_for('auth.menu') }}">Inicio</a>
     <a href="{{ url_for('auth.productos')}}">Productos</a>
@@ -64,7 +47,6 @@
       <i class="fas fa-sign-out-alt"></i> Cerrar sesión
     </a>
   </nav>
->>>>>>> f32f0d6 (x)
 
   <!-- CONTENIDO PRINCIPAL -->
   <main class="contenido-principal">
@@ -109,34 +91,15 @@
               {% endfor %}
             </select>
 
-<<<<<<< HEAD
-            <button type="submit" class="btn btn-success">Registrarse</button>
-            <a href="{{ url_for('auth.login') }}" class="btn btn-secondary">Volver al login</a>
-=======
             <button type="submit" class="btn">Registrarse</button>
             <a href="{{ url_for('auth.login') }}" class="btn">Volver al login</a>
-<<<<<<< HEAD
->>>>>>> f32f0d6 (x)
-=======
->>>>>>> f32f0d6 (x)
           </form>
         </div>
 
         <!-- TABLA -->
         <div class="tabla-contenedor">
           <h2>Usuarios Registrados</h2>
-        
-          <!-- 🔍 BUSCADOR -->
-          <div class="mb-3">
-            <input 
-              type="text" 
-              id="buscadorUsuarios" 
-              class="form-control" 
-              placeholder="Buscar usuario o rol..."
-            >
-          </div>
-
-          <table class="tabla-estilo" id="tablaUsuarios">
+          <table class="tabla-estilo">
             <thead>
               <tr>
                 <th>Nombre de usuario</th>
@@ -146,23 +109,6 @@
             </thead>
             <tbody>
               {% for usuario in usuarios %}
-<<<<<<< HEAD
-<<<<<<< HEAD
-                <tr>
-                  <td>{{ usuario.nom_usuario }}</td>
-                  <td>{{ usuario.nom_rol }}</td>
-                  <td class="acciones">
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalEditar{{ usuario.id_usuario }}">
-                      Editar
-                    </button>
-                    <form action="{{ url_for('auth.eliminar_usuario', id_usuario=usuario.id_usuario) }}" method="POST" style="display:inline;" onsubmit="return confirm('¿Seguro que deseas eliminar este usuario?');">
-                      <button type="submit" class="btn btn-danger">Eliminar</button>
-                    </form>
-                  </td>
-                </tr>
-=======
-=======
->>>>>>> f32f0d6 (x)
               <tr>
                 <td>{{ usuario.nom_usuario }}</td>
                 <td>{{ usuario.nom_rol }}</td>
@@ -177,10 +123,6 @@
                   </form>
                 </td>
               </tr>
-<<<<<<< HEAD
->>>>>>> f32f0d6 (x)
-=======
->>>>>>> f32f0d6 (x)
 
               <!-- MODAL EDITAR -->
               <div class="modal fade" id="modalEditar{{ usuario.id_usuario }}" tabindex="-1"
@@ -250,30 +192,6 @@
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-  <!-- JS Buscador -->
-  <script>
-    document.getElementById('buscadorUsuarios').addEventListener('keyup', function() {
-      let filtro = this.value.toLowerCase();
-      let filas = document.querySelectorAll('#tablaUsuarios tbody tr');
-
-      filas.forEach(fila => {
-        let textoFila = fila.innerText.toLowerCase();
-        if (textoFila.includes(filtro)) {
-          fila.style.display = '';
-        } else {
-          fila.style.display = 'none';
-        }
-      });
-    });
-  </script>
-
 </body>
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 
->>>>>>> f32f0d6 (x)
-=======
-
->>>>>>> f32f0d6 (x)
 </html>

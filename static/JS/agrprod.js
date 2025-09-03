@@ -2,14 +2,28 @@ window.addEventListener("DOMContentLoaded", () => {
     cargarCategorias();
     cargarProveedores();
     cargarCategoriasFiltro();
+
     const selectFiltro = document.getElementById("filtro");
-    cargarProductos(selectFiltro.value);
+    const inputBuscar = document.getElementById("buscador");
+    const btnBuscar = document.querySelector(".buscador button");
+
+    cargarProductos(selectFiltro.value, inputBuscar.value);
 
     selectFiltro.addEventListener("change", () => {
-        cargarProductos(selectFiltro.value);
+        cargarProductos(selectFiltro.value, inputBuscar.value);
     });
 
-    // Apartado de las validaciones: evitar negativos
+    btnBuscar.addEventListener("click", () => {
+        cargarProductos(selectFiltro.value, inputBuscar.value);
+    });
+
+    inputBuscar.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            cargarProductos(selectFiltro.value, inputBuscar.value);
+        }
+    });
+
     const evitarNegativos = e => {
         if (Number(e.target.value) < 0) {
             e.target.value = 0;
@@ -17,7 +31,6 @@ window.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    // Bloquear escritura de "-" y "e" directamente
     const bloquearNegativos = e => {
         if (e.key === '-') {
             e.preventDefault();
@@ -25,7 +38,6 @@ window.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    // Bloquear letras, permitir solo números y punto
     const bloquearLetras = e => {
         const teclasPermitidas = ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab"];
         if (!/[0-9.]/.test(e.key) && !teclasPermitidas.includes(e.key) || e.key === 'e') {
@@ -34,67 +46,62 @@ window.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    // Asignar eventos a cada input numérico
     ["precio_compra", "precio_venta", "stock_minimo"].forEach(id => {
         const input = document.getElementById(id);
         if (input) {
-            input.addEventListener("input", evitarNegativos);       // corrige valores negativos pegados
-            input.addEventListener("keydown", bloquearNegativos);   // bloquea "-" y "e"
-            input.addEventListener("keydown", bloquearLetras);      // bloquea letras
+            input.addEventListener("input", evitarNegativos);
+            input.addEventListener("keydown", bloquearNegativos);
+            input.addEventListener("keydown", bloquearLetras);
         }
     });
+
     document.getElementById('precio_compra').addEventListener('input', function() {
-    let compra = parseFloat(this.value) || 0;
-    let ganancia = 0.3; // 30%
-    let venta = compra * (1 + ganancia);
-    document.getElementById('precio_venta').value = venta.toFixed(2);
-});
+        let compra = parseFloat(this.value) || 0;
+        let venta = compra * 1.3;
+        document.getElementById('precio_venta').value = venta.toFixed(2);
+    });
 });
 
-
-//Apartado de mostrar los datos
 async function cargarCategorias() {
     try {
         const response = await fetch("/categorias");
         if (!response.ok) throw new Error("Error en la petición HTTP");
         const categorias = await response.json();
 
-        const select = document.getElementById("categoria");
-        select.innerHTML = '<option value="">Categoria</option>'; // limpia antes de llenar
-
+        const selectForm = document.getElementById("categoria");
+        selectForm.innerHTML = '<option value="">Categoria</option>';
         categorias.forEach(cat => {
             const option = document.createElement("option");
             option.value = cat.id;
             option.textContent = cat.nombre;
-            select.appendChild(option);
+            selectForm.appendChild(option);
         });
+
         mostrarToast("/static/IMG/iconos/check.png", "Categorias cargadas exitosamente", "success");
     } catch (error) {
         mostrarToast("/static/IMG/iconos/error.png", "Error al cargar las Categorias", "error");
     }
 }
-//Cargar las categorias en el filtro
+
 async function cargarCategoriasFiltro() {
     try {
         const response = await fetch("/categorias");
         if (!response.ok) throw new Error("Error en la petición HTTP");
         const categorias = await response.json();
 
-        const select = document.getElementById("filtro");
-        select.innerHTML = '<option value="">Filtro</option>'; // limpia antes de llenar
-
+        const selectFiltro = document.getElementById("filtro");
+        selectFiltro.innerHTML = '<option value="">Todas las categorías</option>';
         categorias.forEach(cat => {
             const option = document.createElement("option");
             option.value = cat.id;
             option.textContent = cat.nombre;
-            select.appendChild(option);
+            selectFiltro.appendChild(option);
         });
-        mostrarToast("/static/IMG/iconos/check.png", "Categorias cargadas en el filtro exitosamente", "success");
     } catch (error) {
         mostrarToast("/static/IMG/iconos/error.png", "Error al cargar las Categorias en el filtro", "error");
     }
 }
-//Funcion de extraer proveedores de la base de datos
+
 async function cargarProveedores() {
     try {
         const response = await fetch("/proveedores");
@@ -103,8 +110,6 @@ async function cargarProveedores() {
 
         const select = document.getElementById("proveedor");
         select.innerHTML = '<option value="">Proveedor</option>';
-
-        //prov es una abreviacion de proveedores
         proveedores.forEach(prov => {
             const option = document.createElement("option");
             option.value = prov.id;
@@ -116,11 +121,12 @@ async function cargarProveedores() {
         mostrarToast("/static/IMG/iconos/error.png", "Error al cargar los proveedores", "error");
     }
 }
-//Funcion para extraer lo productos
-async function cargarProductos(categoria = "") {
+
+async function cargarProductos(categoria = "", query = "") {
     try {
-        let url = "/productos_filtro";
-        if (categoria) url += `?categoria=${encodeURIComponent(categoria)}`;
+        let url = "/productos_filtro?";
+        if (categoria) url += `categoria=${encodeURIComponent(categoria)}&`;
+        if (query) url += `q=${encodeURIComponent(query)}`;
 
         const response = await fetch(url);
         if (!response.ok) throw new Error("Error en la petición HTTP");
@@ -147,8 +153,6 @@ async function cargarProductos(categoria = "") {
             tbody.appendChild(row);
         });
 
-        mostrarToast("/static/IMG/iconos/check.png", "Productos cargados exitosamente", "success");
-        // Eventos Editar
         document.querySelectorAll(".btn-editar").forEach(btn => {
             btn.addEventListener("click", e => {
                 const id = e.target.dataset.id;
@@ -165,7 +169,6 @@ async function cargarProductos(categoria = "") {
             });
         });
 
-        // Eventos Eliminar
         document.querySelectorAll(".btn-eliminar").forEach(btn => {
             btn.addEventListener("click", e => {
                 const id = e.target.dataset.id;
@@ -174,29 +177,23 @@ async function cargarProductos(categoria = "") {
                     async () => {
                         try {
                             const res = await fetch(`/eliminar_producto/${id}`, { method: "DELETE" });
-                            if (res.ok) {
-                                mostrarToast("/static/IMG/iconos/check.png", "Producto Eliminado", "success");
-                                cargarProductos();
-                            } else {
-                                mostrarToast("/static/IMG/iconos/error.png", "Error al Eliminar", "error");
-                            }
-                        } catch {
-                            mostrarToast("/static/IMG/iconos/error.png", "Error en la conexión", "error");
-                        }
+                            if (res.ok) cargarProductos(categoria, query);
+                        } catch {}
                     },
-                    () => mostrarToast("/static/IMG/iconos/advertencia.png", "Eliminación cancelada", "warning")
+                    () => {}
                 );
             });
         });
+
     } catch (error) {
         console.error("Error cargando productos:", error);
         mostrarToast("/static/IMG/iconos/error.png", "Error cargando productos", "error");
     }
 }
-document.getElementById("guardar").addEventListener("click", function () {
-    const id_producto = document.getElementById("id_producto").value.trim(); // Campo oculto para editar
 
-    // Obtener valores del formulario
+document.getElementById("guardar").addEventListener("click", function () {
+    const id_producto = document.getElementById("id_producto").value.trim();
+
     const nombre = document.getElementById("nombre").value.trim();
     const descripcion = document.getElementById("descripcion").value.trim();
     const categoria = document.getElementById("categoria").value.trim();
@@ -205,13 +202,11 @@ document.getElementById("guardar").addEventListener("click", function () {
     const precio_venta = document.getElementById("precio_venta").value.trim();
     const stock_minimo = document.getElementById("stock_minimo").value.trim();
 
-    // Validación de campos obligatorios
     if (!nombre || !descripcion || !categoria || !proveedor || !precio_compra || !precio_venta || !stock_minimo) {
         mostrarToast("/static/IMG/iconos/advertencia.png", "Todos los campos son obligatorios", "warning");
         return;
     }
 
-    // Construcción del objeto con conversión de tipos
     const data = {
         nombre: nombre,
         descripcion: descripcion,
@@ -222,7 +217,6 @@ document.getElementById("guardar").addEventListener("click", function () {
         stock_minimo: parseInt(stock_minimo)
     };
 
-    // Definir URL y método según si se está editando o agregando
     let url = "/agregar_producto";
     let method = "POST";
     if (id_producto) {
@@ -230,36 +224,35 @@ document.getElementById("guardar").addEventListener("click", function () {
         method = "PUT";
     }
 
-    // Enviar al backend
     fetch(url, {
         method: method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
     })
-        .then(response => response.json())
-        .then(result => {
-            if (result.status === "ok") {
-                mostrarToast("/static/IMG/iconos/check.png", id_producto ? "Producto actualizado" : "Producto agregado correctamente", "success");
+    .then(response => response.json())
+    .then(result => {
+        if (result.status === "ok") {
+            mostrarToast("/static/IMG/iconos/check.png", id_producto ? "Producto actualizado" : "Producto agregado correctamente", "success");
 
-                // Limpiar formulario
-                document.getElementById("id_producto").value = "";
-                document.getElementById("nombre").value = "";
-                document.getElementById("descripcion").value = "";
-                document.getElementById("categoria").value = "";
-                document.getElementById("proveedor").value = "";
-                document.getElementById("precio_compra").value = "";
-                document.getElementById("precio_venta").value = "";
-                document.getElementById("stock_minimo").value = "";
+            document.getElementById("id_producto").value = "";
+            document.getElementById("nombre").value = "";
+            document.getElementById("descripcion").value = "";
+            document.getElementById("categoria").value = "";
+            document.getElementById("proveedor").value = "";
+            document.getElementById("precio_compra").value = "";
+            document.getElementById("precio_venta").value = "";
+            document.getElementById("stock_minimo").value = "";
 
-                // Recargar productos
-                if (typeof cargarProductos === "function") cargarProductos();
+            const selectFiltro = document.getElementById("filtro");
+            const inputBuscar = document.getElementById("buscador");
+            cargarProductos(selectFiltro.value, inputBuscar.value);
 
-            } else {
-                mostrarToast("/static/IMG/iconos/error.png", "Error al guardar producto", "error");
-            }
-        })
-        .catch(error => {
-            console.error("Error en la conexión:", error);
-            mostrarToast("/static/IMG/iconos/error.png", "Error en la conexión", "error");
-        });
+        } else {
+            mostrarToast("/static/IMG/iconos/error.png", "Error al guardar producto", "error");
+        }
+    })
+    .catch(error => {
+        console.error("Error en la conexión:", error);
+        mostrarToast("/static/IMG/iconos/error.png", "Error en la conexión", "error");
+    });
 });

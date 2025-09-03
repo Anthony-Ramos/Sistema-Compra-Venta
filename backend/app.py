@@ -40,7 +40,7 @@ def crear_app():
     
     @app.route("/")
     def index():
-        return render_template("auth/menu.html")
+        return render_template("auth/index.html")
     return app
 
 
