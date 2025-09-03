@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Registro de Usuario</title>
 
   <!-- Bootstrap CSS -->
@@ -32,10 +33,16 @@
   </header>
 
   <!-- NAV LATERAL -->
-  <nav class="nav-lateral">
+  <nav>
     <a href="{{ url_for('auth.menu') }}">Inicio</a>
-    <a href="{{ url_for('auth.productos') }}">Gestión de Productos</a>
-    <a href="{{ url_for('auth.registro') }}">Ir a Usuarios</a>
+    <a href="{{ url_for('auth.productos')}}">Productos</a>
+    <a href="{{ url_for('auth.categoria') }}">Categorias</a>
+    <a href="{{ url_for('auth.proveedor') }}" class="active">Proveedores</a>
+    <a href="{{url_for('auth.inventario')}}">Inventario</a>
+    <a href="{{url_for('auth.compras')}}">Compras</a>
+    <a href="{{url_for('auth.reportes')}}">Reportes</a>
+    <a href="{{url_for('auth.ventas')}}">Ventas</a>
+    <a href="{{ url_for('auth.registro') }}">Usuarios</a>
     <a href="{{ url_for('auth.logout') }}" class="logout">
       <i class="fas fa-sign-out-alt"></i> Cerrar sesión
     </a>
@@ -46,16 +53,16 @@
 
     <!-- ALERTAS -->
     {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        <div class="container mt-3">
-          {% for category, message in messages %}
-            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-              {{ message }}
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
-            </div>
-          {% endfor %}
-        </div>
-      {% endif %}
+    {% if messages %}
+    <div class="container mt-3">
+      {% for category, message in messages %}
+      <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
     {% endwith %}
 
     <!-- FORMULARIO + TABLA CENTRADOS -->
@@ -67,24 +74,25 @@
           <h1 class="msj">Registro de Usuario</h1>
           <form id="registroForm" method="POST" action="/auth/registro" novalidate>
             <label class="texto" for="nom_usuario">Nombre de usuario</label>
-            <input type="text" class="txt" id="nom_usuario" name="nom_usuario" required minlength="3" maxlength="100"/>
+            <input type="text" class="txt" id="nom_usuario" name="nom_usuario" required minlength="3" maxlength="100" />
 
             <label class="texto" for="contrasena">Contraseña</label>
-            <input type="password" class="txt" id="contrasena" name="contrasena" required minlength="6" maxlength="100"/>
+            <input type="password" class="txt" id="contrasena" name="contrasena" required minlength="6"
+              maxlength="100" />
 
             <label class="texto" for="confirmar">Confirmar contraseña</label>
-            <input type="password" class="txt" id="confirmar" name="confirmar" required minlength="6" maxlength="100"/>
+            <input type="password" class="txt" id="confirmar" name="confirmar" required minlength="6" maxlength="100" />
 
             <label class="texto" for="id_rol">Rol</label>
             <select class="txt" id="id_rol" name="id_rol" required>
               <option value="" selected disabled>Seleccione un rol</option>
-              <option value="1">Administrador</option>
-              <option value="2">Vendedor</option>
+              {% for r in roles %}
+              <option value="{{ r[0] }}">{{ r[1] }}</option>
+              {% endfor %}
             </select>
 
             <button type="submit" class="btn">Registrarse</button>
             <a href="{{ url_for('auth.login') }}" class="btn">Volver al login</a>
-            <a href="{{ url_for('auth.menu') }}" class="btn">Regresar al menú</a>
           </form>
         </div>
 
@@ -101,47 +109,53 @@
             </thead>
             <tbody>
               {% for usuario in usuarios %}
-                <tr>
-                  <td>{{ usuario.nom_usuario }}</td>
-                  <td>{{ usuario.nom_rol }}</td>
-                  <td class="acciones">
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalEditar{{ usuario.id_usuario }}">
-                      Editar
-                    </button>
-                    <form action="{{ url_for('auth.eliminar_usuario', id_usuario=usuario.id_usuario) }}" method="POST" style="display:inline;" onsubmit="return confirm('¿Seguro que deseas eliminar este usuario?');">
-                      <button type="submit" class="btn btn-eliminar">Eliminar</button>
-                    </form>
-                  </td>
-                </tr>
+              <tr>
+                <td>{{ usuario.nom_usuario }}</td>
+                <td>{{ usuario.nom_rol }}</td>
+                <td class="acciones">
+                  <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#modalEditar{{ usuario.id_usuario }}">
+                    Editar
+                  </button>
+                  <form action="{{ url_for('auth.eliminar_usuario', id_usuario=usuario.id_usuario) }}" method="POST"
+                    style="display:inline;" onsubmit="return confirm('¿Seguro que deseas eliminar este usuario?');">
+                    <button type="submit" class="btn btn-eliminar">Eliminar</button>
+                  </form>
+                </td>
+              </tr>
 
-                <!-- MODAL EDITAR -->
-                <div class="modal fade" id="modalEditar{{ usuario.id_usuario }}" tabindex="-1" aria-labelledby="modalLabel{{ usuario.id_usuario }}" aria-hidden="true">
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-                      <form action="{{ url_for('auth.editar_usuario', id_usuario=usuario.id_usuario) }}" method="POST">
-                        <div class="modal-header">
-                          <h5 class="modal-title">Editar Usuario</h5>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                        </div>
-                        <div class="modal-body">
-                          <label class="form-label">Nombre de Usuario</label>
-                          <input type="text" class="form-control" name="nom_usuario" value="{{ usuario.nom_usuario }}" required>
-                          <label class="form-label">Rol</label>
-                          <select class="form-select" name="id_rol" required>
-                            <option value="1" {% if usuario.id_rol == 1 %}selected{% endif %}>Administrador</option>
-                            <option value="2" {% if usuario.id_rol == 2 %}selected{% endif %}>Vendedor</option>
-                          </select>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                          <button type="submit" class="btn btn-success">Guardar Cambios</button>
-                        </div>
-                      </form>
-                    </div>
+              <!-- MODAL EDITAR -->
+              <div class="modal fade" id="modalEditar{{ usuario.id_usuario }}" tabindex="-1"
+                aria-labelledby="modalLabel{{ usuario.id_usuario }}" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <form action="{{ url_for('auth.editar_usuario', id_usuario=usuario.id_usuario) }}" method="POST">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Editar Usuario</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                      </div>
+                      <div class="modal-body">
+                        <label class="form-label">Nombre de Usuario</label>
+                        <input type="text" class="form-control" name="nom_usuario" value="{{ usuario.nom_usuario }}"
+                          required>
+                        <label class="form-label">Rol</label>
+                        <select class="form-select" name="id_rol" required>
+                          <option value="1" {% if usuario.id_rol==1 %}selected{% endif %}>Administrador</option>
+                          <option value="2" {% if usuario.id_rol==2 %}selected{% endif %}>Vendedor</option>
+                        </select>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-success">Guardar Cambios</button>
+                      </div>
+                    </form>
                   </div>
                 </div>
+              </div>
               {% else %}
-                <tr><td colspan="3">No hay usuarios registrados aún.</td></tr>
+              <tr>
+                <td colspan="3">No hay usuarios registrados aún.</td>
+              </tr>
               {% endfor %}
             </tbody>
           </table>
@@ -179,4 +193,5 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
+
 </html>
