@@ -79,7 +79,6 @@ def registro():
     usuarios = Usuario.obtener_todos()
     return render_template("auth/usuarios.html", usuarios=usuarios)
 
-
 @auth_bp.route("/menu")
 def menu():
     """
