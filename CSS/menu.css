@@ -1,0 +1,145 @@
+ body {
+     font-family: Arial, sans-serif;
+     margin: 0;
+     display: flex;
+     flex-direction: column;
+     height: 100vh;
+ }
+
+ header {
+     background-color: #007BFF;
+     color: white;
+     padding: 10px 30px;
+     width: 100%;
+     height: 11vh;
+     position: fixed;
+     top: 0;
+     left: 0;
+     z-index: 1;
+
+     display: flex;
+     justify-content: space-between;
+ }
+
+ header h1 {
+     margin: 0 25px;
+ }
+
+ .empresa {
+     font-size: 22px;
+     font-weight: bold;
+ }
+
+.pagina {
+    font-size: 40px;
+    font-family: 'Playfair Display', serif;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+ .user-info {
+     position: fixed;
+     top: 10px;
+     right: 20px;
+     color: white;
+     display: flex;
+     align-items: center;
+     gap: 10px;
+     font-size: 12px;
+ }
+
+ .user-info i {
+     font-size: 16px;
+ }
+
+ .user-info img {
+     width: 25px;
+     height: 25px;
+     border-radius: 50%;
+     border: 2px solid white;
+ }
+
+ .user-info input {
+     padding: 2px 5px;
+     font-size: 11px;
+     border: 1px solid #ccc;
+     border-radius: 3px;
+ }
+
+ .user-info label {
+     font-size: 12px;
+     color: white;
+     font-weight: normal;
+ }
+
+ nav {
+     margin-top: 30px;
+     background-color: #0056b3;
+     width: 220px;
+     display: flex;
+     flex-direction: column;
+     padding-top: 60px;
+     position: fixed;
+     left: 0;
+     top: 0;
+     bottom: 0;
+     z-index: 0;
+ }
+
+ nav a {
+     color: white;
+     padding: 14px 20px;
+     text-decoration: none;
+     border-bottom: 1px solid #003d80;
+ }
+
+ nav a:hover {
+     background-color: #003d80;
+ }
+
+ nav a.active {
+     background-color: #003d80;
+     font-weight: bold;
+ }
+
+ main {
+     flex: 1;
+     margin-left: 220px;
+     padding: 120px 40px 40px;
+     text-align: center;
+ }
+
+ .logo-container {
+     margin: 40px 0;
+ }
+
+ .logo-container img {
+     max-width: 500px;
+     height: auto;
+     border-radius: 10px;
+     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+ }
+
+ footer {
+     background-color: #f1f1f1;
+     color: #333;
+     text-align: center;
+     padding: 10px;
+     position: fixed;
+     bottom: 0;
+     left: 220px;
+     width: calc(100% - 220px);
+ }
+
+ nav a.logout {
+     background-color: #cc0000;
+     color: white;
+     font-weight: bold;
+     margin-top: auto;
+     border-top: 1px solid #003d80;
+ }
+
+ nav a.logout:hover {
+     background-color: #cc0000;
+ }

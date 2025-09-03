@@ -1,0 +1,187 @@
+/* ============ Variables & Reset ============ */
+:root{
+  --bg: #f9fdff;
+  --card: #0365ce;
+  --text: #f6fdff;
+  --primary: #007bff;
+  --primary-hover: #4a7baf;
+  --field-bg: #ffffff;
+  --field-focus: #f0fff4;
+  --shadow: 0 12px 28px rgba(0,0,0,0.35);
+  --radius: 14px;
+  --radius-sm: 10px;
+  --transition: .2s ease;
+  --gap: 14px;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: radial-gradient(1200px 800px at 80% -10%, #007BFF 0%, var(--bg) 40%, #007BFF 100%);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  color: var(--text);
+}
+
+/* ============ Layout centrado ============ */
+.fondo{
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+}
+
+/* ============ Tarjeta ============ */
+.contenido{
+  width: 100%;
+  max-width: 460px;
+  background: linear-gradient(180deg, rgba(50,130,181,0.92) 0%, var(--card) 100%);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 28px 24px;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+/* Encabezado */
+.msj{
+  margin: 0 0 6px 0;
+  text-align: center;
+  font-size: 1.6rem;
+  letter-spacing: .3px;
+  font-weight: 700;
+}
+
+/* Subtítulo opcional si usas .texto como título corto */
+.texto{
+  display: block;
+  font-weight: 600;
+  margin: 2px 0 6px 2px;
+  opacity: .95;
+}
+
+/* ============ Formato del formulario ============ */
+form{
+  display: grid;
+  gap: var(--gap);
+  margin-top: 16px;
+}
+
+/* Campos */
+.txt{
+  width: 100%;
+  height: 46px;
+  border: 2px solid transparent;
+  border-radius: var(--radius-sm);
+  background: var(--field-bg);
+  color: #0a0a0a;
+  padding: 0 14px;
+  transition: border-color var(--transition), box-shadow var(--transition), background-color var(--transition), transform var(--transition);
+  outline: none;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.05) inset;
+}
+
+.txt::placeholder{
+  color: #7b8b94;
+}
+
+.txt:focus{
+  border-color: #0a0a0a;
+  background-color: var(--field-focus);
+  box-shadow: 0 0 0 4px rgba(0,0,0,0.12);
+}
+
+.txt:not(:placeholder-shown){
+  border-color: #0a0a0a;
+  background-color: var(--field-focus);
+}
+
+/* Estados de validación nativos */
+.txt:invalid:focus{
+  border-color: #b00020;
+  box-shadow: 0 0 0 4px rgba(176,0,32,0.18);
+}
+
+/* ============ Botones ============ */
+.btn{
+  background-color: var(--primary);
+  color: #fff;
+  padding: 12px 18px;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 16px;
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background-color var(--transition), transform .08s ease, box-shadow var(--transition);
+  box-shadow: 0 6px 18px rgba(0, 123, 255, 0.25);
+}
+
+.btn:hover{
+  background-color: var(--primary-hover);
+  box-shadow: 0 8px 22px rgba(0, 123, 255, 0.32);
+}
+
+.btn:active{
+  transform: translateY(1px);
+  box-shadow: 0 5px 14px rgba(0, 123, 255, 0.28);
+}
+
+/* Grupo de botones ordenado (se aplica automático si hay varios .btn seguidos) */
+.btn + .btn{
+  margin-top: 8px;
+}
+
+/* Enlaces con look de texto (por si usas .recuperacion aquí también) */
+.recuperacion{
+  text-align: center;
+  color: #e6f7ff;
+  text-decoration: none;
+  font-weight: 600;
+  margin-top: 4px;
+  transition: opacity var(--transition);
+}
+.recuperacion:hover{ opacity: .9; }
+
+/* ============ Detalles visuales ============ */
+hr, .divider{
+  height: 1px;
+  background: rgba(255,255,255,0.18);
+  border: 0;
+  margin: 8px 0;
+  width: 100%;
+  border-radius: 1px;
+}
+
+.small, .helper{
+  font-size: .85rem;
+  opacity: .92;
+  line-height: 1.35;
+}
+
+/* ============ Accesibilidad y foco visible ============ */
+:focus-visible{
+  outline: 3px dashed rgba(255,255,255,0.55);
+  outline-offset: 2px;
+}
+
+/* ============ Responsive fino ============ */
+@media (max-width: 520px){
+  .contenido{ padding: 22px 16px; border-radius: 18px; }
+  .msj{ font-size: 1.4rem; }
+  .btn{ font-size: 15px; }
+  .txt{ height: 44px; }
+}
+
+/* ============ Animación sutil al aparecer ============ */
+.contenido{
+  opacity: 0;
+  transform: translateY(8px) scale(.996);
+  animation: rise-in .36s var(--transition) forwards;
+}
+@keyframes rise-in{
+  to{ opacity: 1; transform: translateY(0) scale(1); }
+}
