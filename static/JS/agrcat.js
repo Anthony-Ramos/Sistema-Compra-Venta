@@ -14,7 +14,7 @@ async function cargarCategorias() {
             const row = document.createElement("tr");
 
             row.innerHTML = `
-                <td>${cat.id}</td>
+                <td type="hidden">${cat.id}</td>
                 <td>${cat.nombre}</td>
                 <td>
                     <button class="btn-editar" data-id="${cat.id}">Editar</button>

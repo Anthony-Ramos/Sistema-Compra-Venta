@@ -84,7 +84,7 @@ class Venta:
         INNER JOIN producto p ON dv.id_producto = p.id_producto
         ORDER BY v.id_venta DESC
         """
-        rows = DB.fetch_all(sql)  # ← importante: devuelve tuplas
+        rows = DB.fetch_all(sql)
         return [cls._row_to_venta(row) for row in rows]
 
     @classmethod
