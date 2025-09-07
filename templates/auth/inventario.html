@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Tienda Julio y Mary</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
-    </style>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='CSS/menu.css') }}">
 </head>
+
 <body>
     <header>
         <h1 class="empresa">Tienda Julio y Mary</h1>
-        <h1 class="pagina">Inventario</h1>
+        <h1 class="pagina">Menu</h1>
         <div class="user-info">
             <img src="{{ url_for('static', filename='IMG/logo.png') }}">
             <i class="fas fa-user-circle"></i>
@@ -22,30 +22,57 @@
     </header>
 
     <div class="contenedor">
-    <nav>
-        <a href="{{ url_for('auth.menu') }}">Inicio</a>
-        <a href="{{ url_for('auth.productos')}}">Productos</a>
-        <a href="{{ url_for('auth.categoria') }}">Categorias</a>
-        <a href="{{ url_for('auth.proveedor') }}">Proveedores</a>
-        <a href="{{url_for('auth.inventario')}}" class="active">Inventario</a>
-        <a href="{{url_for('auth.compras')}}" >Compras</a>
-        <a href="{{url_for('auth.reportes')}}"  >Reportes</a>
-        <a href="{{url_for('auth.ventas')}}"    >Ventas</a>
-        <a href="{{ url_for('auth.registro') }}">Usuarios</a>
-        <a href="{{ url_for('auth.logout') }}" class="logout">
-            <i class="fas fa-sign-out-alt"></i> Cerrar sesión
-        </a>
-    </nav>
-    <main>
-        <div class="logo-container">
-           <img src="{{ url_for('static', filename='IMG/logotienda.png') }}">
-        </div>
-        <p>Bienvenido al sistema de Tienda Julio y Mary. Seleccione una opción del menú para comenzar.</p>
-    </main>
-      </div>
+        <nav>
+            <a href="{{ url_for('auth.menu') }}">
+                <img src="{{ url_for('static', filename='IMG/iconos/hogar.png') }}" class="icono">
+                Inicio
+            </a>
+            <a href="{{ url_for('auth.productos')}}">
+                <img src="{{ url_for('static', filename='IMG/iconos/paquetes.png') }}" class="icono">
+                Productos
+            </a>
+            <a href="{{ url_for('auth.categoria') }}">
+                <img src="{{ url_for('static', filename='IMG/iconos/lineas-de-opciones.png') }}" class="icono">
+                Categorias
+            </a>
+            <a href="{{ url_for('auth.proveedor') }}">
+                <img src="{{ url_for('static', filename='IMG/iconos/cadena-de-suministro.png') }}" class="icono">
+                Proveedores
+            </a>
+            <a href="{{url_for('auth.inventario')}}" class="active">
+                <img src="{{ url_for('static', filename='IMG/iconos/inventario-disponible.png') }}" class="icono">
+                Inventario
+            </a>
+            <a href="{{url_for('auth.compras')}}">
+                <img src="{{ url_for('static', filename='IMG/iconos/carrito-de-compras.png') }}" class="icono">
+                Compras
+            </a>
+            <a href="{{url_for('auth.reportes')}}">
+                <img src="{{ url_for('static', filename='IMG/iconos/informe-seo.png') }}" class="icono">
+                Reportes
+            </a>
+            <a href="{{url_for('auth.ventas')}}">
+                <img src="{{ url_for('static', filename='IMG/iconos/grafico-de-barras.png') }}" class="icono">
+                Ventas</a>
+            <a href="{{ url_for('auth.registro') }}">
+                <img src="{{ url_for('static', filename='IMG/iconos/agregar-usuario.png') }}" class="icono">
+                Usuarios
+            </a>
+            <a href="{{ url_for('auth.logout') }}" class="logout">
+                <i class="fas fa-sign-out-alt"></i>Cerrar sesión
+            </a>
+        </nav>
+        <main>
+            <div class="logo-container">
+                <img src="{{ url_for('static', filename='IMG/logotienda.png') }}">
+            </div>
+            <p>Bienvenido al sistema de Tienda Julio y Mary. Seleccione una opción del menú para comenzar.</p>
+        </main>
+    </div>
 
     <footer>
-        © Sistema Tienda Julio y Mary
+        © Universidad Nacional de El Salvador
     </footer>
 </body>
+
 </html>

@@ -1,4 +1,18 @@
-"""Controlador de autenticación y módulos principales."""
+"""
+Controlador de autenticación para usuarios.
+
+Define las rutas relacionadas con:
+- Inicio de sesión
+- Cierre de sesión
+- Registro de usuarios
+- Menú principal
+- Gestión de usuarios
+- Gestión de productos
+- Gestión de inventario
+- Módulo de compras, ventas, reportes
+- Módulo de categorías y proveedores
+"""
+
 import re
 import psycopg2
 from flask import session, Blueprint, render_template, request, redirect, url_for, flash, make_response
@@ -6,6 +20,8 @@ from backend.modelos.usuario_modelo import Usuario
 from backend.utils.decoradores import login_requerido
 from backend.db import DB
 
+
+# Blueprint para las rutas de autenticación
 auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
 
 
@@ -19,13 +35,16 @@ def login():
     if request.method == "POST":
         usuario = request.form.get("usuario")
         contrasena = request.form.get("contrasena")
+
         user = Usuario.autenticar(usuario, contrasena)
         if user:
             session["usuario_id"] = user.id_usuario
             session["usuario_nombre"] = user.nom_usuario
             session["usuario_rol"] = Usuario.obtener_nombre_rol(user.id_rol)
+
             flash("Inicio de sesión exitoso", "success")
             return redirect(url_for("auth.menu"))
+
         flash("Usuario o contraseña incorrectos", "danger")
     return render_template("auth/index.html")
 
@@ -63,7 +82,8 @@ def registro():
             or not re.search(r"[a-z]", contrasena)
         ):
             flash(
-                "La contraseña debe tener al menos 8 caracteres, incluir mayúsculas, minúsculas y números.",
+                "La contraseña debe tener al menos 8 caracteres, "
+                "incluir mayúsculas, minúsculas y números.",
                 "warning"
             )
         else:
@@ -75,8 +95,48 @@ def registro():
 
     usuarios = Usuario.obtener_todos()
     roles = DB.fetch_all("SELECT id_rol, nom_rol FROM rol ORDER BY id_rol")
+
     return render_template("auth/usuarios.html", usuarios=usuarios, roles=roles)
 
+
+@auth_bp.route("/usuarios")
+@login_requerido
+def usuarios():
+    """Muestra la vista de usuarios registrados (ruta adicional del segundo controlador)."""
+    usuarios = Usuario.obtener_todos()
+    return render_template("auth/usuarios.html", usuarios=usuarios)
+
+
+@auth_bp.route('/editar/<int:id_usuario>', methods=['GET', 'POST'])
+@login_requerido
+def editar_usuario(id_usuario):
+    """Actualiza el nombre y rol de un usuario por su ID."""
+    if request.method == 'POST':
+        nom_usuario = request.form.get('nom_usuario')
+        id_rol = request.form.get('id_rol')
+        try:
+            Usuario.actualizar_nombre_rol(id_usuario, nom_usuario, int(id_rol))
+            flash(f"Usuario con ID {id_usuario} actualizado correctamente.", "success")
+        except psycopg2.Error as error:
+            flash(f"Error al actualizar en la base de datos: {error}", "danger")
+
+        return redirect(url_for('auth.registro'))
+
+    return redirect(url_for('auth.registro'))
+
+
+@auth_bp.route('/eliminar/<int:id_usuario>', methods=['POST'])
+@login_requerido
+def eliminar_usuario(id_usuario):
+    """Elimina un usuario de la base de datos según su ID."""
+    Usuario.eliminar(id_usuario)
+    flash(f"Usuario con ID {id_usuario} eliminado correctamente.", "success")
+    return redirect(url_for('auth.registro'))
+
+
+# ===============================
+# 🔹 Menú principal
+# ===============================
 
 @auth_bp.route("/menu")
 @login_requerido
@@ -87,39 +147,6 @@ def menu():
     response.headers["Pragma"] = "no-cache"
     response.headers["Expires"] = "0"
     return response
-
-
-@auth_bp.route("/usuarios")
-@login_requerido
-def listar_usuarios():
-    """Muestra todos los usuarios registrados en tabla."""
-    usuarios = Usuario.obtener_todos()
-    return render_template("auth/tabla_usuarios.html", usuarios=usuarios)
-
-
-@auth_bp.route('/editar/<int:id_usuario>', methods=['GET', 'POST'])
-@login_requerido
-def editar_usuario(id_usuario):
-    """Actualiza nombre y rol de un usuario por su ID."""
-    if request.method == 'POST':
-        nom_usuario = request.form.get('nom_usuario')
-        id_rol = request.form.get('id_rol')
-        try:
-            Usuario.actualizar_nombre_rol(id_usuario, nom_usuario, int(id_rol))
-            flash(f"Usuario con ID {id_usuario} actualizado correctamente.", "success")
-        except psycopg2.Error as error:
-            flash(f"Error al actualizar en la base de datos: {error}", "danger")
-        return redirect(url_for('auth.registro'))
-    return redirect(url_for('auth.registro'))
-
-
-@auth_bp.route('/eliminar/<int:id_usuario>', methods=['POST'])
-@login_requerido
-def eliminar_usuario(id_usuario):
-    """Elimina un usuario según su ID."""
-    Usuario.eliminar(id_usuario)
-    flash(f"Usuario con ID {id_usuario} eliminado correctamente.", "success")
-    return redirect(url_for('auth.registro'))
 
 
 # ===============================
@@ -166,15 +193,3 @@ def categoria():
 @login_requerido
 def proveedor():
     return render_template('auth/proveedor.html')
-
-
-@auth_bp.route('/stockmin')
-@login_requerido
-def stockmin():
-    return render_template('auth/stockMin.html')
-
-
-@auth_bp.route('/movi')
-@login_requerido
-def movi():
-    return render_template('auth/movi.html')

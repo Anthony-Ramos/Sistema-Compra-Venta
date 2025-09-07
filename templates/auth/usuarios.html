@@ -4,26 +4,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Registro de Usuario</title>
+  <title>Tienda Julio y Mary</title>
+
+  <!-- Font Awesome -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-  <!-- Fuente -->
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
-  </style>
-
   <!-- Estilos CSS -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='CSS/registro.css') }}" />
   <link rel="stylesheet" href="{{ url_for('static', filename='CSS/menu.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='CSS/general.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='CSS/toast.css') }}">
 </head>
 
 <body>
 
   <!-- HEADER -->
   <header>
-    <h1>Tienda Julio y Mary</h1>
+    <h1 class="empresa">Tienda Julio y Mary</h1>
+    <h1 class="pagina">Usuarios</h1>
     <div class="user-info">
       <img src="{{ url_for('static', filename='IMG/logo.png') }}">
       <i class="fas fa-user-circle"></i>
@@ -32,91 +33,122 @@
     </div>
   </header>
 
-  <!-- NAV LATERAL -->
-  <nav>
-    <a href="{{ url_for('auth.menu') }}">Inicio</a>
-    <a href="{{ url_for('auth.productos')}}">Productos</a>
-    <a href="{{ url_for('auth.categoria') }}">Categorias</a>
-    <a href="{{ url_for('auth.proveedor') }}" class="active">Proveedores</a>
-    <a href="{{url_for('auth.inventario')}}">Inventario</a>
-    <a href="{{url_for('auth.compras')}}">Compras</a>
-    <a href="{{url_for('auth.reportes')}}">Reportes</a>
-    <a href="{{url_for('auth.ventas')}}">Ventas</a>
-    <a href="{{ url_for('auth.registro') }}">Usuarios</a>
-    <a href="{{ url_for('auth.logout') }}" class="logout">
-      <i class="fas fa-sign-out-alt"></i> Cerrar sesión
-    </a>
-  </nav>
+  <!-- CONTENEDOR PRINCIPAL -->
+  <div class="contenedor">
+    <!-- NAV LATERAL -->
+    <nav>
+      <a href="{{ url_for('auth.menu') }}">
+        <img src="{{ url_for('static', filename='IMG/iconos/hogar.png') }}" class="icono">
+        Inicio
+      </a>
+      <a href="{{ url_for('auth.productos')}}">
+        <img src="{{ url_for('static', filename='IMG/iconos/paquetes.png') }}" class="icono">
+        Productos
+      </a>
+      <a href="{{ url_for('auth.categoria') }}">
+        <img src="{{ url_for('static', filename='IMG/iconos/lineas-de-opciones.png') }}" class="icono">
+        Categorias
+      </a>
+      <a href="{{ url_for('auth.proveedor') }}">
+        <img src="{{ url_for('static', filename='IMG/iconos/cadena-de-suministro.png') }}" class="icono">
+        Proveedores
+      </a>
+      <a href="{{url_for('auth.inventario')}}">
+        <img src="{{ url_for('static', filename='IMG/iconos/inventario-disponible.png') }}" class="icono">
+        Inventario
+      </a>
+      <a href="{{url_for('auth.compras')}}">
+        <img src="{{ url_for('static', filename='IMG/iconos/carrito-de-compras.png') }}" class="icono">
+        Compras
+      </a>
+      <a href="{{url_for('auth.reportes')}}">
+        <img src="{{ url_for('static', filename='IMG/iconos/informe-seo.png') }}" class="icono">
+        Reportes
+      </a>
+      <a href="{{url_for('auth.ventas')}}">
+        <img src="{{ url_for('static', filename='IMG/iconos/grafico-de-barras.png') }}" class="icono">
+        Ventas
+      </a>
+      <a href="{{ url_for('auth.registro') }}" class="active">
+        <img src="{{ url_for('static', filename='IMG/iconos/agregar-usuario.png') }}" class="icono">
+        Usuarios
+      </a>
+      <a href="{{ url_for('auth.logout') }}" class="logout">
+        <i class="fas fa-sign-out-alt"></i>Cerrar sesión
+      </a>
+    </nav>
 
-  <!-- CONTENIDO PRINCIPAL -->
-  <main class="contenido-principal">
-
-    <!-- ALERTAS -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-    <div class="container mt-3">
-      {% for category, message in messages %}
-      <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
-      </div>
-      {% endfor %}
-    </div>
-    {% endif %}
-    {% endwith %}
-
-    <!-- FORMULARIO + TABLA CENTRADOS -->
-    <div class="envoltorio-centrado">
-      <div class="contenedor-flex">
-
-        <!-- FORMULARIO -->
-        <div class="formulario-contenedor">
-          <h1 class="msj">Registro de Usuario</h1>
-          <form id="registroForm" method="POST" action="/auth/registro" novalidate>
-            <label class="texto" for="nom_usuario">Nombre de usuario</label>
-            <input type="text" class="txt" id="nom_usuario" name="nom_usuario" required minlength="3" maxlength="100" />
-
-            <label class="texto" for="contrasena">Contraseña</label>
-            <input type="password" class="txt" id="contrasena" name="contrasena" required minlength="6"
-              maxlength="100" />
-
-            <label class="texto" for="confirmar">Confirmar contraseña</label>
-            <input type="password" class="txt" id="confirmar" name="confirmar" required minlength="6" maxlength="100" />
-
-            <label class="texto" for="id_rol">Rol</label>
-            <select class="txt" id="id_rol" name="id_rol" required>
-              <option value="" selected disabled>Seleccione un rol</option>
-              {% for r in roles %}
-              <option value="{{ r[0] }}">{{ r[1] }}</option>
-              {% endfor %}
-            </select>
-
-            <button type="submit" class="btn">Registrarse</button>
-            <a href="{{ url_for('auth.login') }}" class="btn">Volver al login</a>
-          </form>
+    <!-- MAIN -->
+    <main>
+      <!-- ALERTAS -->
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      <div class="container mt-3">
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
         </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% endwith %}
 
-        <!-- TABLA -->
-        <div class="tabla-contenedor">
-          <h2>Usuarios Registrados</h2>
-          <table class="tabla-estilo">
+      <!-- FORMULARIO -->
+      <div class="formulario">
+        <form id="registroForm" method="POST" action="{{ url_for('auth.registro') }}" novalidate>
+          <label for="" class="center">AGREGAR USUARIO</label>
+          <input type="hidden" id="id_usuario">
+
+          <label for="" class="label1">Nombre<label style="color: red;">*</label></label>
+          <input type="text" name="nom_usuario" id="nom_usuario" placeholder="Nombre" required>
+
+          <label for="" class="label1">Contraseña <label style="color: red;">*</label></label>
+          <input type="password" name="contrasena" id="contrasena" placeholder="Contraseña" required>
+
+          <label for="" class="label1">Confirmacion de la Contraseña <label style="color: red;">*</label></label>
+          <input type="password" name="confirmar" id="confirmar" placeholder="Contraseña" required>
+
+          <label for="" class="label1">Rol <label style="color: red;">*</label></label>
+          <select class="txt" id="id_rol" name="id_rol" required>
+            <option value="" selected disabled>Seleccione un rol</option>
+            {% for r in roles %}
+            <option value="{{ r[0] }}">{{ r[1] }}</option>
+            {% endfor %}
+          </select>
+          <div class="botones">
+            <button type="submit" class="guardar">Guardar</button>
+            <button type="reset" class="cancelar">Cancelar</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- TABLA -->
+      <div class="tabla">
+        <div class="tabla-scroll">
+          <table>
             <thead>
               <tr>
-                <th>Nombre de usuario</th>
+                <th hidden>ID</th>
+                <th>Nombre</th>
                 <th>Rol</th>
                 <th>Acciones</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody class="tabla-user">
               {% for usuario in usuarios %}
               <tr>
+                <td hidden>{{ usuario.id_usuario }}</td>
                 <td>{{ usuario.nom_usuario }}</td>
                 <td>{{ usuario.nom_rol }}</td>
-                <td class="acciones">
+                <td>
+                  <!-- EDITAR -->
                   <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                     data-bs-target="#modalEditar{{ usuario.id_usuario }}">
                     Editar
                   </button>
+
+                  <!-- ELIMINAR -->
                   <form action="{{ url_for('auth.eliminar_usuario', id_usuario=usuario.id_usuario) }}" method="POST"
                     style="display:inline;" onsubmit="return confirm('¿Seguro que deseas eliminar este usuario?');">
                     <button type="submit" class="btn btn-eliminar">Eliminar</button>
@@ -136,8 +168,8 @@
                       </div>
                       <div class="modal-body">
                         <label class="form-label">Nombre de Usuario</label>
-                        <input type="text" class="form-control" name="nom_usuario" value="{{ usuario.nom_usuario }}"
-                          required>
+                        <input type="text" class="form-control" name="nom_usuario"
+                          value="{{ usuario.nom_usuario }}" required>
                         <label class="form-label">Rol</label>
                         <select class="form-select" name="id_rol" required>
                           <option value="1" {% if usuario.id_rol==1 %}selected{% endif %}>Administrador</option>
@@ -152,23 +184,22 @@
                   </div>
                 </div>
               </div>
+
               {% else %}
               <tr>
-                <td colspan="3">No hay usuarios registrados aún.</td>
+                <td colspan="4">No hay usuarios registrados aún.</td>
               </tr>
               {% endfor %}
             </tbody>
           </table>
         </div>
-
       </div>
-    </div>
-
-  </main>
+    </main>
+  </div>
 
   <!-- FOOTER -->
   <footer>
-    © Sistema Tienda Julio y Mary
+    © Universidad Nacional de El Salvador
   </footer>
 
   <!-- JS Validación -->
@@ -188,10 +219,5 @@
       }
     });
   </script>
-
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
-
 </html>

@@ -4,11 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Tienda Julio y Mary</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='CSS/menu.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/productos.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/general.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='CSS/toast.css') }}">
 </head>
 
@@ -18,49 +16,81 @@
         <h1 class="pagina">Productos</h1>
         <div class="user-info">
             <img src="{{ url_for('static', filename='IMG/logo.png') }}">
-            <i class="fas fa-user-circle"></i>
             <label class="usuario-rol">{{ session.get("usuario_rol", "Rol") }}</label>
             <label class="usuario-nombre">{{ session.get("usuario_nombre", "Invitado") }}</label>
         </div>
     </header>
     <nav>
-        <a href="{{ url_for('auth.menu') }}"    >Inicio</a>
-        <a href="{{ url_for('auth.productos')}}" class="active">Productos</a>
-        <a href="{{ url_for('auth.categoria') }}">Categorias</a>
-        <a href="{{ url_for('auth.proveedor') }}">Proveedores</a>
-        <a href="{{url_for('auth.inventario')}}">Inventario</a>
-        <a href="{{url_for('auth.compras')}}"   >Compras</a>
-        <a href="{{url_for('auth.reportes')}}"  >Reportes</a>
-        <a href="{{url_for('auth.ventas')}}"    >Ventas</a>
-        <a href="{{ url_for('auth.registro') }}">Usuarios</a>
-        <a href="{{ url_for('auth.logout') }}" class="logout">
-            <i class="fas fa-sign-out-alt"></i> Cerrar sesión
-        </a>
-    </nav>
+            <a href="{{ url_for('auth.menu') }}">
+                <img src="{{ url_for('static', filename='IMG/iconos/hogar.png') }}" class="icono">
+                Inicio
+            </a>
+            <a href="{{ url_for('auth.productos')}}" class="active">
+                <img src="{{ url_for('static', filename='IMG/iconos/paquetes.png') }}" class="icono">
+                Productos
+            </a>
+            <a href="{{ url_for('auth.categoria') }}">
+                <img src="{{ url_for('static', filename='IMG/iconos/lineas-de-opciones.png') }}" class="icono">
+                Categorias
+            </a>
+            <a href="{{ url_for('auth.proveedor') }}">
+                <img src="{{ url_for('static', filename='IMG/iconos/cadena-de-suministro.png') }}" class="icono">
+                Proveedores
+            </a>
+            <a href="{{url_for('auth.inventario')}}">
+                <img src="{{ url_for('static', filename='IMG/iconos/inventario-disponible.png') }}" class="icono">
+                Inventario
+            </a>
+            <a href="{{url_for('auth.compras')}}">
+                <img src="{{ url_for('static', filename='IMG/iconos/carrito-de-compras.png') }}" class="icono">
+                Compras
+            </a>
+            <a href="{{url_for('auth.reportes')}}">
+                <img src="{{ url_for('static', filename='IMG/iconos/informe-seo.png') }}" class="icono">
+                Reportes
+            </a>
+            <a href="{{url_for('auth.ventas')}}">
+                <img src="{{ url_for('static', filename='IMG/iconos/grafico-de-barras.png') }}" class="icono">
+                Ventas</a>
+            <a href="{{ url_for('auth.registro') }}">
+                <img src="{{ url_for('static', filename='IMG/iconos/agregar-usuario.png') }}" class="icono">
+                Usuarios
+            </a>
+            <a href="{{ url_for('auth.logout') }}" class="logout">
+                <i class="fas fa-sign-out-alt"></i>Cerrar sesión
+            </a>
+        </nav>
     <main>
-        <div class="tabla-agregarprod">
-            <div class="form-productos">
+            <div class="formulario">
                 <label for="" class="center">AGREGAR PRODUCTO</label>
                 <input type="hidden" id="id_producto">
 
-                <label for="">Nombre*</label>
+                <label for="" class="label1">Nombre
+                <label for="" style="color: red;">*</label>
+                </label>
                 <input type="text" id="nombre" placeholder="Nombre">
-
                 <div class="fila-doble">
                     <div class="campo">
-                        <label for="">Categoria*</label>
+                        <label for="" class="label1">Categoria
+                            <label for="" style="color: red;">*</label>
+                        </label>
                         <select id="categoria" class="select-combo">
                             <option value="">Categoria</option>
                         </select>
                     </div>
                     <div class="campo">
-                        <label for="">Proveedor*</label>
+                        <label for="" class="label1">Proveedor
+                            <label for="" style="color: red;">*</label>
+                        </label>
                         <select id="proveedor">
                             <option value="">Proveedor</option>
                         </select>
                     </div>
                 </div>
-                <label for="">Precio($)*</label>
+                <label for="" class="label1">
+                Precio($)
+                <label for="" style="color: red;">*</label>
+                </label>
                 <div class="fila-doble">
                     <div class="campo">
                         <input type="number" id="precio_compra" placeholder="Compra" step="0.01" required >
@@ -70,24 +100,27 @@
                     </div>
                 </div>
 
-                <label for="">Minimo en inventario*</label>
+                <label for="" class="label1">Minimo en inventario
+                    <label for="" style="color: red;">*</label>
+                </label>
                 <input type="number" id="stock_minimo" placeholder="Stock minimo" required>
 
-                <label for="">Descripcion*</label>
+                <label for="" class="label1">Descripcion
+                    <label for="" style="color: red;">*</label>
+                </label>
                 <textarea id="descripcion" rows="4" placeholder="Ingrese aqui la descripcion del Producto"></textarea>
 
                 <div class="botones">
-                    <input type="button" value="Guardar" id="guardar">
-                    <input type="button" value="Cancelar" id="cancelar">
+                    <input type="button" class="guardar" value="Guardar" id="guardar">
+                    <input type="button" class="cancelar" value="Cancelar" id="cancelar">
                 </div>
             </div>
-        </div>
 
         </div>
         <div class="tabla-productos">
             <div class="buscador">
                 <select id="filtro" class="select-combo">
-                    <option value="">Filtro</option>
+                    <option value="" class="select-combo">Filtro</option>
                 </select>
                 <input type="search" placeholder="Buscar" id="buscador">
                 <button type="button">Buscar</button>
@@ -97,7 +130,7 @@
                 <table>
                     <thead>
                         <tr>
-                            <th class="id_prod">ID</th>
+                            <th class="id-general">ID</th>
                             <th>Nombre</th>
                             <th>Categoria</th>
                             <th>Proveedor</th>
@@ -117,7 +150,7 @@
         </div>
     </main>
     <footer>
-        © Sistema Tienda Julio y Mary
+      © Universidad Nacional de El Salvador
     </footer>
     <script src="{{ url_for('static', filename='JS/agrprod.js') }}"></script>
     <script src="{{ url_for('static', filename='JS/toast.js') }}"></script>

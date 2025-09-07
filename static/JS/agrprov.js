@@ -14,7 +14,7 @@ async function cargarProveedores() {
             const row = document.createElement("tr");
 
             row.innerHTML = `
-                <td class="id-prov">${prov.id}</td>
+                <td class="id-general">${prov.id}</td>
                 <td>${prov.nombre}</td>
                 <td>${prov.telefono}</td>
                 <td>${prov.email}</td>
