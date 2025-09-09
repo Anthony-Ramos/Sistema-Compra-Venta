@@ -7,9 +7,9 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
     </style>
-    <link rel="stylesheet" href="../CSS/menu.css">
-    <link rel="stylesheet" href="../CSS/productos.css">
-    <link rel="stylesheet" href="../CSS/toast.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/menu.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/productos.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/toast.css') }}">
 </head>
 
 <body>
@@ -17,21 +17,25 @@
         <h1 class="empresa">Tienda Julio y Mary</h1>
         <h1 class="pagina">Productos</h1>
         <div class="user-info">
-            <img src="../IMG/logo.png" alt="Logo">
+            <img src="{{ url_for('static', filename='IMG/logo.png') }}">
             <i class="fas fa-user-circle"></i>
-            <label>Administrador</label>
-            <label>Ricardo</label>
+            <label class="usuario-rol">{{ session.get("usuario_rol", "Rol") }}</label>
+            <label class="usuario-nombre">{{ session.get("usuario_nombre", "Invitado") }}</label>
         </div>
     </header>
     <nav>
-        <a href="menu.html">Menu</a>
-        <a href="productos.html" class="active">Gestión de Productos</a>
-        <a href="ventas.html">Ventas</a>
-        <a href="compras.html">Compras</a>
-        <a href="inventario.html">Inventario</a>
-        <a href="reportes.html">Reportes</a>
-        <a href="usuarios.html">usuarios</a>
-        <a href="#" class="logout"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
+        <a href="{{ url_for('auth.menu') }}"    >Inicio</a>
+        <a href="{{ url_for('auth.productos')}}" class="active">Productos</a>
+        <a href="{{ url_for('auth.categoria') }}">Categorias</a>
+        <a href="{{ url_for('auth.proveedor') }}">Proveedores</a>
+        <a href="{{url_for('auth.inventario')}}">Inventario</a>
+        <a href="{{url_for('auth.compras')}}"   >Compras</a>
+        <a href="{{url_for('auth.reportes')}}"  >Reportes</a>
+        <a href="{{url_for('auth.ventas')}}"    >Ventas</a>
+        <a href="{{ url_for('auth.registro') }}">Usuarios</a>
+        <a href="{{ url_for('auth.logout') }}" class="logout">
+            <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+        </a>
     </nav>
     <main>
         <div class="tabla-agregarprod">
@@ -56,18 +60,18 @@
                         </select>
                     </div>
                 </div>
-                <label for="">Precio*</label>
+                <label for="">Precio($)*</label>
                 <div class="fila-doble">
                     <div class="campo">
-                        <input type="number" id="precio_compra" placeholder="Compra" step="0.01">
+                        <input type="number" id="precio_compra" placeholder="Compra" step="0.01" required >
                     </div>
                     <div class="campo">
-                        <input type="number" id="precio_venta" placeholder="Venta" step="0.01">
+                        <input type="number" id="precio_venta" placeholder="Venta" step="0.01" required readonly>
                     </div>
                 </div>
 
                 <label for="">Minimo en inventario*</label>
-                <input type="number" id="stock_minimo" placeholder="Stock minimo">
+                <input type="number" id="stock_minimo" placeholder="Stock minimo" required>
 
                 <label for="">Descripcion*</label>
                 <textarea id="descripcion" rows="4" placeholder="Ingrese aqui la descripcion del Producto"></textarea>
@@ -81,18 +85,6 @@
 
         </div>
         <div class="tabla-productos">
-            <div class="botones-agr">
-                <button type="button" class="btn-agregar">
-                    <img src="../IMG/iconos/mas.png" alt="Agregar" class="icono"
-                        style="width:16px; height:16px; vertical-align:middle;">
-                    Agregar Categoria
-                </button>
-                <button type="button" class="btn-agregar">
-                    <img src="../IMG/iconos/mas.png" alt="Agregar" class="icono"
-                        style="width:16px; height:16px; vertical-align:middle;">
-                    Agregar Proveedor
-                </button>
-            </div>
             <div class="buscador">
                 <select id="filtro" class="select-combo">
                     <option value="">Filtro</option>
@@ -111,7 +103,7 @@
                             <th>Proveedor</th>
                             <th>Precio Compra</th>
                             <th>Precio Venta</th>
-                            <th>Stock Actual</th>
+                            <th>Stock Minimo</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -120,13 +112,14 @@
                 </table>
             </div>
         </div>
-        <div id="toast-container"></div>
+        <div id="toast-container">
+
+        </div>
     </main>
     <footer>
         © Sistema Tienda Julio y Mary
     </footer>
-    <script src="../JS/prodenv.js"></script>
-    <script src="../JS/toast.js"></script>
+    <script src="{{ url_for('static', filename='JS/agrprod.js') }}"></script>
+    <script src="{{ url_for('static', filename='JS/toast.js') }}"></script>
 </body>
-
 </html>

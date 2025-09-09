@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Tienda Julio y Mary</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
+    </style>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/menu.css') }}">
+</head>
+<body>
+    <header>
+        <h1 class="empresa">Tienda Julio y Mary</h1>
+        <h1 class="pagina">Menu</h1>
+        <div class="user-info">
+            <img src="{{ url_for('static', filename='IMG/logo.png') }}">
+            <i class="fas fa-user-circle"></i>
+            <label class="usuario-rol">{{ session.get("usuario_rol", "Rol") }}</label>
+            <label class="usuario-nombre">{{ session.get("usuario_nombre", "Invitado") }}</label>
+        </div>
+    </header>
+
+    <div class="contenedor">
+    <nav>
+        <a href="{{ url_for('auth.menu') }}" class="active">Inicio</a>
+        <a href="{{ url_for('auth.productos')}}">Productos</a>
+        <a href="{{ url_for('auth.categoria') }}">Categorias</a>
+        <a href="{{ url_for('auth.proveedor') }}">Proveedores</a>
+        <a href="{{url_for('auth.inventario')}}">Inventario</a>
+        <a href="{{url_for('auth.compras')}}"   >Compras</a>
+        <a href="{{url_for('auth.reportes')}}"  >Reportes</a>
+        <a href="{{url_for('auth.ventas')}}"    >Ventas</a>
+        <a href="{{ url_for('auth.registro') }}">Usuarios</a>
+        <a href="{{ url_for('auth.logout') }}" class="logout">
+            <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+        </a>
+    </nav>
+    <main>
+        <div class="logo-container">
+           <img src="{{ url_for('static', filename='IMG/logotienda.png') }}">
+        </div>
+        <p>Bienvenido al sistema de Tienda Julio y Mary. Seleccione una opción del menú para comenzar.</p>
+    </main>
+      </div>
+
+    <footer>
+        © Sistema Tienda Julio y Mary
+    </footer>
+</body>
+</html>

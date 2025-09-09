@@ -1,6 +1,6 @@
 #toast-container {
-    position: fixed;
-    top: 20px;
+    position: Fixed;
+    bottom: 20px;
     right: 20px;
     z-index: 9999;
 }
@@ -12,7 +12,7 @@
     padding: 12px 20px;
     margin-top: 10px;
     border-radius: 6px;
-    box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
     opacity: 0;
     transform: translateX(100%);
     transition: all 0.4s ease;
@@ -31,31 +31,47 @@
 }
 
 /*Cambiar color de los toast o mensajes*/
-.success { background: #28a745;}
-.warning { background: #ffc107;}
-.error   { background: #dc3545;}
+.success {
+    background: #28a745;
+}
+
+.warning {
+    background: #ffc107;
+}
+
+.error {
+    background: #dc3545;
+}
+.informacion {
+    background-color: #095CFF;
+}
 
 
 .confirm-toast {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    background: #007bff; /* color azul para confirmación */
+    align-items: center;
+    background: #007bff;
     color: #fff;
+    font-weight: bold;
     padding: 12px 20px;
-    margin-top: 10px;
     border-radius: 6px;
-    box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
     opacity: 0;
-    transform: translateX(100%);
     transition: all 0.4s ease;
     font-family: Arial, sans-serif;
+
     min-width: 250px;
+    max-width: 350px;
+    width: auto;
 }
 
 .confirm-toast.show {
     opacity: 1;
-    transform: translateX(0);
 }
 
 .confirm-toast .buttons {
@@ -65,7 +81,7 @@
 }
 
 .confirm-toast button {
-    padding: 5px 12px;
+    padding: 10px 12px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -75,9 +91,21 @@
 .confirm-toast .accept {
     background-color: #28a745;
     color: #fff;
+    transition: all 0.5s ease;
+}
+
+.confirm-toast .accept:hover {
+    background-color: #14842e;
+    transform: scale(1.1);
 }
 
 .confirm-toast .cancel {
     background-color: #dc3545;
     color: #fff;
+    transition: all 0.5s ease;
+}
+
+.confirm-toast .cancel:hover {
+    background-color: #bb2937;
+    transform: scale(1.1);
 }

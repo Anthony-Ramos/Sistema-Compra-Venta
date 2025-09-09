@@ -27,7 +27,7 @@ main {
 }
 
 /*Espacio par los botones de agregar*/
-.btn-agregar{
+.btn-agregar {
   border: none;
   width: 30vh;
   height: 40px;
@@ -38,17 +38,10 @@ main {
   margin-right: 30px;
   font-size: 15px;
   text-align: center;
+  transition: background 0.3s, transform 0.2s;
+
 }
-.btn-agregar .icono{
-    transition: transform 0.3s ease;
-}
-.btn-agregar:hover .icono{
-      transform: rotate(90deg);
-}
-.btn-agregar:hover{
-  cursor: pointer;
-  background-color: #218838;
-}
+
 /*Parte de estilos para el bucador*/
 .buscador {
   display: flex;
@@ -62,7 +55,6 @@ main {
   width: 350px;
   max-width: 90%;
 }
-
 .select-combo {
   width: 100%;
   padding: 5px;
@@ -113,7 +105,7 @@ main {
   margin: 0 auto;
   padding: 10px;
   margin-left: 13vh;
-  border: 1px solid #ccc;
+  border: 1px solid #000000;
   border-radius: 8px;
   background-color: #ffffff;
   font-family: Arial, sans-serif;
@@ -158,7 +150,18 @@ main {
   border-radius: 5px;
   border: 1px solid #ccc;
 }
-
+.form-productos input[type="text"]:focus {
+    border-color: #0095ff;
+    outline: none;
+}
+.form-productos input[type="number"]:focus {
+    border-color: #0095ff;
+    outline: none;
+}
+.form-productos textarea:focus {
+    border-color: #0095ff;
+    outline: none;
+}
 .form-productos text {
   padding: 8px;
 }
@@ -179,11 +182,13 @@ main {
   color: white;
   font-weight: bold;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background 0.3s, transform 0.2s;
+  
 }
 
 .form-productos .botones input[type="button"]:hover {
   background-color: #218838;
+    transform: scale(1.05);
 }
 
 .form-productos .botones input[type="button"]:nth-child(2) {
@@ -211,12 +216,9 @@ main {
   flex-direction: column;
 }
 
-/*Apartado de la tabla*/
 .tabla-scroll {
   max-height: 300px;
-  /* altura máxima visible */
   overflow-y: auto;
-  /* barra vertical si excede */
   margin-top: 15px;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -262,21 +264,23 @@ main {
 .btn-editar {
   background-color: #ffc107;
   color: #FFFF;
-  transition: background-color 0.3s ease;
+  transition: background 0.3s, transform 0.2s;
 }
 
 .btn-eliminar {
   background-color: #c82333;
   color: #fff;
-  transition: background-color 0.3s ease;
+  transition: background 0.3s, transform 0.2s;
 }
 
 .btn-editar:hover {
   cursor: pointer;
   background-color: #e3ab04;
+  transform: scale(0.95);
 }
 
 .btn-eliminar:hover {
   cursor: pointer;
   background-color: #76000c;
+  transform: scale(0.95);
 }

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Tienda Julio y Mary — Reporte: Productos por Categoría</title>
+
+  <!-- Fuentes/estilos generales del menú -->
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
+  </style>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='CSS/menu.css') }}">
+
+  <!-- Chart.js y estilos de la gráfica -->
+  <script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/grafica.css') }}">
+
+  <!-- Tu JS de la gráfica -->
+  <script defer src="{{ url_for('static', filename='js/grafi.js') }}"></script>
+</head>
+<body>
+  <header>
+    <h1 class="empresa">Tienda Julio y Mary</h1>
+    <h1 class="pagina">Reportes</h1>
+    <div class="user-info">
+      <img src="{{ url_for('static', filename='IMG/logo.png') }}">
+      <i class="fas fa-user-circle"></i>
+      <label class="usuario-rol">{{ session.get("usuario_rol", "Rol") }}</label>
+      <label class="usuario-nombre">{{ session.get("usuario_nombre", "Invitado") }}</label>
+    </div>
+  </header>
+
+  <div class="contenedor">
+    <nav>
+      <a href="{{ url_for('auth.menu') }}">Inicio</a>
+      <a href="{{ url_for('auth.productos')}}">Productos</a>
+      <a href="{{ url_for('auth.inventario')}}">Inventario</a>
+      <a href="{{ url_for('auth.compras')}}">Compras</a>
+      <a href="{{ url_for('auth.reportes') }}" class="active">Reportes</a>
+      <a href="{{ url_for('auth.ventas') }}">Ventas</a>
+      <a href="{{ url_for('auth.registro') }}">Usuarios</a>
+      <a href="{{ url_for('auth.logout') }}" class="logout">
+        <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+      </a>
+    </nav>
+
+    <main>
+      <div class="wrap">
+        <div class="head">
+          <h2 class="title">📊 Productos por categoría</h2>
+          <div class="actions">
+            <button id="btnBar">Barras</button>
+            <button id="btnPie">Stock mínimo</button>
+            <button id="btnMovi">Movimientos Recientes</button>
+            <!-- Stub oculto para compat con grafi.js (evita errores si lo busca) -->
+            <button id="btnReload" type="button" style="display:none" aria-hidden="true"></button>
+          </div>
+        </div>
+
+        <div id="loading" class="spinner" style="margin-bottom:12px;">
+          <div class="dot"></div>
+          <span>Cargando datos…</span>
+        </div>
+
+        <div class="grid">
+          <div class="card">
+            <div class="chart-box">
+              <canvas id="chart"></canvas>
+            </div>
+            <div class="foot" id="totalInfo"></div>
+          </div>
+
+          <div class="card">
+            <h3 style="margin:6px 0 10px">Resumen</h3>
+            <div id="tablaWrap"></div>
+          </div>
+        </div>
+
+        <p class="foot">Fuente: <span class="muted">/api/categorias_grafica</span></p>
+      </div>
+    </main>
+  </div>
+
+  <footer>
+    © Sistema Tienda Julio y Mary
+  </footer>
+
+  <!-- Navegaciones / overrides (quitan dona y recargar; agregan Movimientos) -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // 1) Stock mínimo: reemplaza cualquier listener de "dona"
+      const btnPie = document.getElementById("btnPie");
+      if (btnPie) {
+        const nuevoPie = btnPie.cloneNode(true);
+        nuevoPie.textContent = "Stock mínimo";
+        btnPie.parentNode.replaceChild(nuevoPie, btnPie);
+        nuevoPie.addEventListener("click", () => {
+          window.location.href = "{{ url_for('auth.stockmin') }}";
+        });
+      }
+
+      // 2) Movimientos Recientes -> movi.html
+      const btnMovi = document.getElementById("btnMovi");
+      if (btnMovi) {
+        btnMovi.addEventListener("click", () => {
+          window.location.href = "{{ url_for('auth.movi') }}";
+        });
+      }
+
+      // 3) Desactivar/ocultar completamente cualquier intento de "recargar"
+      const btnReload = document.getElementById("btnReload");
+      if (btnReload) {
+        const nuevoReload = btnReload.cloneNode(true);
+        nuevoReload.style.display = "none"; // ya está oculto; aseguramos
+        btnReload.parentNode.replaceChild(nuevoReload, btnReload);
+      }
+    });
+  </script>
+</body>
+</html>

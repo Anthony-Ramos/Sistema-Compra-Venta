@@ -6,7 +6,6 @@ function mostrarToast(icono, mensaje, tipo) {
         console.error("No se encontró el contenedor de toasts");
         return;
     }
-
     // Crear toast
     const toast = document.createElement("div");
     toast.classList.add("toast", tipo); // asigna color por tipo
