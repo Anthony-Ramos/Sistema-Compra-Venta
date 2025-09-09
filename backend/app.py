@@ -1,5 +1,6 @@
 from flask import Flask
-from controladores.auth_controlador import auth_bp
+from backend.controladores.auth_controlador import auth_bp
+
 from .config import Config
 from db import iniciar_pool
 
