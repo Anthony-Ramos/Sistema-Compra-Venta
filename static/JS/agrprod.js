@@ -178,6 +178,7 @@ async function cargarProductos(categoria = "", query = "") {
                         try {
                             const res = await fetch(`/eliminar_producto/${id}`, { method: "DELETE" });
                             if (res.ok) cargarProductos(categoria, query);
+                                mostrarToast("/static/IMG/iconos/check.png", "Producto eliminado correctamente", "success");
                         } catch {}
                     },
                     () => {}
@@ -190,7 +191,6 @@ async function cargarProductos(categoria = "", query = "") {
         mostrarToast("/static/IMG/iconos/error.png", "Error cargando productos", "error");
     }
 }
-
 document.getElementById("guardar").addEventListener("click", function () {
     const id_producto = document.getElementById("id_producto").value.trim();
 

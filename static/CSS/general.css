@@ -146,6 +146,7 @@ input[type="tel"]{
 .guardar{
   background-color:#4CAF50;;
 }
+
 .guardar:hover{
   background: #218838;
     transform: scale(1.05);
@@ -192,7 +193,7 @@ input[type="tel"]{
 /*Espacio para los estilos de tabla*/
 /* Contenedor con scroll */
 .tabla-pequena{
-  font-size: 18px;
+  font-size: 15px;
 }
 .tabla-pequena th,
 .tabla-pequena td{
@@ -240,8 +241,8 @@ table tbody tr {
 }
 
 table tbody tr:hover {
-  background-color: #f9fafb;
-  transform: scale(1.01);
+  background-color: #e1e1e1;
+  cursor: pointer;
 }
 
 /* Celdas */
