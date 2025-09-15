@@ -41,9 +41,9 @@ def login():
             return redirect(url_for("auth.menu"))
 
         flash("Usuario o contraseña incorrectos", "danger")
+        return render_template("auth/index.html")
+
     return render_template("auth/index.html")
-
-
 @auth_bp.route("/logout")
 def logout():
     """Cierra la sesión del usuario."""
@@ -93,7 +93,7 @@ def registro():
 @login_requerido
 def menu():
     """Muestra el menú principal."""
-    return render_template("auth/Menu.html")
+    return render_template("auth/menu.html")
 
 
 @auth_bp.route("/usuarios")
@@ -185,3 +185,81 @@ def categoria():
 def proveedor():
     """Muestra la vista de proveedores."""
     return render_template('auth/proveedor.html')
+
+
+@auth_bp.route('/inventario')
+@login_requerido
+def inventario():
+    """Muestra la vista del módulo de Inventario."""
+    return render_template('auth/inventario.html')
+
+
+@auth_bp.route('/compras')
+@login_requerido
+def compras():
+    """Muestra la vista del módulo de Compras."""
+    return render_template('auth/compras.html')
+
+
+@auth_bp.route('/reportes')
+@login_requerido
+def reportes():
+    """Muestra la vista del módulo de Reportes."""
+    return render_template('auth/reportes.html')
+
+
+@auth_bp.route('/ventas')
+@login_requerido
+def ventas():
+    """Muestra la vista del módulo de Ventas."""
+    return render_template('auth/ventas.html')
+
+
+# ===============================
+# 🔹 Nuevos endpoints necesarios
+# ===============================
+
+@auth_bp.route('/categoria')
+@login_requerido
+def categoria():
+    """Muestra la vista de categorías."""
+    return render_template('auth/categoria.html')
+
+@auth_bp.route('/proveedor')
+@login_requerido
+def proveedor():
+    """Muestra la vista de proveedores."""
+    return render_template('auth/proveedor.html')
+
+
+# ENDPOINTS ADICIONALES PARA EL MENÚ
+
+@auth_bp.route('/inventario')
+def inventario():
+    """Página de inventario"""
+    return render_template('auth/inventario.html')
+
+@auth_bp.route('/compras')
+def compras():
+    """Página de compras"""
+    return render_template('auth/compras.html')
+
+@auth_bp.route('/reportes')
+def reportes():
+    """Página de reportes"""
+    return render_template('auth/reportes.html')
+
+@auth_bp.route('/ventas')
+def ventas():
+    """Página de ventas"""
+    return render_template('auth/ventas.html')
+
+@auth_bp.route('/proveedor')
+def proveedor():
+    """Página de proveedor"""
+    return render_template('auth/proveedor.html')
+
+@auth_bp.route('/categoria')
+def categoria():
+    """Página de categorias"""
+    return render_template('auth/categoria.html')

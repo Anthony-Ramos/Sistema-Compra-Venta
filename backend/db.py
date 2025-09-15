@@ -1,7 +1,26 @@
+<<<<<<< HEAD
+import psycopg2
+from psycopg2 import pool
+from .config import Config
+=======
 """Módulo db: manejo de conexiones a PostgreSQL con un pool y métodos de ayuda."""
+>>>>>>> 9b7a46f117bf64e31afe0100cb487a227027cbe3
 
 from contextlib import contextmanager
 from typing import Any, Iterable, Optional, Tuple, List
+<<<<<<< HEAD
+def iniciar_pool():
+    global _pool
+    if _pool is None:
+        _pool = pool.SimpleConnectionPool(
+            1, 10,
+            host=Config.PG_HOST,
+            port=Config.PG_PORT,
+            dbname=Config.PG_DB,
+            user=Config.PG_USER,
+            password=Config.PG_PASS,
+            client_encoding='UTF8'
+=======
 from psycopg2.pool import SimpleConnectionPool
 from backend.config import Config
 
@@ -24,6 +43,23 @@ class DB:
     # ===============================
     @classmethod
     def init_app(cls, cfg: Config, minconn: int = 1, maxconn: int = 10) -> None:
+        """Inicializa el pool con base en la Config."""
+        if cls._pool is not None:
+            return  # ya inicializado
+
+        dsn = (
+            f"host={cfg.PG_HOST} port={cfg.PG_PORT} dbname={cfg.PG_DB} "
+            f"user={cfg.PG_USER} password={cfg.PG_PASS}"
+        )
+        cls._pool = SimpleConnectionPool(
+            minconn=minconn,
+            maxconn=maxconn,
+            dsn=dsn,
+            connect_timeout=10,
+            application_name="mi-app",
+>>>>>>> 9b7a46f117bf64e31afe0100cb487a227027cbe3
+        )
+        print("Conexion exitosa")
         """
         Inicializa el pool de conexiones si aún no ha sido creado.
 
@@ -219,7 +255,6 @@ class DB:
                 return None
 
             return None
-
 
 # ===============================
 # Función de compatibilidad

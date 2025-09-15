@@ -27,7 +27,15 @@ main {
 }
 
 /*Espacio par los botones de agregar*/
+<<<<<<< HEAD
 .btn-agregar{
+=======
+<<<<<<< HEAD:CSS/productos.css
+.btn-agregar{
+=======
+.btn-agregar {
+>>>>>>> 9b7a46f117bf64e31afe0100cb487a227027cbe3:static/CSS/productos.css
+>>>>>>> main
   border: none;
   width: 30vh;
   height: 40px;
@@ -38,6 +46,10 @@ main {
   margin-right: 30px;
   font-size: 15px;
   text-align: center;
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD:CSS/productos.css
+>>>>>>> main
 }
 .btn-agregar .icono{
     transition: transform 0.3s ease;
@@ -49,6 +61,15 @@ main {
   cursor: pointer;
   background-color: #218838;
 }
+<<<<<<< HEAD
+=======
+=======
+  transition: background 0.3s, transform 0.2s;
+
+}
+
+>>>>>>> 9b7a46f117bf64e31afe0100cb487a227027cbe3:static/CSS/productos.css
+>>>>>>> main
 /*Parte de estilos para el bucador*/
 .buscador {
   display: flex;
@@ -62,7 +83,14 @@ main {
   width: 350px;
   max-width: 90%;
 }
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD:CSS/productos.css
+
+=======
+>>>>>>> 9b7a46f117bf64e31afe0100cb487a227027cbe3:static/CSS/productos.css
+>>>>>>> main
 .select-combo {
   width: 100%;
   padding: 5px;
@@ -113,7 +141,15 @@ main {
   margin: 0 auto;
   padding: 10px;
   margin-left: 13vh;
+<<<<<<< HEAD
   border: 1px solid #ccc;
+=======
+<<<<<<< HEAD:CSS/productos.css
+  border: 1px solid #ccc;
+=======
+  border: 1px solid #000000;
+>>>>>>> 9b7a46f117bf64e31afe0100cb487a227027cbe3:static/CSS/productos.css
+>>>>>>> main
   border-radius: 8px;
   background-color: #ffffff;
   font-family: Arial, sans-serif;
@@ -158,7 +194,26 @@ main {
   border-radius: 5px;
   border: 1px solid #ccc;
 }
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD:CSS/productos.css
+
+=======
+.form-productos input[type="text"]:focus {
+    border-color: #0095ff;
+    outline: none;
+}
+.form-productos input[type="number"]:focus {
+    border-color: #0095ff;
+    outline: none;
+}
+.form-productos textarea:focus {
+    border-color: #0095ff;
+    outline: none;
+}
+>>>>>>> 9b7a46f117bf64e31afe0100cb487a227027cbe3:static/CSS/productos.css
+>>>>>>> main
 .form-productos text {
   padding: 8px;
 }
@@ -179,11 +234,27 @@ main {
   color: white;
   font-weight: bold;
   cursor: pointer;
+<<<<<<< HEAD
   transition: background 0.3s;
+=======
+<<<<<<< HEAD:CSS/productos.css
+  transition: background 0.3s;
+=======
+  transition: background 0.3s, transform 0.2s;
+  
+>>>>>>> 9b7a46f117bf64e31afe0100cb487a227027cbe3:static/CSS/productos.css
+>>>>>>> main
 }
 
 .form-productos .botones input[type="button"]:hover {
   background-color: #218838;
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD:CSS/productos.css
+=======
+    transform: scale(1.05);
+>>>>>>> 9b7a46f117bf64e31afe0100cb487a227027cbe3:static/CSS/productos.css
+>>>>>>> main
 }
 
 .form-productos .botones input[type="button"]:nth-child(2) {
@@ -211,12 +282,24 @@ main {
   flex-direction: column;
 }
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD:CSS/productos.css
+>>>>>>> main
 /*Apartado de la tabla*/
 .tabla-scroll {
   max-height: 300px;
   /* altura máxima visible */
   overflow-y: auto;
   /* barra vertical si excede */
+<<<<<<< HEAD
+=======
+=======
+.tabla-scroll {
+  max-height: 300px;
+  overflow-y: auto;
+>>>>>>> 9b7a46f117bf64e31afe0100cb487a227027cbe3:static/CSS/productos.css
+>>>>>>> main
   margin-top: 15px;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -262,21 +345,51 @@ main {
 .btn-editar {
   background-color: #ffc107;
   color: #FFFF;
+<<<<<<< HEAD
   transition: background-color 0.3s ease;
+=======
+<<<<<<< HEAD:CSS/productos.css
+  transition: background-color 0.3s ease;
+=======
+  transition: background 0.3s, transform 0.2s;
+>>>>>>> 9b7a46f117bf64e31afe0100cb487a227027cbe3:static/CSS/productos.css
+>>>>>>> main
 }
 
 .btn-eliminar {
   background-color: #c82333;
   color: #fff;
+<<<<<<< HEAD
   transition: background-color 0.3s ease;
+=======
+<<<<<<< HEAD:CSS/productos.css
+  transition: background-color 0.3s ease;
+=======
+  transition: background 0.3s, transform 0.2s;
+>>>>>>> 9b7a46f117bf64e31afe0100cb487a227027cbe3:static/CSS/productos.css
+>>>>>>> main
 }
 
 .btn-editar:hover {
   cursor: pointer;
   background-color: #e3ab04;
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD:CSS/productos.css
+=======
+  transform: scale(0.95);
+>>>>>>> 9b7a46f117bf64e31afe0100cb487a227027cbe3:static/CSS/productos.css
+>>>>>>> main
 }
 
 .btn-eliminar:hover {
   cursor: pointer;
   background-color: #76000c;
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD:CSS/productos.css
+=======
+  transform: scale(0.95);
+>>>>>>> 9b7a46f117bf64e31afe0100cb487a227027cbe3:static/CSS/productos.css
+>>>>>>> main
 }
