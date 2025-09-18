@@ -1,18 +1,13 @@
 // toast.js
+
 function mostrarToast(icono, mensaje, tipo) {
     const contenedor = document.getElementById("toast-container");
-    
+
     if (!contenedor) {
         console.error("No se encontró el contenedor de toasts");
         return;
     }
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD:JS/toast.js
 
-=======
->>>>>>> 9b7a46f117bf64e31afe0100cb487a227027cbe3:static/JS/toast.js
->>>>>>> main
     // Crear toast
     const toast = document.createElement("div");
     toast.classList.add("toast", tipo); // asigna color por tipo
@@ -29,10 +24,13 @@ function mostrarToast(icono, mensaje, tipo) {
     }, 3000);
 }
 
-//Toast de verificacion
+// Toast de confirmación con botones
 function mostrarConfirmToast(mensaje, callbackAceptar, callbackCancelar) {
     const contenedor = document.getElementById("toast-container");
-    if (!contenedor) return;
+    if (!contenedor) {
+        console.error("No se encontró el contenedor de toasts");
+        return;
+    }
 
     // Crear toast
     const toast = document.createElement("div");
@@ -49,7 +47,7 @@ function mostrarConfirmToast(mensaje, callbackAceptar, callbackCancelar) {
     // Mostrar con animación
     setTimeout(() => toast.classList.add("show"), 100);
 
-    // Manejo de botones
+    // Eventos de los botones
     toast.querySelector(".accept").addEventListener("click", () => {
         if (callbackAceptar) callbackAceptar();
         cerrarToast(toast);
@@ -64,12 +62,4 @@ function mostrarConfirmToast(mensaje, callbackAceptar, callbackCancelar) {
 function cerrarToast(toast) {
     toast.classList.remove("show");
     setTimeout(() => toast.remove(), 400);
-<<<<<<< HEAD
 }
-=======
-<<<<<<< HEAD:JS/toast.js
-}
-=======
-}
->>>>>>> 9b7a46f117bf64e31afe0100cb487a227027cbe3:static/JS/toast.js
->>>>>>> main

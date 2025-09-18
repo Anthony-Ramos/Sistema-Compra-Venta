@@ -1,24 +1,15 @@
 """Controlador de autenticación para usuarios.
 
-Define las rutas relacionadas con:
-- Inicio de sesión
-- Cierre de sesión
-- Registro de usuarios
-- Menú principal
-- Gestión de usuarios
-- Gestión de productos
-- Gestión de inventario
-- Módulo de compras, ventas, reportes
-- Módulo de categorías y proveedores
+Este módulo define las rutas relacionadas con el inicio de sesión,
+registro y menú principal utilizando Flask y Blueprints.
 """
-
 import re
 import psycopg2
-from flask import session, Blueprint, render_template, request, redirect, url_for, flash
+from flask import (
+    session, make_response, Blueprint, render_template,
+    request, redirect, url_for, flash
+)
 from backend.modelos.usuario_modelo import Usuario
-from backend.utils.decoradores import login_requerido
-from backend.db import DB
-
 
 # Blueprint para las rutas de autenticación
 auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
@@ -26,7 +17,9 @@ auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
 
 @auth_bp.route("/login", methods=["GET", "POST"])
 def login():
-    """Maneja el inicio de sesión de los usuarios."""
+    """
+    Abre la sesión del usuario.
+    """
     if request.method == "POST":
         usuario = request.form.get("usuario")
         contrasena = request.form.get("contrasena")
@@ -35,7 +28,9 @@ def login():
         if user:
             session["usuario_id"] = user.id_usuario
             session["usuario_nombre"] = user.nom_usuario
-            session["usuario_rol"] = Usuario.obtener_nombre_rol(user.id_rol)
+            session["usuario_rol"] = Usuario.obtener_nombre_rol(
+                user.id_rol
+            )
 
             flash("Inicio de sesión exitoso", "success")
             return redirect(url_for("auth.menu"))
@@ -44,17 +39,23 @@ def login():
         return render_template("auth/index.html")
 
     return render_template("auth/index.html")
+
+
 @auth_bp.route("/logout")
 def logout():
-    """Cierra la sesión del usuario."""
+    """
+    Cierra la sesión del usuario.
+    """
     session.clear()
     flash("Sesión cerrada correctamente", "info")
     return redirect(url_for("auth.login"))
 
+
 @auth_bp.route("/registro", methods=["GET", "POST"])
-@login_requerido
 def registro():
-    """Muestra y procesa el formulario de registro de usuarios."""
+    """
+    Muestra y procesa el formulario de registro de usuarios.
+    """
     if request.method == "POST":
         nom_usuario = request.form.get("nom_usuario")
         contrasena = request.form.get("contrasena")
@@ -78,188 +79,121 @@ def registro():
             )
         else:
             try:
-                nuevo_id = Usuario.registrar(nom_usuario, contrasena, int(id_rol))
+                nuevo_id = Usuario.registrar(
+                    nom_usuario, contrasena, int(id_rol)
+                )
                 flash(f"Usuario creado con id {nuevo_id}", "success")
             except ValueError as e:
                 flash(str(e), "warning")
 
+    # 👇 Esta línea se ejecuta SIEMPRE
     usuarios = Usuario.obtener_todos()
-    roles = DB.fetch_all("SELECT id_rol, nom_rol FROM rol ORDER BY id_rol")
-
-    return render_template("auth/usuarios.html", usuarios=usuarios, roles=roles)
+    return render_template("auth/usuarios.html", usuarios=usuarios)
 
 
 @auth_bp.route("/menu")
-@login_requerido
 def menu():
-    """Muestra el menú principal."""
-    return render_template("auth/menu.html")
+    """
+    Muestra y procesa el formulario de menús.
+    """
+    if "usuario_id" not in session:
+        flash("Inicie sesión para continuar.", "warning")
+        return redirect(url_for("auth.login"))
+    response = make_response(render_template("auth/menu.html"))
+    response.headers["Cache-Control"] = (
+        "no-store, no-cache, must-revalidate, "
+        "post-check=0, pre-check=0, max-age=0"
+    )
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
 
 
 @auth_bp.route("/usuarios")
-@login_requerido
 def listar_usuarios():
-    """Muestra una tabla con todos los usuarios registrados."""
+    """
+    Muestra una tabla con todos los usuarios registrados.
+    """
     usuarios = Usuario.obtener_todos()
     return render_template("auth/tabla_usuarios.html", usuarios=usuarios)
 
 
-@auth_bp.route('/editar/<int:id_usuario>', methods=['GET', 'POST'])
-@login_requerido
+@auth_bp.route("/editar/<int:id_usuario>", methods=["GET", "POST"])
 def editar_usuario(id_usuario):
-    """Actualiza el nombre y rol de un usuario por su ID."""
-    if request.method == 'POST':
-        nom_usuario = request.form.get('nom_usuario')
-        id_rol = request.form.get('id_rol')
+    """
+    Actualiza el nombre y rol de un usuario por su ID.
+
+    Si la petición es POST, guarda los cambios.
+    Si es GET, redirige al formulario de registro.
+    """
+    if request.method == "POST":
+        nom_usuario = request.form.get("nom_usuario")
+        id_rol = request.form.get("id_rol")
         try:
             Usuario.actualizar_nombre_rol(id_usuario, nom_usuario, int(id_rol))
-            flash(f"Usuario con ID {id_usuario} actualizado correctamente.", "success")
+            flash(
+                f"Usuario con ID {id_usuario} actualizado correctamente.",
+                "success"
+            )
         except psycopg2.Error as error:
-            flash(f"Error al actualizar en la base de datos: {error}", "danger")
+            flash(
+                f"Error al actualizar en la base de datos: {error}",
+                "danger"
+            )
 
-        return redirect(url_for('auth.registro'))
+        return redirect(url_for("auth.registro"))
 
-    return redirect(url_for('auth.registro'))
+    return redirect(url_for("auth.registro"))
 
 
-@auth_bp.route('/eliminar/<int:id_usuario>', methods=['POST'])
-@login_requerido
+@auth_bp.route("/eliminar/<int:id_usuario>", methods=["POST"])
 def eliminar_usuario(id_usuario):
-    """Elimina un usuario de la base de datos según su ID."""
+    """
+    Elimina un usuario de la base de datos según su ID.
+    """
     Usuario.eliminar(id_usuario)
     flash(f"Usuario con ID {id_usuario} eliminado correctamente.", "success")
-    return redirect(url_for('auth.registro'))
+    return redirect(url_for("auth.registro"))
 
 
-# ===============================
-# Vistas de módulos principales
-# ===============================
-
-@auth_bp.route('/productos')
-@login_requerido
+@auth_bp.route("/productos")
 def productos():
-    """Muestra la vista de gestión de productos."""
-    return render_template('auth/productos.html')
-
-
-@auth_bp.route('/inventario')
-@login_requerido
-def inventario():
-    """Muestra la vista del módulo de Inventario."""
-    return render_template('auth/inventario.html')
-
-
-@auth_bp.route('/compras')
-@login_requerido
-def compras():
-    """Muestra la vista del módulo de Compras."""
-    return render_template('auth/compras.html')
-
-
-@auth_bp.route('/reportes')
-@login_requerido
-def reportes():
-    """Muestra la vista del módulo de Reportes."""
-    return render_template('auth/reportes.html')
-
-
-@auth_bp.route('/ventas')
-@login_requerido
-def ventas():
-    """Muestra la vista del módulo de Ventas."""
-    return render_template('auth/ventas.html')
-
-
-# ===============================
-# 🔹 Nuevos endpoints necesarios
-# ===============================
-
-@auth_bp.route('/categoria')
-@login_requerido
-def categoria():
-    """Muestra la vista de categorías."""
-    return render_template('auth/categoria.html')
-
-@auth_bp.route('/proveedor')
-@login_requerido
-def proveedor():
-    """Muestra la vista de proveedores."""
-    return render_template('auth/proveedor.html')
-
-
-@auth_bp.route('/inventario')
-@login_requerido
-def inventario():
-    """Muestra la vista del módulo de Inventario."""
-    return render_template('auth/inventario.html')
-
-
-@auth_bp.route('/compras')
-@login_requerido
-def compras():
-    """Muestra la vista del módulo de Compras."""
-    return render_template('auth/compras.html')
-
-
-@auth_bp.route('/reportes')
-@login_requerido
-def reportes():
-    """Muestra la vista del módulo de Reportes."""
-    return render_template('auth/reportes.html')
-
-
-@auth_bp.route('/ventas')
-@login_requerido
-def ventas():
-    """Muestra la vista del módulo de Ventas."""
-    return render_template('auth/ventas.html')
-
-
-# ===============================
-# 🔹 Nuevos endpoints necesarios
-# ===============================
-
-@auth_bp.route('/categoria')
-@login_requerido
-def categoria():
-    """Muestra la vista de categorías."""
-    return render_template('auth/categoria.html')
-
-@auth_bp.route('/proveedor')
-@login_requerido
-def proveedor():
-    """Muestra la vista de proveedores."""
-    return render_template('auth/proveedor.html')
+    """Lleva a vista productos."""
+    return render_template("auth/productos.html")
 
 
 # ENDPOINTS ADICIONALES PARA EL MENÚ
-
-@auth_bp.route('/inventario')
+@auth_bp.route("/inventario")
 def inventario():
-    """Página de inventario"""
-    return render_template('auth/inventario.html')
+    """Página de inventario."""
+    return render_template("auth/inventario.html")
 
-@auth_bp.route('/compras')
+
+@auth_bp.route("/compras")
 def compras():
-    """Página de compras"""
-    return render_template('auth/compras.html')
+    """Página de compras."""
+    return render_template("auth/compras.html")
 
-@auth_bp.route('/reportes')
+
+@auth_bp.route("/reportes")
 def reportes():
-    """Página de reportes"""
-    return render_template('auth/reportes.html')
+    """Página de reportes."""
+    return render_template("auth/reportes.html")
 
-@auth_bp.route('/ventas')
+
+@auth_bp.route("/ventas")
 def ventas():
-    """Página de ventas"""
-    return render_template('auth/ventas.html')
+    """Página de ventas."""
+    return render_template("auth/ventas.html")
 
-@auth_bp.route('/proveedor')
+
+@auth_bp.route("/proveedor")
 def proveedor():
-    """Página de proveedor"""
-    return render_template('auth/proveedor.html')
+    """Página de proveedor."""
+    return render_template("auth/proveedor.html")
 
-@auth_bp.route('/categoria')
+
+@auth_bp.route("/categoria")
 def categoria():
-    """Página de categorias"""
-    return render_template('auth/categoria.html')
+    """Página de categorías."""
+    return render_template("auth/categoria.html")
