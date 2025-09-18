@@ -18,7 +18,11 @@ class Config:
     # Base de datos (PostgreSQL)
     PG_HOST: str = os.getenv("PG_HOST", "localhost")
     PG_PORT: int = int(os.getenv("PG_PORT", "5433"))  # 5432 es el default de Postgres
+<<<<<<< HEAD
     PG_DB: str = os.getenv("PG_DB", "BDTJM")
+=======
+    PG_DB: str = os.getenv("PG_DB", "DBTJM")
+>>>>>>> practicas
     PG_USER: str = os.getenv("PG_USER", "postgres")
     PG_PASS: str = os.getenv("PG_PASS", "root")
 

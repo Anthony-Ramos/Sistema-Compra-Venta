@@ -7,20 +7,31 @@
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
     </style>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<<<<<<< HEAD
+=======
+    <!-- ✅ Rutas correctas con Flask -->
+>>>>>>> practicas
     <link rel="stylesheet" href="{{ url_for('static', filename='CSS/menu.css') }}">
 </head>
 <body>
     <header>
         <h1 class="empresa">Tienda Julio y Mary</h1>
+<<<<<<< HEAD
         <h1 class="pagina">Menu</h1>
         <div class="user-info">
             <img src="{{ url_for('static', filename='IMG/logo.png') }}">
+=======
+        <h1 class="pagina">Menú Principal</h1>
+        <div class="user-info">
+            <img src="{{ url_for('static', filename='IMG/logo.png') }}" alt="Logo">
+>>>>>>> practicas
             <i class="fas fa-user-circle"></i>
             <label class="usuario-rol">{{ session.get("usuario_rol", "Rol") }}</label>
             <label class="usuario-nombre">{{ session.get("usuario_nombre", "Invitado") }}</label>
         </div>
     </header>
 
+<<<<<<< HEAD
     <div class="contenedor">
     <nav>
         <a href="{{ url_for('auth.menu') }}" class="active">Inicio</a>
@@ -32,10 +43,22 @@
         <a href="{{url_for('auth.reportes')}}"  >Reportes</a>
         <a href="{{url_for('auth.ventas')}}"    >Ventas</a>
         <a href="{{ url_for('auth.registro') }}">Usuarios</a>
+=======
+    <nav>
+        <a href="{{ url_for('auth.menu') }}" class="active">Menú</a>        
+        <a href="{{ url_for('auth.productos') }}">Gestión de Productos</a>
+        <a href="{{ url_for('auth.registro') }}">Usuarios</a>
+        <!-- ✅ Opciones adicionales (por ahora apuntan a #, puedes crear rutas luego) -->
+        <a href="#">Ventas</a>
+        <a href="#">Compras</a>
+        <a href="#">Inventario</a>
+        <a href="#">Reportes</a>
+>>>>>>> practicas
         <a href="{{ url_for('auth.logout') }}" class="logout">
             <i class="fas fa-sign-out-alt"></i> Cerrar sesión
         </a>
     </nav>
+<<<<<<< HEAD
     <main>
         <div class="logo-container">
            <img src="{{ url_for('static', filename='IMG/logotienda.png') }}">
@@ -43,6 +66,15 @@
         <p>Bienvenido al sistema de Tienda Julio y Mary. Seleccione una opción del menú para comenzar.</p>
     </main>
       </div>
+=======
+
+    <main>
+        <div class="logo-container">
+            <img src="{{ url_for('static', filename='IMG/logotienda.png') }}" alt="Logo Tienda Julio y Mary">
+        </div>
+        <p>Bienvenido al sistema de Tienda Julio y Mary. Seleccione una opción del menú para comenzar.</p>
+    </main>
+>>>>>>> practicas
 
     <footer>
         © Sistema Tienda Julio y Mary
