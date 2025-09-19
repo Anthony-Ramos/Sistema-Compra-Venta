@@ -1,14 +1,14 @@
 """Punto de entrada principal de la aplicación Flask."""
-import os
-from flask import Flask, render_template<<<<<<< HEAD
-from controladores.auth_controlador import auth_bp
-from .config import Config
-from db import iniciar_pool
-=======
-from flask import Flask, render_template
-from backend.controladores.auth_controlador import auth_bp
+
+from flask import Flask, redirect, url_for
 from backend.config import Config
 from backend.db import DB
+from backend.controladores.auth_controlador import auth_bp
+from backend.controladores.prod_controlador import prod_bp
+from backend.controladores.cate_controlador import cate_bp
+from backend.controladores.prov_controlador import prov_bp
+from backend.controladores.reportes_controlador import reportes_bp
+
 
 
 def crear_app():
@@ -21,6 +21,18 @@ def crear_app():
 
     # Registrar blueprints
     app.register_blueprint(auth_bp)
+    app.register_blueprint(prod_bp)
+    app.register_blueprint(cate_bp)
+    app.register_blueprint(prov_bp)
+    app.register_blueprint(reportes_bp)
+
+    # ------------------------------
+    # Ruta raíz → redirige al login
+    # ------------------------------
+    @app.route("/")
+    def raiz():
+        return redirect(url_for("auth.login"))
+
     return app
 
 

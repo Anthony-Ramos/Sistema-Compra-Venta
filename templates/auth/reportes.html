@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Tienda Julio y Mary</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
     </style>
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <!-- ✅ CDN oficial de FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='CSS/menu.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
     <header>
         <h1 class="empresa">Tienda Julio y Mary</h1>
@@ -22,30 +26,79 @@
     </header>
 
     <div class="contenedor">
-    <nav>
-        <a href="{{ url_for('auth.menu') }}">Inicio</a>
-        <a href="{{ url_for('auth.productos')}}">Productos</a>
-        <a href="{{ url_for('auth.categoria') }}">Categorias</a>
-        <a href="{{ url_for('auth.proveedor') }}">Proveedores</a>
-        <a href="{{url_for('auth.inventario')}}">Inventario</a>
-        <a href="{{url_for('auth.compras')}}"   >Compras</a>
-        <a href="{{url_for('auth.reportes')}}" class="active">Reportes</a>
-        <a href="{{url_for('auth.ventas')}}"    >Ventas</a>
-        <a href="{{ url_for('auth.registro') }}">Usuarios</a>
-        <a href="{{ url_for('auth.logout') }}" class="logout">
-            <i class="fas fa-sign-out-alt"></i> Cerrar sesión
-        </a>
-    </nav>
-    <main>
-        <div class="logo-container">
-           <img src="{{ url_for('static', filename='IMG/logotienda.png') }}">
-        </div>
-        <p>Bienvenido al sistema de Tienda Julio y Mary. Seleccione una opción del menú para comenzar.</p>
-    </main>
-      </div>
+        <nav>
+            <a href="{{ url_for('auth.menu') }}">Inicio</a>
+            <a href="{{ url_for('auth.productos')}}">Productos</a>
+            <a href="{{ url_for('auth.categoria') }}">Categorias</a>
+            <a href="{{ url_for('auth.proveedor') }}">Proveedores</a>
+            <a href="{{url_for('auth.inventario')}}">Inventario</a>
+            <a href="{{url_for('auth.compras')}}">Compras</a>
+            <a href="{{url_for('auth.reportes')}}" class="active">Reportes</a>
+            <a href="{{url_for('auth.ventas')}}">Ventas</a>
+            <a href="{{ url_for('auth.registro') }}">Usuarios</a>
+            <a href="{{ url_for('auth.logout') }}" class="logout">
+                <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+            </a>
+        </nav>
+        <main>
+
+            <!-- Filtros -->
+            <div style="max-width: 800px; margin: 20px auto; text-align: center;">
+                <label for="fechaInicio">Desde: </label>
+                <input type="month" id="fechaInicio">
+                <label for="fechaFin">Hasta: </label>
+                <input type="month" id="fechaFin">
+                <button id="btnGenerar" class="btn btn-primary">
+                    <i class="fas fa-search"></i> Generar Reporte
+                </button>
+            </div>
+
+            <!-- Botón para descargar PDF -->
+            <div style="max-width: 800px; margin: 20px auto; text-align: center;">
+                <a id="btnPdf" href="/reportes/rentabilidad/pdf" class="btn btn-primary" target="_blank">
+                    <i class="fas fa-file-pdf"></i> Descargar PDF
+                </a>
+            </div>
+
+            <!-- Gráfica -->
+            <div style="max-width: 800px; margin: auto;">
+                <canvas id="graficoRentabilidad"></canvas>
+            </div>
+
+            <!-- Tabla de resultados -->
+            <div style="max-width: 800px; margin: 30px auto;">
+                <h2>Resultados Numéricos</h2>
+                <table id="tablaRentabilidad" border="1" cellpadding="5" cellspacing="0"
+                    style="width:100%; border-collapse: collapse; text-align: right;">
+                    <thead>
+                        <tr style="background: #f0f0f0; text-align: center;">
+                            <th>Mes</th>
+                            <th>Ingresos ($)</th>
+                            <th>Costos ($)</th>
+                            <th>Utilidad ($)</th>
+                            <th>Margen (%)</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <!-- Conclusión -->
+            <div style="max-width: 800px; margin: 30px auto;">
+                <h2>Conclusión Ejecutiva</h2>
+                <p id="conclusion"></p>
+                <p style="font-size: 0.9em; color: gray;" id="fechaReporte"></p>
+            </div>
+
+        </main>
+    </div>
 
     <footer>
         © Sistema Tienda Julio y Mary
     </footer>
+
+    <!-- ✅ Mover el JS al final -->
+    <script src="{{ url_for('static', filename='JS/reportes.js') }}"></script>
 </body>
+
 </html>
