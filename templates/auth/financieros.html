@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tienda Julio y Mary</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
+    </style>
+    <!-- ✅ CDN oficial de FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/menu.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/financieros.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <header>
+        <h1 class="empresa">Tienda Julio y Mary</h1>
+        <h1 class="pagina">Reportes Financieros</h1>
+        <div class="user-info">
+            <img src="{{ url_for('static', filename='IMG/logo.png') }}" alt="Logo de la empresa">
+            <i class="fas fa-user-circle"></i>
+            <label class="usuario-rol">{{ session.get("usuario_rol", "Rol") }}</label>
+            <label class="usuario-nombre">{{ session.get("usuario_nombre", "Invitado") }}</label>
+        </div>
+    </header>
+
+    <div class="contenedor">
+        <nav>
+            <a href="{{ url_for('auth.menu') }}">Inicio</a>
+            <a href="{{ url_for('auth.productos') }}">Productos</a>
+            <a href="{{ url_for('auth.categoria') }}">Categorías</a>
+            <a href="{{ url_for('auth.proveedor') }}">Proveedores</a>
+            <a href="{{ url_for('auth.inventario') }}">Inventario</a>
+            <a href="{{ url_for('auth.compras') }}">Compras</a>
+            <a href="{{ url_for('auth.reportes') }}">Reportes</a>
+            <a href="{{ url_for('auth.ventas') }}">Ventas</a>
+            <a href="{{ url_for('auth.registro') }}">Usuarios</a>
+            <a href="{{ url_for('auth.logout') }}" class="logout">
+                <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+            </a>
+        </nav>
+
+        <main>
+            <!-- 🔹 Filtros -->
+            <div class="filtros">
+                <label for="inicio">Desde: </label>
+                <input type="month" id="inicio">
+                <label for="fin">Hasta: </label>
+                <input type="month" id="fin">
+                <button id="btnGenerar" class="btn btn-primary">
+                    <i class="fas fa-search"></i> Generar Reporte
+                </button>
+            </div>
+
+            <!-- 🔹 Secciones de reportes -->
+            <section>
+                <h2>Estado de Resultados</h2>
+                <canvas id="graficoResultados"></canvas>
+                <table id="tablaResultados"></table>
+            </section>
+
+            <section>
+                <h2>Margen de Rentabilidad</h2>
+                <canvas id="graficoMargen"></canvas>
+                <table id="tablaMargen"></table>
+            </section>
+
+            <section>
+                <h2>Flujo de Caja</h2>
+                <canvas id="graficoFlujo"></canvas>
+                <table id="tablaFlujo"></table>
+            </section>
+
+            <section>
+                <h2>Punto de Equilibrio</h2>
+                <canvas id="graficoEquilibrio"></canvas>
+                <table id="tablaEquilibrio"></table>
+            </section>
+
+            <section>
+                <h2>Crecimiento de Ventas</h2>
+                <canvas id="graficoCrecimiento"></canvas>
+                <table id="tablaCrecimiento"></table>
+            </section>
+
+            <!-- ✅ Un único botón PDF general -->
+            <div class="acciones" style="text-align:center; margin:30px 0;">
+                <a class="btn btn-secondary" id="pdfGeneral" target="_blank">
+                    <i class="fas fa-file-pdf"></i> Exportar PDF General
+                </a>
+            </div>
+        </main>
+    </div>
+
+    <footer>
+        © Sistema Tienda Julio y Mary
+    </footer>
+
+    <!-- ✅ JS al final -->
+    <script src="{{ url_for('static', filename='JS/financieros.js') }}"></script>
+</body>
+</html>

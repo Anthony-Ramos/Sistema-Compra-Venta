@@ -8,6 +8,7 @@ from backend.controladores.prod_controlador import prod_bp
 from backend.controladores.cate_controlador import cate_bp
 from backend.controladores.prov_controlador import prov_bp
 from backend.controladores.reportes_controlador import reportes_bp
+from backend.controladores.reportes_financieros_controlador import financieros_bp
 
 
 
@@ -25,6 +26,7 @@ def crear_app():
     app.register_blueprint(cate_bp)
     app.register_blueprint(prov_bp)
     app.register_blueprint(reportes_bp)
+    app.register_blueprint(financieros_bp)
 
     # ------------------------------
     # Ruta raíz → redirige al login

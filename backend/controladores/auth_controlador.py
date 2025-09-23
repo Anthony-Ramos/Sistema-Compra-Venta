@@ -180,6 +180,11 @@ def reportes():
     """Página de reportes."""
     return render_template("auth/reportes.html")
 
+@auth_bp.route("/reportesfinancieros")
+def financieros():
+    """Página de reportes."""
+    return render_template("auth/financieros.html")
+
 
 @auth_bp.route("/ventas")
 def ventas():
