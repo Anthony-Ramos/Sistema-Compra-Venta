@@ -73,56 +73,66 @@
             </a>
         </nav>
 
-        <main>
-            <!-- 🔹 Filtros -->
-            <div class="filtros">
-                <label for="inicio">Desde: </label>
-                <input type="month" id="inicio">
-                <label for="fin">Hasta: </label>
-                <input type="month" id="fin">
-                <button id="btnGenerar" class="btn btn-primary">
-                    <i class="fas fa-search"></i> Generar Reporte
-                </button>
-            </div>
+<main>
+    <!-- 🔹 Filtros -->
+    <section class="filtros">
+        <h2>Filtros</h2>
+        <div>
+            <label for="inicio">Desde: </label>
+            <input type="month" id="inicio">
 
-            <!-- ✅ Un único botón PDF general -->
-            <div class="acciones" style="text-align:center; margin:30px 0;">
-                <a class="btn btn-secondary" id="pdfGeneral" target="_blank">
-                    <i class="fas fa-file-pdf"></i> Exportar PDF General
-                </a>
-            </div>
+            <label for="fin">Hasta: </label>
+            <input type="month" id="fin">
 
-            <!-- 🔹 Secciones de reportes -->
-            <section>
-                <h2>Estado de Resultados</h2>
-                <canvas id="graficoResultados"></canvas>
-                <table id="tablaResultados"></table>
-            </section>
+            <button id="btnGenerar" class="btn btn-primary">
+                <i class="fas fa-search"></i> Generar Reporte
+            </button>
+        </div>
+    </section>
 
-            <section>
-                <h2>Margen de Rentabilidad</h2>
-                <canvas id="graficoMargen"></canvas>
-                <table id="tablaMargen"></table>
-            </section>
+    <!-- 🔹 Exportar PDF -->
+    <section class="pdf">
+        <h2>Exportar</h2>
+        <div class="acciones" style="text-align:center; margin:20px 0;">
+            <a class="btn btn-secondary" id="pdfGeneral" target="_blank">
+                <i class="fas fa-file-pdf"></i> Descargar PDF
+            </a>
+        </div>
+    </section>
 
-            <section>
-                <h2>Flujo de Caja</h2>
-                <canvas id="graficoFlujo"></canvas>
-                <table id="tablaFlujo"></table>
-            </section>
+    <!-- 🔹 Secciones de reportes -->
+    <section>
+        <h2>Estado de Resultados</h2>
+        <canvas id="graficoResultados"></canvas>
+        <table id="tablaResultados"></table>
+    </section>
 
-            <section>
-                <h2>Punto de Equilibrio</h2>
-                <canvas id="graficoEquilibrio"></canvas>
-                <table id="tablaEquilibrio"></table>
-            </section>
+    <section>
+        <h2>Margen de Rentabilidad</h2>
+        <canvas id="graficoMargen"></canvas>
+        <table id="tablaMargen"></table>
+    </section>
 
-            <section>
-                <h2>Crecimiento de Ventas</h2>
-                <canvas id="graficoCrecimiento"></canvas>
-                <table id="tablaCrecimiento"></table>
-            </section>
-        </main>
+    <section>
+        <h2>Flujo de Caja</h2>
+        <canvas id="graficoFlujo"></canvas>
+        <table id="tablaFlujo"></table>
+    </section>
+
+    <section>
+        <h2>Punto de Equilibrio</h2>
+        <canvas id="graficoEquilibrio"></canvas>
+        <table id="tablaEquilibrio"></table>
+    </section>
+
+    <!-- 🔹 Ejemplo full width -->
+    <section class="full-width">
+        <h2>Crecimiento de Ventas</h2>
+        <canvas id="graficoCrecimiento"></canvas>
+        <table id="tablaCrecimiento"></table>
+    </section>
+</main>
+
     </div>
 
     <footer>
