@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='CSS/menu.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='CSS/financieros.css') }}">
+       <link rel="stylesheet" href="{{ url_for('static', filename='CSS/repo.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
@@ -27,18 +28,48 @@
     </header>
 
     <div class="contenedor">
-        <nav>
-            <a href="{{ url_for('auth.menu') }}">Inicio</a>
-            <a href="{{ url_for('auth.productos') }}">Productos</a>
-            <a href="{{ url_for('auth.categoria') }}">Categorías</a>
-            <a href="{{ url_for('auth.proveedor') }}">Proveedores</a>
-            <a href="{{ url_for('auth.inventario') }}">Inventario</a>
-            <a href="{{ url_for('auth.compras') }}">Compras</a>
-            <a href="{{ url_for('auth.reportes') }}">Reportes</a>
-            <a href="{{ url_for('auth.ventas') }}">Ventas</a>
-            <a href="{{ url_for('auth.registro') }}">Usuarios</a>
+                    <nav>
+            <a href="{{ url_for('auth.menu') }}"  class="active">
+                <img src="{{ url_for('static', filename='IMG/iconos/hogar.png') }}" class="icono">
+                Inicio
+            </a>
+            <a href="{{ url_for('auth.productos')}}">
+                <img src="{{ url_for('static', filename='IMG/iconos/paquetes.png') }}" class="icono">
+                Productos
+            </a>
+            <a href="{{ url_for('auth.categoria') }}">
+                <img src="{{ url_for('static', filename='IMG/iconos/lineas-de-opciones.png') }}" class="icono">
+                Categorias
+            </a>
+            <a href="{{ url_for('auth.proveedor') }}">
+                <img src="{{ url_for('static', filename='IMG/iconos/cadena-de-suministro.png') }}" class="icono">
+                Proveedores
+            </a>
+            <a href="{{url_for('auth.inventario')}}">
+                <img src="{{ url_for('static', filename='IMG/iconos/inventario-disponible.png') }}" class="icono">
+                Inventario
+            </a>
+            <a href="{{url_for('auth.compras')}}">
+                <img src="{{ url_for('static', filename='IMG/iconos/carrito-de-compras.png') }}" class="icono">
+                Compras
+            </a>
+            <a href="{{url_for('auth.reportes')}}">
+                <img src="{{ url_for('static', filename='IMG/iconos/informe-seo.png') }}" class="icono">
+                Reportes de Ventas
+            </a>
+                        <a href="{{url_for('auth.financieros')}}">
+                <img src="{{ url_for('static', filename='IMG/iconos/informe-seo.png') }}" class="icono">
+                Reportes Financieros
+            </a>
+            <a href="{{url_for('auth.ventas')}}">
+                <img src="{{ url_for('static', filename='IMG/iconos/grafico-de-barras.png') }}" class="icono">
+                Ventas</a>
+            <a href="{{ url_for('auth.registro') }}">
+                <img src="{{ url_for('static', filename='IMG/iconos/agregar-usuario.png') }}" class="icono">
+                Usuarios
+            </a>
             <a href="{{ url_for('auth.logout') }}" class="logout">
-                <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+            <i class="fas fa-sign-out-alt"></i>Cerrar sesión
             </a>
         </nav>
 
@@ -52,6 +83,13 @@
                 <button id="btnGenerar" class="btn btn-primary">
                     <i class="fas fa-search"></i> Generar Reporte
                 </button>
+            </div>
+
+            <!-- ✅ Un único botón PDF general -->
+            <div class="acciones" style="text-align:center; margin:30px 0;">
+                <a class="btn btn-secondary" id="pdfGeneral" target="_blank">
+                    <i class="fas fa-file-pdf"></i> Exportar PDF General
+                </a>
             </div>
 
             <!-- 🔹 Secciones de reportes -->
@@ -84,13 +122,6 @@
                 <canvas id="graficoCrecimiento"></canvas>
                 <table id="tablaCrecimiento"></table>
             </section>
-
-            <!-- ✅ Un único botón PDF general -->
-            <div class="acciones" style="text-align:center; margin:30px 0;">
-                <a class="btn btn-secondary" id="pdfGeneral" target="_blank">
-                    <i class="fas fa-file-pdf"></i> Exportar PDF General
-                </a>
-            </div>
         </main>
     </div>
 
