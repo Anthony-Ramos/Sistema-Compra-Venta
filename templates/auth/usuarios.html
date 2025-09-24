@@ -6,13 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tienda Julio y Mary</title>
 
-  <!-- Font Awesome -->
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
   <!-- Estilos CSS -->
   <link rel="stylesheet" href="{{ url_for('static', filename='CSS/menu.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='CSS/general.css') }}">
@@ -77,147 +70,166 @@
         <i class="fas fa-sign-out-alt"></i>Cerrar sesión
       </a>
     </nav>
-
-    <!-- MAIN -->
     <main>
-      <!-- ALERTAS -->
-      {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-      <div class="container mt-3">
-        {% for category, message in messages %}
-        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-          {{ message }}
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
-        </div>
-        {% endfor %}
-      </div>
-      {% endif %}
-      {% endwith %}
-
-      <!-- FORMULARIO -->
       <div class="formulario">
-        <form id="registroForm" method="POST" action="{{ url_for('auth.registro') }}" novalidate>
-          <label for="" class="center">AGREGAR USUARIO</label>
-          <input type="hidden" id="id_usuario">
+        <label for="" class="center">AGREGAR USUARIO</label>
+        <input type="hidden" id="id_usuario">
 
-          <label for="" class="label1">Nombre<label style="color: red;">*</label></label>
-          <input type="text" name="nom_usuario" id="nom_usuario" placeholder="Nombre" required>
+        <label for="" class="label1">Nombre
+          <label for="" style="color: red;">*</label>
+        </label>
+        <input type="text" id="nombre" placeholder="Nombre">
 
-          <label for="" class="label1">Contraseña <label style="color: red;">*</label></label>
-          <input type="password" name="contrasena" id="contrasena" placeholder="Contraseña" required>
 
-          <label for="" class="label1">Confirmacion de la Contraseña <label style="color: red;">*</label></label>
-          <input type="password" name="confirmar" id="confirmar" placeholder="Contraseña" required>
-
-          <label for="" class="label1">Rol <label style="color: red;">*</label></label>
-          <select class="txt" id="id_rol" name="id_rol" required>
-            <option value="" selected disabled>Seleccione un rol</option>
-            {% for r in roles %}
-            <option value="{{ r[0] }}">{{ r[1] }}</option>
-            {% endfor %}
-          </select>
-          <div class="botones">
-            <button type="submit" class="guardar">Guardar</button>
-            <button type="reset" class="cancelar">Cancelar</button>
-          </div>
-        </form>
-      </div>
-
-      <!-- TABLA -->
-      <div class="tabla">
-        <div class="tabla-scroll">
-          <table>
-            <thead>
-              <tr>
-                <th hidden>ID</th>
-                <th>Nombre</th>
-                <th>Rol</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody class="tabla-user">
-              {% for usuario in usuarios %}
-              <tr>
-                <td hidden>{{ usuario.id_usuario }}</td>
-                <td>{{ usuario.nom_usuario }}</td>
-                <td>{{ usuario.nom_rol }}</td>
-                <td>
-                  <!-- EDITAR -->
-                  <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                    data-bs-target="#modalEditar{{ usuario.id_usuario }}">
-                    Editar
-                  </button>
-
-                  <!-- ELIMINAR -->
-                  <form action="{{ url_for('auth.eliminar_usuario', id_usuario=usuario.id_usuario) }}" method="POST"
-                    style="display:inline;" onsubmit="return confirm('¿Seguro que deseas eliminar este usuario?');">
-                    <button type="submit" class="btn btn-eliminar">Eliminar</button>
-                  </form>
-                </td>
-              </tr>
-
-              <!-- MODAL EDITAR -->
-              <div class="modal fade" id="modalEditar{{ usuario.id_usuario }}" tabindex="-1"
-                aria-labelledby="modalLabel{{ usuario.id_usuario }}" aria-hidden="true">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <form action="{{ url_for('auth.editar_usuario', id_usuario=usuario.id_usuario) }}" method="POST">
-                      <div class="modal-header">
-                        <h5 class="modal-title">Editar Usuario</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                      </div>
-                      <div class="modal-body">
-                        <label class="form-label">Nombre de Usuario</label>
-                        <input type="text" class="form-control" name="nom_usuario"
-                          value="{{ usuario.nom_usuario }}" required>
-                        <label class="form-label">Rol</label>
-                        <select class="form-select" name="id_rol" required>
-                          <option value="1" {% if usuario.id_rol==1 %}selected{% endif %}>Administrador</option>
-                          <option value="2" {% if usuario.id_rol==2 %}selected{% endif %}>Vendedor</option>
-                        </select>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-success">Guardar Cambios</button>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </div>
-
-              {% else %}
-              <tr>
-                <td colspan="4">No hay usuarios registrados aún.</td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
+        <label for="" class="label1">Contraseña
+          <label for="" style="color: red;">*</label>
+        </label>
+        <div class="fila-doble">
+          <input type="password" id="contrasena" placeholder="Contraseña">
+          <input type="password" id="confirmar" placeholder="Confirmación">
         </div>
+
+        <div id="mensaje-flotante" class="mensaje-flotante">
+          <p><strong>La contraseña debe contener:</strong></p>
+          <ul>
+            <li id="req-long">Mínimo de <strong>12 caracteres</strong></li>
+            <li id="req-mayus">Al menos <strong>1 mayúscula</strong></li>
+            <li id="req-simbolo">Al menos <strong>1 símbolo</strong> (ej: !, @, #, $)</li>
+            <li id="req-num">Al menos <strong>1 número</strong></li>
+          </ul>
+        </div>
+        <label for="mostrar-contrasena" class="label1">
+          <input type="checkbox" id="mostrar-contrasena"> Mostrar contraseña
+        </label>
+
+        <label for="" class="label1">Rol
+          <label for="" style="color: red;">*</label>
+        </label>
+        <select id="roles">
+          <option value="">Seleccione un Rol</option>
+        </select>
+
+
+        <label for="" class="label1">Correo
+          <label for="" style="color: red;">*</label>
+        </label>
+        <input type="email" name="" id="correo" placeholder="EjemploCorreo@gmail.com">
+
+        <label for="" class="label1">Teléfono
+          <label for="" style="color: red;">*</label>
+        </label>
+        <input type="tel" name="" id="telefono" placeholder="7519-3567">
+
+        <div class="botones">
+          <input type="button" class="guardar" value="Guardar" id="guardar">
+          <input type="button" class="cancelar" value="Cancelar" id="cancelar">
+        </div>
+        <!--Fin del div formulario-->
       </div>
+
+      <div class="tabla-scroll">
+        <button id="abrir-modal-rol" class="btn-abrir">Gestionar Roles</button>
+
+        <!-- Modal -->
+        <div id="modal-rol" class="modal">
+          <div class="modal-contenido">
+            <span id="cerrar-modal-rol" class="cerrar">&times;</span>
+            <h2>Gestión de Roles</h2>
+            <!-- Formulario para agregar/editar rol -->
+            <div class="formulario-rol">
+              <input type="hidden" id="id_rol_modal">
+              <label>Nombre del rol</label>
+              <input type="text" id="nombre_rol_modal" placeholder="Nombre del rol">
+
+              <div class="botones">
+                <input type="button" id="guardar_rol_modal" class="guardar" value="Guardar">
+                <input type="button" id="cancelar_rol_modal" class="cancelar" value="Cancelar">
+              </div>
+            </div>
+
+            <!-- Tabla de roles existentes -->
+            <div class="tabla-roles">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="tablaRoles">
+                  <!-- Se llenará dinámicamente -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th class="id-general">ID</th>
+              <th>Nombre</th>
+              <th>Rol</th>
+              <th>Correo</th>
+              <th>Telefono</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tablaUsuarios">
+          </tbody>
+        </table>
+        <!--Fin del div tabla-scroll-->
+      </div>
+
     </main>
-  </div>
 
-  <!-- FOOTER -->
-  <footer>
-    © Universidad Nacional de El Salvador
-  </footer>
+    <div id="toast-container">
+    </div>
+    <!-- FOOTER -->
+    <footer>
+      © Universidad Nacional de El Salvador
+    </footer>
 
-  <!-- JS Validación -->
-  <script>
-    const form = document.getElementById('registroForm');
-    form.addEventListener('submit', (e) => {
-      const pass = document.getElementById('contrasena').value;
-      const confirm = document.getElementById('confirmar').value;
-      const rol = document.getElementById('id_rol').value;
+    <script>
+      const inputContrasena = document.getElementById("contrasena");
+      const mensaje = document.getElementById("mensaje-flotante");
 
-      if (pass !== confirm) {
-        e.preventDefault();
-        alert('Las contraseñas no coinciden.');
-      } else if (!rol) {
-        e.preventDefault();
-        alert('Seleccione un rol.');
-      }
-    });
-  </script>
+      const reqLong = document.getElementById("req-long");
+      const reqMayus = document.getElementById("req-mayus");
+      const reqSimbolo = document.getElementById("req-simbolo");
+      const reqNum = document.getElementById("req-num");
+
+      inputContrasena.addEventListener("focus", () => {
+        mensaje.style.display = "block";
+      });
+
+      inputContrasena.addEventListener("blur", () => {
+        mensaje.style.display = "none";
+      });
+
+      inputContrasena.addEventListener("input", () => {
+        const value = inputContrasena.value;
+
+        // Validaciones
+        reqLong.classList.toggle("cumplido", value.length >= 12);
+        reqMayus.classList.toggle("cumplido", /[A-Z]/.test(value));
+        reqSimbolo.classList.toggle("cumplido", /[!@#$%^&*(),.?":{}|<>]/.test(value));
+        reqNum.classList.toggle("cumplido", /\d/.test(value));
+      });
+      const inputConfirmar = document.getElementById("confirmar");
+      const mostrar = document.getElementById("mostrar-contrasena");
+
+      mostrar.addEventListener("change", () => {
+        const tipo = mostrar.checked ? "text" : "password";
+        inputContrasena.type = tipo;
+        inputConfirmar.type = tipo;
+      });
+    </script>
+    <script src="{{ url_for('static', filename='JS/agrusuario.js') }}"></script>
+    <script src="{{ url_for('static', filename='JS/toast.js') }}"></script>
+    <script src="{{ url_for('static', filename='JS/agrrol.js') }}"></script>
 </body>
+
 </html>

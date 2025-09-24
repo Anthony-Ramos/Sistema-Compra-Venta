@@ -1,158 +1,208 @@
-/* ===== Reset útil ===== */
-* { box-sizing: border-box; }
-
-body {
-    background-color: #0E4C75;
+/* Reset básico */
+* {
     margin: 0;
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+.contenido .img-inicio {
+    width: 50px; 
+    height: 50px;
+    margin-bottom: 20px;
+    object-fit: cover;
 }
 
-/* ===== Contenedor para centrar todo ===== */
-.fondo {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;   /* Centra horizontal */
-    align-items: center;       /* Centra vertical */
-    padding: 16px;
-}
-
-/* ===== Tarjeta (login/registro) ===== */
-.contenido {
-    width: 100%;
-    max-width: 420px;                 /* Antes era porcentaje fijo; ahora responsivo */
-    color: #f6fdff;
-    background-color: rgba(50,130,181,0.8);
-    box-shadow: 10px 10px 15px rgba(0,0,0,0.5);
-    border-radius: 10px;
-    padding: 28px 22px;               /* Espaciado interno cómodo */
-}
-
-/* ===== Títulos y textos ===== */
-.msj {
-    display: block;
-    text-align: center;               /* Centrado real */
-    margin: 0 0 16px 0;
-}
-
-.texto{
-    font-weight: bold;
-    text-align: center;
-    display: block;
-    margin-bottom: 8px;
-}
-
-/* ===== Inputs ===== */
-.txt{
-    display: block;
-    width: 100%;
-    height: 44px;                     /* 6vh puede variar demasiado; fijo para consistencia */
-    border: 2px solid transparent;
-    border-radius: 5px;
-    margin: 0 0 14px 0;
-    padding: 0 12px;                  /* Antes 5vh; ahora padding típico */
-    transition: all 0.2s ease;
-    background-color: #ffffff;
-}
-
-.txt:focus{
-    outline: none;
-    border: 2px solid #000;
-    background-color: #f0fff4;
-}
-
-.txt:not(:placeholder-shown){
-    border: 2px solid #000000fa;
-    background-color: #f0fff4;
-}
-
-/* ===== Botón base ===== */
-.entrar {
-    background-color: #007bff; /* Azul */
+.recuperacion {
+    margin-top: 20px;
+    margin-left: 90px;
+    width: 400px;
+    height: 45px;
+    background-color: #007BFF;
+    border: 1px solid white;
+    border-radius: 8px; 
     color: white;
-    padding: 12px 18px;
+    font-size: 18px;
+    cursor: pointer;
+}
+.recuperacion:hover{
+    background-color: rgba(255,255,255,0.10);
+}
+/* Contenedor principal */
+.fondo {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+}
+
+/* Lado izquierdo: formulario */
+.contenido {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 10px;
+}
+
+.msj {
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+form {
+    width: 100%;
+    max-width: 350px;
+    display: flex;
+    flex-direction: column;
+}
+
+.txt, .txt2 {
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+}
+
+.cont-contra {
+    position: relative;
+}
+
+.txt2 {
+    padding-right: 40px;
+    width: 100%;
+}
+
+.icono {
+    position: absolute;
+    right: 10px;
+    top: 40%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+}
+
+.entrar {
+    padding: 12px;
+    background-color: #007BFF;
+    color: white;
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    font-size: 16px;
-    margin: 10px 0 0 0;
-    width: 100%;                     /* Ocupa el ancho para alineación limpia */
-    display: block;
-    transition: background-color 0.2s ease, transform 0.08s ease;
+    font-size: 1em;
+    transition: background-color 0.3s;
 }
 
 .entrar:hover {
     background-color: #0056b3;
 }
 
-.entrar:active {
-    transform: scale(0.98);
-}
-
-/* ===== Enlace recuperar cuenta ===== */
-.recuperacion {
-    text-decoration: none;
-    color: #def4fd;
+/* Lado derecho */
+.texto-lateral {
+    flex: 1;
+    background-color: #007BFF;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 40px;
     font-weight: bold;
-    margin: 12px auto 14px auto;     /* Centrado y con margen vertical */
-    display: inline-block;
-    transition: transform 0.2s ease, background-color 0.2s ease;
+    text-align: justify;
+    color: #ffffff;
+}
+.texto-lateral .img-inicio{
+    width: 50px; 
+    height: 50px;
+    margin-left: 50%;
+    margin-bottom: 20px;
+    object-fit: cover;
+}
+.texto-lateral h2 {
+    margin-left: 25%;
+    font-size: 1.8em;
+    margin-bottom: 15px;
 }
 
-.recuperacion:hover {
-    transform: scale(1.05);
-    text-decoration: underline;
+.texto-lateral p {
+    font-size: 1.1em;
+    line-height: 1.5;
 }
 
-/* ===== Variantes de botón (opcional) ===== */
-.registrar {
-    background-color: #28a745; /* Verde */
-}
-.registrar:hover {
-    background-color: #1e7e34;
-}
-
-.volver {
-    background-color: #6c757d; /* Gris */
-}
-.volver:hover {
-    background-color: #5a6268;
+/* 🔹 Contenedor de mensajes flash */
+.flash-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: auto;
+  max-width: 400px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-/* ===== Utilidad para ocultar el otro formulario ===== */
-.oculto { display: none; }
-
-/* ===== Responsive fino ===== */
-@media (max-width: 480px) {
-    .contenido {
-        padding: 22px 16px;
-        border-radius: 12px;
-    }
-    .entrar { font-size: 15px; }
+/* 🔹 Contenedor de flashes */
+.flash-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: auto;
+  max-width: 400px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.flashes {
-    list-style: none;
-    padding: 0;
-    margin-top: 10px;
+/* 🔹 Caja de cada mensaje */
+.flash {
+  padding: 14px 20px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  box-shadow: 0px 4px 10px rgba(0,0,0,0.15);
+  animation: fadeIn 0.4s ease-in-out;
+  transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
-.flashes li {
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    color: white;
-    font-weight: bold;
-    text-align: center;
+/* 🔹 Colores según categoría */
+.flash.success {
+  background: linear-gradient(135deg, #28a745, #218838);
 }
 
-.success {
-    background-color: #4CAF50;
+.flash.danger {
+  background: linear-gradient(135deg, #dc3545, #b02a37);
 }
 
-.warning {
-    background-color: #ff9800;
+.flash.warning {
+  background: linear-gradient(135deg, #ffc107, #e0a800);
+  color: #000;
 }
 
-.danger {
-    background-color: #f44336;
+.flash.info {
+  background: linear-gradient(135deg, #17a2b8, #117a8b);
+}
+
+/* 🔹 Animación de aparición */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* 🔹 Animación de desaparición */
+@keyframes fadeOut {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-15px); }
+}
+
+.flash.hide {
+  animation: fadeOut 0.5s forwards;
 }

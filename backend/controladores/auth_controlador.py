@@ -1,18 +1,3 @@
-"""
-Controlador de autenticación para usuarios.
-
-Define las rutas relacionadas con:
-- Inicio de sesión
-- Cierre de sesión
-- Registro de usuarios
-- Menú principal
-- Gestión de usuarios
-- Gestión de productos
-- Gestión de inventario
-- Módulo de compras, ventas, reportes
-- Módulo de categorías y proveedores
-"""
-
 import re
 import psycopg2
 from flask import session, Blueprint, render_template, request, redirect, url_for, flash, make_response
@@ -31,21 +16,22 @@ auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
 
 @auth_bp.route("/login", methods=["GET", "POST"])
 def login():
-    """Maneja el inicio de sesión de los usuarios."""
     if request.method == "POST":
         usuario = request.form.get("usuario")
         contrasena = request.form.get("contrasena")
 
-        user = Usuario.autenticar(usuario, contrasena)
-        if user:
-            session["usuario_id"] = user.id_usuario
-            session["usuario_nombre"] = user.nom_usuario
-            session["usuario_rol"] = Usuario.obtener_nombre_rol(user.id_rol)
+        user, mensaje = Usuario.autenticar(usuario, contrasena)
+        if not user:
+            flash(mensaje, "danger")
+            return render_template("auth/index.html")
 
-            flash("Inicio de sesión exitoso", "success")
-            return redirect(url_for("auth.menu"))
+        # Login exitoso
+        session["usuario_id"] = user.id_usuario
+        session["usuario_nombre"] = user.nom_usuario
+        session["usuario_rol"] = Usuario.obtener_nombre_rol(user.id_rol)
+        flash("Inicio de sesión exitoso", "success")
+        return redirect(url_for("auth.menu"))
 
-        flash("Usuario o contraseña incorrectos", "danger")
     return render_template("auth/index.html")
 
 

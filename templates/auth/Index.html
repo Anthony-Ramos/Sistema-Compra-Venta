@@ -1,33 +1,80 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tienda Julio y Mary</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='CSS/login.css') }}">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
 </head>
+
 <body>
 
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
-        <ul class="flashes">
+    <div class="flash-container">
         {% for category, message in messages %}
-            <li class="{{ category }}">{{ message }}</li>
+        <div class="flash {{ category }}">{{ message }}</div>
         {% endfor %}
-        </ul>
+    </div>
     {% endif %}
     {% endwith %}
 
+
     <div class="fondo">
         <div class="contenido">
-            <h1 class="msj">Bienvenido</h1>
+            <img src="{{ url_for('static', filename='IMG/iconos/tienda-delantera.png') }}" alt="" class="img-inicio">
+            <h1 class="msj">Inicio de sesión</h1>
             <form id="loginForm" method="POST" action="{{ url_for('auth.login') }}">
-                <input type="text" class="txt" name="usuario" placeholder="Usuario" required minlength="3">
-                <input type="password" class="txt" name="contrasena" placeholder="Contraseña" required minlength="6">
+                <input type="text" class="txt" name="usuario" placeholder="Usuario" required minlength="3"
+                    autocomplete="off">
+                <div class="cont-contra">
+                    <input type="password" id="contrasena" class="txt2" name="contrasena" placeholder="Contraseña"
+                        required minlength="6">
+                    <img src="{{ url_for('static', filename='IMG/iconos/ojo.png') }}" alt="Mostrar contraseña"
+                        id="togglePassword" class="icono">
+                </div>
                 <button type="submit" class="entrar">Entrar</button><br>
-                <a href="#" class="recuperacion">Recuperar la cuenta</a>
+
             </form>
         </div>
+        <div class="texto-lateral">
+            <img src="{{ url_for('static', filename='IMG/iconos/proteger.png') }}" alt="" class="img-inicio">
+            <h2>Información Importante</h2>
+            <p>
+        En caso de fallar más de 3 veces, su usuario  será bloqueado por seguridad.
+            </p>
+            <button type="submit" class="recuperacion">Desbloquear usuario</button>
+            <button type="submit" class="recuperacion">Recuperar Cuenta</button>
+            
+        </div>
+        
     </div>
+    <script>
+        const togglePassword = document.getElementById("togglePassword");
+        const passwordInput = document.getElementById("contrasena");
+
+        togglePassword.addEventListener("click", () => {
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                togglePassword.src = "{{ url_for('static', filename='IMG/iconos/cerrar-ojo.png') }}";
+            } else {
+                passwordInput.type = "password";
+                togglePassword.src = "{{ url_for('static', filename='IMG/iconos/ojo.png') }}";
+            }
+        });
+        document.addEventListener("DOMContentLoaded", () => {
+            const flashes = document.querySelectorAll(".flash");
+            flashes.forEach(flash => {
+                setTimeout(() => {
+                    flash.classList.add("hide");
+                    setTimeout(() => flash.remove(), 500);
+                }, 2000);
+            });
+        });
+    </script>
 </body>
 </html>

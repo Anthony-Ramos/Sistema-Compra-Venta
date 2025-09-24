@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <title>Tienda Julio y Mary</title>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='CSS/menu.css') }}">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
 </head>
 <body>
     <header>
@@ -71,5 +73,12 @@
     <footer>
       © Universidad Nacional de El Salvador
     </footer>
+
+    <script>
+    const loggedIn = "{{ 'true' if session.get('usuario_id') else 'false' }}";
+    if (loggedIn !== "true") {
+        window.location.href = "{{ url_for('auth.login') }}";
+    }
+</script>
 </body>
 </html>

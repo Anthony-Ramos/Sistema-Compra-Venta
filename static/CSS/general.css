@@ -27,6 +27,35 @@
   outline: none;
 }
 
+/*Estilos para las exigecias flotantes*/
+.mensaje-flotante {
+  position: absolute;
+  top: 58%;
+  left: 14%;
+  transform: translateY(-50%);
+  background: #ffffff;
+  color: rgb(0, 0, 0);
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  width: 250px;
+  display: none;
+  z-index: 999;
+  border-left: 4px solid #0076ca;
+}
+
+.mensaje-flotante ul {
+  margin: 8px 0 0 15px;
+  padding: 0;
+}
+.mensaje-flotante li {
+  color: red;
+}
+
+.mensaje-flotante li.cumplido {
+  color: #4caf50;
+}
+
 /* Input search */
 .buscador input[type="search"] {
   flex: 1;
